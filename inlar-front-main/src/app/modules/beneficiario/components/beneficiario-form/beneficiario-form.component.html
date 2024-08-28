@@ -1,0 +1,137 @@
+<div>
+  <form [formGroup]="beneficiarioForm" (ngSubmit)="handleSubmit()">
+    <div class="card flex flex-column md:flex-column gap-3">
+
+      <!-- Campo oculto para ID do Beneficiário -->
+    <input type="hidden" formControlName="idBeneficiario" />
+
+      <!-- Nome -->
+      <input pInputText placeholder="Nome" formControlName="nome" />
+
+      <!-- Tipo de Pessoa -->
+      <p-dropdown  
+        [options]="tiposPessoa" 
+        formControlName="tipo_pessoa" 
+        placeholder="Selecione o Tipo de Pessoa">
+      </p-dropdown>
+
+      <!-- Estado (UF) -->
+      <p-dropdown 
+        [options]="estados" 
+        formControlName="uf" 
+        placeholder="Selecione um Estado">
+      </p-dropdown>
+
+      <!-- Campos para Pessoa Física -->
+      <div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'F'">
+        <input 
+          pInputText 
+          placeholder="CPF" 
+          formControlName="cpf" 
+          appCpfMask 
+          appCpfValidator 
+          style="margin-right: 13px;" 
+        />
+        <input 
+          pInputText 
+          placeholder="RG" 
+          formControlName="rg" 
+          maxlength="9" 
+          style="margin-right: 13px;" 
+        />
+        <input 
+          pInputText 
+          placeholder="Data de Nascimento" 
+          formControlName="data_nascimento" 
+          type="date" 
+          style="margin-right: 13px;" 
+        />
+        <p-dropdown 
+          [options]="generos" 
+          formControlName="genero" 
+          placeholder="Selecione o Gênero">
+        </p-dropdown>
+      </div>
+
+      <!-- Campos para Pessoa Jurídica -->
+      <div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'J'">
+        <input 
+          pInputText 
+          placeholder="CNPJ" 
+          formControlName="cnpj" 
+          appCnpjMask 
+          appCnpjValidator 
+          style="margin-right: 10px;" 
+        />
+        <input 
+          pInputText 
+          placeholder="Razão Social" 
+          formControlName="razao_social" 
+        />
+      </div>
+
+      <!-- Contato -->
+      <input 
+        pInputText 
+        placeholder="Contato 1" 
+        formControlName="contato1" 
+        maxlength="11" 
+      />
+      <input 
+        pInputText 
+        placeholder="Contato 2" 
+        formControlName="contato2" 
+        maxlength="11" 
+      />
+
+      <!-- Endereço -->
+      <input 
+        pInputText 
+        placeholder="CEP" 
+        formControlName="cep" 
+        maxlength="8" 
+      />
+      <input 
+        pInputText 
+        placeholder="Logradouro" 
+        formControlName="logradouro" 
+      />
+      <input 
+        pInputText 
+        placeholder="Número" 
+        formControlName="numero" 
+      />
+      <input 
+        pInputText 
+        placeholder="Complemento" 
+        formControlName="complemento" 
+      />
+      <input 
+        pInputText 
+        placeholder="Bairro" 
+        formControlName="bairro" 
+      />
+      <input 
+        pInputText 
+        placeholder="Cidade" 
+        formControlName="cidade" 
+      />
+
+      <!-- Observações -->
+      <textarea 
+        pInputTextarea 
+        placeholder="Observações" 
+        formControlName="observacoes">
+      </textarea>
+
+      <!-- Botão de Submissão -->
+      <div class="flex flex-row justify-content-center align-content-center align-items-center">
+        <p-button 
+          [disabled]="!beneficiarioForm.valid" 
+          type="submit" 
+          label="Concluir">
+        </p-button>
+      </div>
+    </div>
+  </form>
+</div>
