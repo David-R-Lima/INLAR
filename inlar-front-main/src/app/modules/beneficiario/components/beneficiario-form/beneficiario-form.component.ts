@@ -98,14 +98,26 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const beneficiarioData = this.config.data?.event;
-    console.log('beneficiarioData:', beneficiarioData);
+    console.log('Dados recebidos ao editar:', beneficiarioData);
 
     if (beneficiarioData) {
       this.isEditing = true;
       beneficiarioData.idBeneficiario = beneficiarioData.id; // Copia o valor de 'id' para 'idBeneficiario'
     console.log('beneficiarioData ajustado:', beneficiarioData);
       console.log('isEditing set to true'); 
-      this.populateForm(beneficiarioData);
+     
+      this.beneficiarioService.getBeneficiarioById(beneficiarioData.id)
+      .subscribe({
+          next: (beneficiario: GetBeneficiarioResponse) => {
+              console.log('Dados completos do beneficiário:', beneficiario);
+              this.populateForm(beneficiario); // Preencha o formulário com os dados completos
+          },
+          error: (err) => {
+              console.error('Erro ao buscar dados do beneficiário:', err);
+              this.handleErrorMessage('Erro ao buscar dados do beneficiário.');
+          }
+      });
+
     } else {
       console.log('Adicionando novo beneficiário');
       this.isEditing = false;
@@ -122,18 +134,18 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       const formData = this.beneficiarioForm.value;
   
       if (formData.tipo_pessoa === 'J') {
-        // Se for Pessoa Jurídica, chame o método para salvar empresa
+       
         if (this.isEditing) {
-          console.log('Editando empresa'); // Verifique se ele entra no modo de edição para empresas
+          console.log('Editando empresa'); 
           this.editEmpresa(formData);
         } else {
-          console.log('Adicionando nova empresa'); // Verifique se ele entra no modo de criação para empresas
+          console.log('Adicionando nova empresa'); 
           this.addEmpresa(formData);
         }
       } else {
-        // Se for Pessoa Física, chame o método para salvar beneficiário
+        
         if (this.isEditing) {
-          console.log('Editando beneficiário'); // Verifique se ele entra no modo de edição para beneficiários
+          console.log('Editando beneficiário'); 
           this.editBeneficiario(formData);
         } else {
           console.log('Adicionando novo beneficiário'); // Verifique se ele entra no modo de criação para beneficiários
@@ -146,6 +158,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
   }
   
   private addBeneficiario(formData: any): void {
+    console.log('Dados enviados ao backend:', formData); // Verificar o payload completo
 
     if (formData.tipo_pessoa === 'F') {
       formData.cnpj = ''; 
@@ -167,8 +180,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
   }
 
   private editBeneficiario(formData: any): void {
-    const payload = { ...formData, id: formData.idBeneficiario }; // Usando idBeneficiario conforme definido
-  
+    const payload = { ...formData, id: formData.idBeneficiario }; 
     console.log('ID do Beneficiário:', payload.id);
     if (!payload.id) {
       this.handleErrorMessage('ID do beneficiário não encontrado.');
@@ -180,7 +192,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.handleSuccessMessage('Beneficiário editado com sucesso!');
-          this.ref.close(); // Fecha o diálogo após editar com sucesso
+          this.ref.close(); 
         },
         error: (err) => {
           console.error('Erro ao editar beneficiário:', err);
@@ -223,30 +235,43 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
 
   private populateForm(beneficiario: GetBeneficiarioResponse): void {
     console.log('Beneficiário recebido no populateForm:', beneficiario);
-    this.beneficiarioForm.patchValue({
-      idBeneficiario: beneficiario.idBeneficiario,  
-      nome: beneficiario.nome,
-      tipo_pessoa: beneficiario.tipoPessoa,
-      cpf: beneficiario.cpf,
-      rg: beneficiario.rg,
-      genero: beneficiario.genero,
-      data_nascimento: beneficiario.dataNascimento,
-      cnpj: beneficiario.cnpj,
-      razao_social: beneficiario.razaoSocial,
-      contato1: beneficiario.contato1,
-      contato2: beneficiario.contato2,
-      cep: beneficiario.cep,
-      logradouro: beneficiario.logradouro,
-      numero: beneficiario.numero,
-      complemento: beneficiario.complemento,
-      bairro: beneficiario.bairro,
-      cidade: beneficiario.cidade,
-      uf: beneficiario.siglaEstado,
-      observacoes: beneficiario.observacoes,
-      ativo: beneficiario.ativo
-    });
-  }
 
+    const dataNascimento = beneficiario.dataNascimento 
+        ? new Date(beneficiario.dataNascimento).toISOString().split('T')[0] 
+        : '';
+
+    console.log('Data de Nascimento formatada:', dataNascimento);
+
+    this.beneficiarioForm.patchValue({
+        idBeneficiario: beneficiario.idBeneficiario,  
+        nome: beneficiario.nome,
+        tipo_pessoa: beneficiario.tipoPessoa,
+        cpf: beneficiario.cpf,
+        rg: beneficiario.rg,
+        genero: beneficiario.genero,
+        data_nascimento: dataNascimento,
+        cnpj: beneficiario.cnpj,
+        razao_social: beneficiario.razaoSocial,
+        contato1: beneficiario.contato1,
+        contato2: beneficiario.contato2,
+        cep: beneficiario.cep,
+        logradouro: beneficiario.logradouro,
+        numero: beneficiario.numero,
+        complemento: beneficiario.complemento,
+        bairro: beneficiario.bairro,
+        cidade: beneficiario.cidade,
+        uf: beneficiario.uf,
+        observacoes: beneficiario.observacoes,
+        ativo: beneficiario.ativo
+    });
+
+    // Este é o log que verifica o valor do campo após o patchValue
+    console.log('Valor de data_nascimento no formulário após patchValue:', this.beneficiarioForm.get('data_nascimento')?.value);
+}
+
+ 
+ 
+  
   private handleSuccessMessage(message: string): void {
     this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: message });
   }

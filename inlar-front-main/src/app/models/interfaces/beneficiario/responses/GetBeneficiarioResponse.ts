@@ -17,6 +17,7 @@ export interface GetBeneficiarioResponse {
   bairro?: string;
   cidade?: string;
   siglaEstado?: string;
+  uf?: string;
   observacoes?: string;
   ativo: boolean;
 }
