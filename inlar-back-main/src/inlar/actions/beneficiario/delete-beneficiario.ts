@@ -8,7 +8,7 @@ interface Request {
 }
 
 @Injectable()
-export class DeletebeneficiarioById {
+export class DeleteBeneficiarioById {
   constructor(private beneficiarioRepositorio: BeneficiarioRepositorio) {}
 
   async execute(data: Request): Promise<boolean | NotFoundError | InternalError> {

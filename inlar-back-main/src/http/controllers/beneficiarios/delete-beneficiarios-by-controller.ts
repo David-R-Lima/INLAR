@@ -31,7 +31,7 @@ import { InternalError } from 'src/inlar/errors/internal-error';
       param: Schema,
     ) {
       const res = await this.deleteBeneficiarioById.execute({
-        idbeneficiario: param.id_beneficiario,
+        idBeneficiario: param.id_beneficiario,
       });
 
       if (res instanceof NotFoundError) {
