@@ -19,12 +19,13 @@ export class AuthenticateUser {
 
   async execute(data: Request): Promise<string | NotFoundError> {
     const user = await this.usuarioRepositorio.findByEmail(data.email)
-    const senha = user.getSenha()
 
     if(user) {
+      const senha = user.getSenha()
+
       const isPasswordValid = await this.bcryptHasher.compare(
         data.senha,
-        user.getSenha(),
+        senha,
       );
 
       if(!isPasswordValid) {
