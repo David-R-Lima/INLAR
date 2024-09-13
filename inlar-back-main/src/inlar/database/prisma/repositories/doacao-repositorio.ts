@@ -63,7 +63,7 @@ export class DoacaoRepositorio {
     return prismaDoacao.map(DoacaoMapper.fromDatabase);
   }
 
-  async delete(idDoacao: number): Promise<boolean> {
+  async Delete(idDoacao: number): Promise<boolean> {
     const res = await this.prisma.doacao.delete({
       where: {
         IDDOACAO:idDoacao
