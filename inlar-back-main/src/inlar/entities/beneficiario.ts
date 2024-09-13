@@ -44,7 +44,6 @@ export class Beneficiario {
   private idBeneficiario: number;
 
   constructor(props: Props = {}) {
-    this.idBeneficiario = props.idBeneficiario;
     this.nome = props.nome || '';
     this.dataNascimento = props.dataNascimento || null;
     this.tipoPessoa = props.tipoPessoa || '';
@@ -64,6 +63,7 @@ export class Beneficiario {
     this.observacoes = props.observacoes || null;
     this.dataCadastro = props.dataCadastro || new Date();
     this.ativo = props.ativo || false;
+    this.idBeneficiario = props.idBeneficiario;
   }
 
   getIdBeneficiario(): number {

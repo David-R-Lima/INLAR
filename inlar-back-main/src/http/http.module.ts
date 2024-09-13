@@ -54,6 +54,10 @@ import { CreateBeneficiarioController } from './controllers/beneficiarios/create
 import { GetBeneficiarioByIdController } from './controllers/beneficiarios/get-beneficiario-by-id-controller';
 import { GetBeneficiarioByPageController } from './controllers/beneficiarios/get-beneficiario-by-page-controller';
 import { UpdateBeneficiarioController } from './controllers/beneficiarios/update-beneficiario-controller';
+import { DeleteBeneficiarioById } from 'src/inlar/actions/beneficiario/delete-beneficiario';
+import { DeleteBeneficiarioByIdController } from './controllers/beneficiarios/delete-beneficiarios-by-controller';
+import { DeleteDoacaoById } from 'src/inlar/actions/doacao/delete-doacao';
+import { DeleteDoacaoByIdController } from './controllers/doacao/delete-doacao-by-controller';
 
 @Module({
   imports: [PrismaModule],
@@ -84,7 +88,9 @@ import { UpdateBeneficiarioController } from './controllers/beneficiarios/update
     CreateBeneficiario,
     GetBeneficiariosByPage,
     GetBeneficiarioById,
-    UpdateBeneficiario
+    UpdateBeneficiario,
+    DeleteBeneficiarioById,
+    DeleteDoacaoById
   ],
   controllers: [
     CreateUsuarioController,
@@ -113,7 +119,9 @@ import { UpdateBeneficiarioController } from './controllers/beneficiarios/update
     CreateBeneficiarioController,
     GetBeneficiarioByIdController,
     GetBeneficiarioByPageController,
-    UpdateBeneficiarioController
+    UpdateBeneficiarioController,
+    DeleteBeneficiarioByIdController,
+    DeleteDoacaoByIdController
   ],
 })
 export class HttpModule {}
