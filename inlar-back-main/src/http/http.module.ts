@@ -58,9 +58,11 @@ import { DeleteBeneficiarioById } from 'src/inlar/actions/beneficiario/delete-be
 import { DeleteBeneficiarioByIdController } from './controllers/beneficiarios/delete-beneficiarios-by-controller';
 import { DeleteDoacaoById } from 'src/inlar/actions/doacao/delete-doacao';
 import { DeleteDoacaoByIdController } from './controllers/doacao/delete-doacao-by-controller';
+import { CryptographyModule } from 'src/inlar/cryptography/cryptography.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, CryptographyModule, AuthModule],
   providers: [
     CreateUsuario,
     CreateDoador,

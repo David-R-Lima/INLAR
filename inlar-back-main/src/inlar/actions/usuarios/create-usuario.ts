@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { BcryptHasher } from 'src/inlar/cryptography/bcrypt.hasher';
 import { UsuarioRepositorio } from 'src/inlar/database/prisma/repositories/usuario-repositorio';
 import { Usuario } from 'src/inlar/entities/usuario';
 import { AlreadyExistsError } from 'src/inlar/errors/already-exists-error';
@@ -12,7 +13,7 @@ interface Request {
 
 @Injectable()
 export class CreateUsuario {
-  constructor(private usuarioRepositorio: UsuarioRepositorio) {}
+  constructor(private usuarioRepositorio: UsuarioRepositorio,  private bcryptHasher: BcryptHasher,) {}
 
   async execute(data: Request): Promise<Usuario | AlreadyExistsError | InternalError> {
     const exists = await this.usuarioRepositorio.findByEmail(
@@ -22,11 +23,13 @@ export class CreateUsuario {
     if (exists) {
       return new AlreadyExistsError("Usuario already exists");
     }
+
+    const hashedSenha = await this.bcryptHasher.hash(data.senha);
     
     const usuario = new Usuario({
       usuario: data.usuario,
       email: data.email,
-      senha: data.senha,
+      senha: hashedSenha,
       role: 'U',
       dataCadastro: new Date(),
       ativo: true,
@@ -37,6 +40,7 @@ export class CreateUsuario {
 
       return res;
     } catch (error) {
+      console.log('error: ', error);
       return new InternalError(error?.message ?? "Internal Error");
     }
   }
