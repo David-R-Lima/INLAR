@@ -4,7 +4,7 @@ import { InternalError } from 'src/inlar/errors/internal-error';
 import { NotFoundError } from 'src/inlar/errors/not-found-error';
 
 interface Request {
-  idDoacao: number;
+  idBeneficiario: number;
 }
 
 @Injectable()
