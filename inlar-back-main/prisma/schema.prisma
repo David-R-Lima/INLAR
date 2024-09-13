@@ -79,7 +79,7 @@ model tipodoacao {
 model usuario {
   IDUSUARIO Int       @id @default(autoincrement())
   USUARIO   String    @db.VarChar(50)
-  SENHA     String    @db.VarChar(16)
+  SENHA     String    @db.VarChar(100)
   EMAIL     String?   @db.VarChar(255)
   ROLE      String?   @db.VarChar(1)
   DATACAD   DateTime?
