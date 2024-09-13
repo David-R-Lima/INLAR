@@ -24,7 +24,7 @@ const squema = z.object({
 type Schema = z.infer<typeof squema>;
 const validationPipe = new ZodValidationPipe(squema);
 
-// @Public()
+@Public()
 @Controller('/usuarios')
 export class CreateUsuarioController {
   constructor(private createUsuario: CreateUsuario) {}
