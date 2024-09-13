@@ -4,6 +4,7 @@ import {
     HttpCode,
     NotFoundException,
     Post,
+    UnauthorizedException,
   } from '@nestjs/common';
   
   import { z } from 'zod';
@@ -44,6 +45,10 @@ import { Public } from 'src/http/auth/public';
   
       if (res instanceof NotFoundError) {
         throw new NotFoundException("Usuario not found");
+      }
+
+      if (res instanceof UnauthorizedException) {
+        throw new UnauthorizedException("Senha incorreta");
       }
   
       throw new NotFoundException();

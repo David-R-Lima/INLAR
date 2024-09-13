@@ -17,7 +17,7 @@ export class AuthenticateUser {
     private encrypter: JwtEncrypter,
   ) {}
 
-  async execute(data: Request): Promise<string | NotFoundError> {
+  async execute(data: Request): Promise<string | NotFoundError | UnauthorizedException> {
     const user = await this.usuarioRepositorio.findByEmail(data.email)
 
     if(user) {
