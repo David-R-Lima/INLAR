@@ -8,6 +8,7 @@
    import { z } from 'zod';
    import { ZodValidationPipe } from '../../pipes/zod-validation.pipe';
    import { CreateBeneficiario } from 'src/inlar/actions/beneficiario/create-beneficiario';
+import { cnpj, cpf } from 'cpf-cnpj-validator';
 
    const squema = z.object({
      nome: z.string({
@@ -18,12 +19,26 @@
        required_error: 'Field: {tipo_pessoa} is required',
      }),
      genero: z.string().optional(),
-     cpf: z.string().max(11, { message: 'Cannot exceed 11 caracters' }).optional(),
+     cpf: z.string().max(11, { message: 'Cannot exceed 11 caracters' }).refine((value) => {
+      if(!value) return true
+      if (cpf.isValid(value)) return true
+  
+      return false
+    }, {
+      message: "Invalid cpf"
+    }).optional(), 
+    cnpj: z
+      .string()
+      .max(14, { message: 'Cannot exceed 14 caracters' })
+      .refine((value) => {
+        if(!value) return true
+        if (cnpj.isValid(value)) return true
+    
+        return false
+      }, {
+        message: "Invalid cnpj"
+      }).optional(), 
      rg: z.string().max(30, { message: 'Cannot exceed 30 caracters'}).optional(),
-     cnpj: z
-       .string()
-       .max(14, { message: 'Cannot exceed 14 caracters' })
-       .optional(),
      contato1: z
        .string()
        .max(11, { message: 'Cannot exceed 11 caracters' })
@@ -55,7 +70,14 @@
        .optional(),
      uf: z.string().max(2, { message: 'Cannot exceed 2 caracters' }).optional(),
      observacoes: z.string().optional(),
-   });
+   }).superRefine((data, ctx) => {
+    if(!data.cnpj && !data.cpf) {
+      throw ctx.addIssue({
+        code: 'custom',
+        message: "Must have cpf or cnpj"
+      })
+    }
+  });
 
    type Schema = z.infer<typeof squema>;
 

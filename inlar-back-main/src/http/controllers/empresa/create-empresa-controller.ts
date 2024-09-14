@@ -12,6 +12,7 @@ import {
 import { Empresa } from 'src/inlar/entities/empresa';
 import { AlreadyExistsError } from 'src/inlar/errors/already-exists-error';
 import { InternalError } from 'src/inlar/errors/internal-error';
+import { cnpj } from 'cpf-cnpj-validator';
   
   const squema = z.object({
     nome_fantasia: z.string({
@@ -19,9 +20,16 @@ import { InternalError } from 'src/inlar/errors/internal-error';
     }),
     razao_social: z.string().optional(),
     cnpj: z
-      .string()
-      .max(14, { message: 'Cannot exceed 14 caracters' })
-      .optional(),
+    .string()
+    .max(14, { message: 'Cannot exceed 14 caracters' })
+    .refine((value) => {
+      if(!value) return true
+      if (cnpj.isValid(value)) return true
+  
+      return false
+    }, {
+      message: "Invalid cnpj"
+    }),
     contato1: z
       .string()
       .max(11, { message: 'Cannot exceed 11 caracters' })
