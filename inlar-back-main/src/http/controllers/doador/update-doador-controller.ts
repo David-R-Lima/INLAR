@@ -13,12 +13,30 @@ import { UpdateDoador } from 'src/inlar/actions/doador/update-doador';
 import { Doador } from 'src/inlar/entities/doador';
 import { NotFoundError } from 'src/inlar/errors/not-found-error';
 import { InternalError } from 'src/inlar/errors/internal-error';
+import { cnpj, cpf } from 'cpf-cnpj-validator';
 
 const squema = z.object({
   nome: z.string().optional(),
   tipo_pessoa: z.string().optional(),
-  cpf: z.string().max(11, { message: 'Cannot exceed 11 caracters' }).optional(),
-  cnpj: z.string().optional(),
+  cpf: z.string().max(11, { message: 'Cannot exceed 11 caracters' }).refine((value) => {
+    if(!value) return true
+    if (cpf.isValid(value)) return true
+
+    return false
+  }, {
+    message: "Invalid cpf"
+  }).optional(), 
+  cnpj: z
+    .string()
+    .max(14, { message: 'Cannot exceed 14 caracters' })
+    .refine((value) => {
+      if(!value) return true
+      if (cnpj.isValid(value)) return true
+  
+      return false
+    }, {
+      message: "Invalid cnpj"
+    }).optional(), 
   contato1: z.string().optional(),
   contato2: z.string().optional(),
   cep: z.string().optional(),
@@ -29,6 +47,13 @@ const squema = z.object({
   cidade: z.string().optional(),
   uf: z.string().optional(),
   observacoes: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if(!data.cnpj && !data.cpf) {
+    throw ctx.addIssue({
+      code: 'custom',
+      message: "Must have cpf or cnpj"
+    })
+  }
 });
 
 type Schema = z.infer<typeof squema>;
