@@ -1,54 +1,54 @@
-// src/app/services/doador.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GetDoadorResponse } from 'src/app/models/interfaces/doador/responses/GetDoadorResponse';
 
 export interface Doador {
-  id: number;
+  idDoador?: number;
   nome: string;
-  tipopessoa?: string;  // varchar(1) (optional)
-  cpf?: string;  // varchar(11) (optional)
-  cnpj?: string;  // varchar(14) (optional)
-  contato1?: string;  // varchar(11) (optional)
-  contato2?: string;  // varchar(11) (optional)
-  cep?: string;  // varchar(8) (optional)
-  logradoudo?: string;  // varchar(255) (optional)
-  numero?: string;  // varchar(10) (optional)
-  complemento?: string;  // varchar(100) (optional)
-  bairro?: string;  // varchar(100) (optional)
-  cidade?: string;  // varchar(100) (optional)
-  siglaestado?: string;  // varchar(2) (optional)
-  observacoes?: string;  // text (optional)
-  datacad?: string;  // datetime (optional)
-  ativo?: string;  // varchar(1) (optional)
+  tipopessoa?: string;
+  cpf?: string;
+  cnpj?: string;
+  contato1?: string;
+  contato2?: string;
+  cep?: string;
+  logradouro?: string;
+  numero?: string;
+  complemento?: string;
+  bairro?: string;
+  cidade?: string;
+  siglaEstado?: string;
+  observacoes?: string;
+  datacad?: string;
+  ativo?: boolean;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class DoadorService {
-  private apiUrl = 'http://localhost:3256'; // URL do backend
+  private apiUrl = 'http://localhost:3256'; // URL do seu backend
 
   constructor(private http: HttpClient) {}
 
-  getDoadores(): Observable<GetDoadorResponse[]> {
-    return this.http.get<GetDoadorResponse[]>(`${this.apiUrl}/doadores`);
+  getDoadores(page: number): Observable<GetDoadorResponse[]> {
+    const params = new HttpParams().set('page', page.toString());
+    return this.http.get<GetDoadorResponse[]>(`${this.apiUrl}/doador`, { params });
   }
 
-  getDoadorById(id: number): Observable<GetDoadorResponse> {
-    return this.http.get<GetDoadorResponse>(`${this.apiUrl}/doadores/${id}`);
+  getDoadorById(idDoador: number): Observable<GetDoadorResponse> {
+    return this.http.get<GetDoadorResponse>(`${this.apiUrl}/doador/${idDoador}`);
   }
 
   createDoador(doador: Doador): Observable<GetDoadorResponse> {
-    return this.http.post<GetDoadorResponse>(`${this.apiUrl}/doadores`, doador);
+    return this.http.post<GetDoadorResponse>(`${this.apiUrl}/doador`, doador);
   }
 
-  updateDoador(id: number, doador: Doador): Observable<GetDoadorResponse> {
-    return this.http.put<GetDoadorResponse>(`${this.apiUrl}/doadores/${id}`, doador);
+  updateDoador(idDoador: number, doador: Doador): Observable<GetDoadorResponse> {
+    return this.http.put<GetDoadorResponse>(`${this.apiUrl}/doador/${idDoador}`, doador);
   }
 
-  deleteDoador(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/doadores/${id}`);
+  deleteDoador(idDoador: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/doador/${idDoador}`);
   }
 }

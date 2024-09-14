@@ -22,12 +22,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './modules/home/home.component';
 import { DoadorService } from './services/doador/doador.service';
 import { BeneficiarioService } from './services/beneficiario/beneficiario.service';
+import { TelefoneMaskDirective } from './directive/TELEFONE/telefone-mask.directive';
+
 
 @NgModule({
   declarations: [AppComponent, 
     HomeComponent,  
     CnpjMaskDirective,
     CpfMaskDirective,
+    TelefoneMaskDirective,
     CnpjValidatorDirective,
     CpfValidatorDirective],
   imports: [
@@ -36,6 +39,7 @@ import { BeneficiarioService } from './services/beneficiario/beneficiario.servic
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    
     // PrimeNg
     CardModule,
     InputTextModule,
@@ -43,7 +47,7 @@ import { BeneficiarioService } from './services/beneficiario/beneficiario.servic
     ToastModule,
     SelectButtonModule
   ],
-  providers: [CookieService, MessageService,DoadorService,BeneficiarioService],
+  providers: [CookieService, MessageService,DoadorService,BeneficiarioService,],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

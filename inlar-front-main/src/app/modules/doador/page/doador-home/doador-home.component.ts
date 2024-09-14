@@ -32,7 +32,7 @@ export class DoadorHomeComponent implements OnInit, OnDestroy {
   }
 
   getDoadores() {
-    this.doadorService.getDoadores()  // Remova os colchetes aqui
+    this.doadorService.getDoadores(1)  // Remova os colchetes aqui
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: GetDoadorResponse[]) => {

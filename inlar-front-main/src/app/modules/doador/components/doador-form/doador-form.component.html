@@ -1,49 +1,126 @@
 <div>
   <form [formGroup]="doadorForm" (ngSubmit)="handleSubmit()">
     <div class="card flex flex-column md:flex-column gap-3">
+      
+      <!-- Campo oculto para ID do Doador -->
+      <input type="hidden" formControlName="id" />
+
+      <!-- Nome -->
       <input pInputText placeholder="Nome" formControlName="nome" />
-      <p-dropdown  
+
+      <!-- Tipo de Pessoa (Física ou Jurídica) -->
+      <p-dropdown 
         [options]="tiposPessoa" 
-        formControlName="tipoPessoa" 
+        formControlName="tipopessoa" 
         placeholder="Selecione o Tipo de Pessoa">
       </p-dropdown>
-      
+
+      <!-- Estado (UF) -->
       <p-dropdown 
         [options]="estados" 
-        formControlName="siglaEstado" 
+        formControlName="siglaestado" 
         placeholder="Selecione um Estado">
       </p-dropdown>
 
-      <div *ngIf="doadorForm.get('tipoPessoa')?.value === 'F'">
-        <input style="margin-right: 13px!important" type="text" appCpfMask appCpfValidator pInputText placeholder="CPF" formControlName="cpf" />
-        <input style="margin-right: 13px!important" maxlength="9" pInputText placeholder="RG" formControlName="rg" />
-        <input style="margin-right: 13px!important" type="date" pInputText placeholder="Data de Nascimento" formControlName="dataNascimento" />
-        <p-dropdown 
-          [options]="generos" 
-          formControlName="genero" 
-          placeholder="Selecione o Gênero">
-        </p-dropdown>
+      <!-- Campos para Pessoa Física -->
+      <div *ngIf="doadorForm.get('tipopessoa')?.value === 'F'">
+        <input 
+          pInputText 
+          placeholder="CPF" 
+          formControlName="cpf" 
+          appCpfMask 
+          appCpfValidator 
+          style="margin-right: 13px;" 
+        />
+        <input 
+          pInputText 
+          placeholder="RG" 
+          formControlName="rg" 
+          maxlength="9" 
+          style="margin-right: 13px;" 
+        />
+        <input 
+          pInputText 
+          placeholder="Data de Nascimento" 
+          formControlName="dataNascimento" 
+          type="date" 
+          style="margin-right: 13px;" 
+        />
       </div>
 
-      <div *ngIf="doadorForm.get('tipoPessoa')?.value === 'J'">
-        <input pInputText style="margin-right: 10px;" type="text" appCnpjMask appCnpjValidator placeholder="CNPJ" formControlName="cnpj" />
-        <input pInputText placeholder="Razão Social" formControlName="razaoSocial" />
+      <!-- Campos para Pessoa Jurídica -->
+      <div *ngIf="doadorForm.get('tipopessoa')?.value === 'J'">
+        <input 
+          pInputText 
+          placeholder="CNPJ" 
+          formControlName="cnpj" 
+          appCnpjMask 
+          appCnpjValidator 
+          style="margin-right: 13px;" 
+        />
       </div>
 
-      <input pInputText placeholder="Contato 1" maxlength="11" type="number" formControlName="contato1" />
-      <input pInputText placeholder="Contato 2" maxlength="11"  formControlName="contato2" />
-      <input pInputText placeholder="CEP" type="number" maxlength="8"  formControlName="cep" />
-      <input pInputText placeholder="Rua" formControlName="logradouro" />
-      <input pInputText placeholder="Número" formControlName="numero" />
-      <input pInputText placeholder="Complemento" formControlName="complemento" />
-      <input pInputText placeholder="Bairro" formControlName="bairro" />
-      <input pInputText placeholder="Cidade" formControlName="cidade" />
+      <!-- Contato -->
+      <input 
+        pInputText 
+        placeholder="Contato 1" 
+        formControlName="contato1" 
+        maxlength="11" 
+      />
+      <input 
+        pInputText 
+        placeholder="Contato 2" 
+        formControlName="contato2" 
+        maxlength="11" 
+      />
 
+      <!-- Endereço -->
+      <input 
+        pInputText 
+        placeholder="CEP" 
+        formControlName="cep" 
+        maxlength="8" 
+      />
+      <input 
+        pInputText 
+        placeholder="Logradouro" 
+        formControlName="logradoudo" 
+      />
+      <input 
+        pInputText 
+        placeholder="Número" 
+        formControlName="numero" 
+      />
+      <input 
+        pInputText 
+        placeholder="Complemento" 
+        formControlName="complemento" 
+      />
+      <input 
+        pInputText 
+        placeholder="Bairro" 
+        formControlName="bairro" 
+      />
+      <input 
+        pInputText 
+        placeholder="Cidade" 
+        formControlName="cidade" 
+      />
 
-      <textarea pInputTextarea placeholder="Observações" formControlName="observacoes"></textarea>
+      <!-- Observações -->
+      <textarea 
+        pInputTextarea 
+        placeholder="Observações" 
+        formControlName="observacoes">
+      </textarea>
 
+      <!-- Botão de Submissão -->
       <div class="flex flex-row justify-content-center align-content-center align-items-center">
-        <p-button [disabled]="!doadorForm.valid" type="submit" label="Concluir"></p-button>
+        <p-button 
+          [disabled]="!doadorForm.valid" 
+          type="submit" 
+          label="Concluir">
+        </p-button>
       </div>
     </div>
   </form>

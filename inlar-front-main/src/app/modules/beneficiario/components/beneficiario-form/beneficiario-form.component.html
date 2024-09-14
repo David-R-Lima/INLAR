@@ -3,17 +3,17 @@
     <div class="card flex flex-column md:flex-column gap-3">
 
       <!-- Campo oculto para ID do Beneficiário -->
-    <input type="hidden" formControlName="idBeneficiario" />
+      <input type="hidden" formControlName="idBeneficiario" />
 
       <!-- Nome -->
       <input pInputText placeholder="Nome" formControlName="nome" />
+      <!-- Dropdown para escolher entre Pessoa Física ou Jurídica -->
 
-      <!-- Tipo de Pessoa -->
-      <p-dropdown  
-        [options]="tiposPessoa" 
-        formControlName="tipo_pessoa" 
-        placeholder="Selecione o Tipo de Pessoa">
-      </p-dropdown>
+      <p-dropdown 
+[options]="tipoPessoaOptions" 
+formControlName="tipo_pessoa" 
+placeholder="Selecione o tipo de pessoa">
+</p-dropdown>
 
       <!-- Estado (UF) -->
       <p-dropdown 
@@ -23,7 +23,7 @@
       </p-dropdown>
 
       <!-- Campos para Pessoa Física -->
-      <div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'F'">
+      <div>
         <input 
           pInputText 
           placeholder="CPF" 
@@ -52,24 +52,22 @@
           placeholder="Selecione o Gênero">
         </p-dropdown>
       </div>
-
-      <!-- Campos para Pessoa Jurídica -->
-      <div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'J'">
-        <input 
-          pInputText 
-          placeholder="CNPJ" 
-          formControlName="cnpj" 
-          appCnpjMask 
-          appCnpjValidator 
-          style="margin-right: 10px;" 
-        />
-        <input 
-          pInputText 
-          placeholder="Razão Social" 
-          formControlName="razao_social" 
-        />
-      </div>
-
+<!-- Campos para Pessoa Jurídica -->
+<div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'J'">
+  <input 
+    pInputText 
+    placeholder="CNPJ" 
+    formControlName="cnpj" 
+    mask="00.000.000/0000-00" 
+    style="margin-right: 13px;" 
+  />
+  <input 
+    pInputText 
+    placeholder="Razão Social" 
+    formControlName="razaoSocial" 
+    style="margin-right: 13px;" 
+  />
+</div>
       <!-- Contato -->
       <input 
         pInputText 
@@ -127,7 +125,7 @@
       <!-- Botão de Submissão -->
       <div class="flex flex-row justify-content-center align-content-center align-items-center">
         <p-button 
-          [disabled]="!beneficiarioForm.valid" 
+           
           type="submit" 
           label="Concluir">
         </p-button>

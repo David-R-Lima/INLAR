@@ -6,9 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BeneficiarioService } from 'src/app/services/beneficiario/beneficiario.service';
 import { GetBeneficiarioResponse } from 'src/app/models/interfaces/beneficiario/responses/GetBeneficiarioResponse';
-import { isValid as isValidCNPJ } from '@fnando/cnpj';
 import { isValid as isValidCPF } from '@fnando/cpf';
-import { EmpresaService } from 'src/app/services/empresa/empresa.service';
 
 @Component({
   selector: 'app-beneficiario-form',
@@ -18,30 +16,35 @@ import { EmpresaService } from 'src/app/services/empresa/empresa.service';
 export class BeneficiarioFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
 
+  public tipoPessoaOptions = [
+    { label: 'Pessoa Física', value: 'F' },
+    { label: 'Pessoa Jurídica', value: 'J' }
+  ];
+
   public beneficiarioForm: FormGroup;
   public isEditing = false;
   public estados: any[];
-  public tiposPessoa: any[];
   public generos: any[];
+
+
 
   constructor(
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private beneficiarioService: BeneficiarioService,
-    private empresaService: EmpresaService
+    private beneficiarioService: BeneficiarioService
   ) {
     this.beneficiarioForm = this.formBuilder.group({
-      idBeneficiario: [null], 
+      idBeneficiario: [null],
       nome: ['', Validators.required],
-      tipo_pessoa: ['F', Validators.required], 
+      tipo_pessoa: ['F', Validators.required],
       cpf: ['', this.cpfValidator],
+      cnpj: [''], 
+      razaoSocial: [''], 
       rg: [''],
       genero: ['', Validators.required],
-      data_nascimento: [''], 
-      cnpj: ['', this.cnpjValidator],
-      razao_social: [''], 
+      data_nascimento: ['', Validators.required],
       contato1: ['', Validators.required],
       contato2: [''],
       cep: ['', Validators.required],
@@ -50,9 +53,22 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       complemento: [''],
       bairro: ['', Validators.required],
       cidade: ['', Validators.required],
-      uf: ['', Validators.required], 
+      uf: ['', Validators.required],
       observacoes: [''],
-      ativo: [true] 
+      ativo: [true]
+    });
+
+    this.beneficiarioForm.get('tipoPessoa')?.valueChanges.subscribe(tipo => {
+      if (tipo === 'F') {
+        this.beneficiarioForm.get('cpf')?.setValidators([Validators.required, this.cpfValidator]);
+        this.beneficiarioForm.get('cnpj')?.clearValidators();
+        this.beneficiarioForm.get('razaoSocial')?.clearValidators();
+      } else if (tipo === 'J') {
+        this.beneficiarioForm.get('cpf')?.clearValidators();
+        this.beneficiarioForm.get('cnpj')?.setValidators([Validators.required]);
+        this.beneficiarioForm.get('razaoSocial')?.setValidators([Validators.required]);
+      }
+      this.beneficiarioForm.updateValueAndValidity();
     });
 
     this.estados = [
@@ -85,11 +101,6 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       { label: 'Tocantins', value: 'TO' }
     ];
 
-    this.tiposPessoa = [
-      { label: 'Pessoa Física', value: 'F' },
-      { label: 'Pessoa Jurídica', value: 'J' }
-    ];
-
     this.generos = [
       { label: 'Masculino', value: 'M' },
       { label: 'Feminino', value: 'F' }
@@ -103,175 +114,97 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
     if (beneficiarioData) {
       this.isEditing = true;
       beneficiarioData.idBeneficiario = beneficiarioData.id; // Copia o valor de 'id' para 'idBeneficiario'
-    console.log('beneficiarioData ajustado:', beneficiarioData);
-      console.log('isEditing set to true'); 
-     
       this.beneficiarioService.getBeneficiarioById(beneficiarioData.id)
-      .subscribe({
+        .subscribe({
           next: (beneficiario: GetBeneficiarioResponse) => {
-              console.log('Dados completos do beneficiário:', beneficiario);
-              this.populateForm(beneficiario); // Preencha o formulário com os dados completos
+            this.populateForm(beneficiario); // Preenche o formulário com os dados recebidos
           },
           error: (err) => {
-              console.error('Erro ao buscar dados do beneficiário:', err);
-              this.handleErrorMessage('Erro ao buscar dados do beneficiário.');
+            this.handleErrorMessage('Erro ao buscar dados do beneficiário.');
           }
-      });
-
+        });
     } else {
-      console.log('Adicionando novo beneficiário');
       this.isEditing = false;
-      console.log('isEditing set to false'); // Verifique se o valor é resetado
       this.beneficiarioForm.reset();
     }
   }
-  
 
   handleSubmit(): void {
-    console.log('Formulário enviado:', this.beneficiarioForm.value);
-  
     if (this.beneficiarioForm.valid) {
       const formData = this.beneficiarioForm.value;
-  
-      if (formData.tipo_pessoa === 'J') {
-       
-        if (this.isEditing) {
-          console.log('Editando empresa'); 
-          this.editEmpresa(formData);
-        } else {
-          console.log('Adicionando nova empresa'); 
-          this.addEmpresa(formData);
-        }
+      
+      if (formData.tipo_pessoa === 'F') {
+        formData.cnpj = ''; 
+      }
+      if (this.isEditing) {
+        this.editBeneficiario(formData);
       } else {
-        
-        if (this.isEditing) {
-          console.log('Editando beneficiário'); 
-          this.editBeneficiario(formData);
-        } else {
-          console.log('Adicionando novo beneficiário'); // Verifique se ele entra no modo de criação para beneficiários
-          this.addBeneficiario(formData);
-        }
+        this.addBeneficiario(formData);
       }
     } else {
       this.handleErrorMessage('Formulário inválido. Verifique os campos obrigatórios.');
     }
   }
-  
-  private addBeneficiario(formData: any): void {
-    console.log('Dados enviados ao backend:', formData); // Verificar o payload completo
 
-    if (formData.tipo_pessoa === 'F') {
-      formData.cnpj = ''; 
-    }
-    
+  private addBeneficiario(formData: any): void {
+    console.log('Adicionando beneficiário com os dados:', formData); 
     this.beneficiarioService.createBeneficiario(formData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: GetBeneficiarioResponse) => {
-          console.log('Beneficiário criado:', response);
           this.handleSuccessMessage('Beneficiário criado com sucesso!');
-          this.ref.close(); 
+          this.ref.close();
         },
         error: (err) => {
-          console.error('Erro ao criar beneficiário:', err);
           this.handleErrorMessage('Erro ao criar beneficiário!');
         }
       });
   }
 
   private editBeneficiario(formData: any): void {
-    const payload = { ...formData, id: formData.idBeneficiario }; 
-    console.log('ID do Beneficiário:', payload.id);
-    if (!payload.id) {
-      this.handleErrorMessage('ID do beneficiário não encontrado.');
-      return;
-    }
-  
+    const payload = { ...formData, id: formData.idBeneficiario };
     this.beneficiarioService.updateBeneficiario(payload.id, payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.handleSuccessMessage('Beneficiário editado com sucesso!');
-          this.ref.close(); 
+          this.ref.close();
         },
         error: (err) => {
-          console.error('Erro ao editar beneficiário:', err);
           this.handleErrorMessage('Erro ao editar beneficiário!');
         }
       });
   }
 
-  private addEmpresa(formData: any): void {
-    this.empresaService.createEmpresa(formData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response) => {
-          console.log('Empresa criada:', response);
-          this.handleSuccessMessage('Empresa criada com sucesso!');
-          this.ref.close(); 
-        },
-        error: (err) => {
-          console.error('Erro ao criar empresa:', err);
-          this.handleErrorMessage('Erro ao criar empresa!');
-        }
-      });
-  }
-  
-  private editEmpresa(formData: any): void {
-    this.empresaService.updateEmpresa(formData.idBeneficiario, formData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.handleSuccessMessage('Empresa editada com sucesso!');
-          this.ref.close(); 
-        },
-        error: (err) => {
-          console.error('Erro ao editar empresa:', err);
-          this.handleErrorMessage('Erro ao editar empresa!');
-        }
-      });
-  }
-  
-
   private populateForm(beneficiario: GetBeneficiarioResponse): void {
-    console.log('Beneficiário recebido no populateForm:', beneficiario);
-
-    const dataNascimento = beneficiario.dataNascimento 
-        ? new Date(beneficiario.dataNascimento).toISOString().split('T')[0] 
-        : '';
-
-    console.log('Data de Nascimento formatada:', dataNascimento);
+    const dataNascimento = beneficiario.dataNascimento
+      ? new Date(beneficiario.dataNascimento).toISOString().split('T')[0]
+      : '';
 
     this.beneficiarioForm.patchValue({
-        idBeneficiario: beneficiario.idBeneficiario,  
-        nome: beneficiario.nome,
-        tipo_pessoa: beneficiario.tipoPessoa,
-        cpf: beneficiario.cpf,
-        rg: beneficiario.rg,
-        genero: beneficiario.genero,
-        data_nascimento: dataNascimento,
-        cnpj: beneficiario.cnpj,
-        razao_social: beneficiario.razaoSocial,
-        contato1: beneficiario.contato1,
-        contato2: beneficiario.contato2,
-        cep: beneficiario.cep,
-        logradouro: beneficiario.logradouro,
-        numero: beneficiario.numero,
-        complemento: beneficiario.complemento,
-        bairro: beneficiario.bairro,
-        cidade: beneficiario.cidade,
-        uf: beneficiario.uf,
-        observacoes: beneficiario.observacoes,
-        ativo: beneficiario.ativo
+      idBeneficiario: beneficiario.idBeneficiario,
+      nome: beneficiario.nome,
+      tipo_pessoa: beneficiario.tipoPessoa,
+      cpf: beneficiario.cpf,
+      cnpj: beneficiario.cnpj,
+      razaoSocial: beneficiario.razaoSocial, 
+      rg: beneficiario.rg,
+      genero: beneficiario.genero,
+      data_nascimento: dataNascimento,
+      contato1: beneficiario.contato1,
+      contato2: beneficiario.contato2,
+      cep: beneficiario.cep,
+      logradouro: beneficiario.logradouro,
+      numero: beneficiario.numero,
+      complemento: beneficiario.complemento,
+      bairro: beneficiario.bairro,
+      cidade: beneficiario.cidade,
+      uf: beneficiario.uf,
+      observacoes: beneficiario.observacoes,
+      ativo: beneficiario.ativo
     });
+  }
 
-    // Este é o log que verifica o valor do campo após o patchValue
-    console.log('Valor de data_nascimento no formulário após patchValue:', this.beneficiarioForm.get('data_nascimento')?.value);
-}
-
- 
- 
-  
   private handleSuccessMessage(message: string): void {
     this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: message });
   }
@@ -284,14 +217,6 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
     const value = control.value;
     if (value && !isValidCPF(value.replace(/\D/g, ''))) {
       return { 'invalidCpf': true };
-    }
-    return null;
-  }
-
-  cnpjValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-    if (value && !isValidCNPJ(value.replace(/\D/g, ''))) {
-      return { 'invalidCnpj': true };
     }
     return null;
   }

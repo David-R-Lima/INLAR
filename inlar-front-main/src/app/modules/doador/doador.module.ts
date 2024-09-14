@@ -22,6 +22,7 @@ import { DOADOR_ROUTES } from './doador.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DoadorTableComponent } from './components/doador-table/doador-table.component';
 import { DoadorFormComponent } from './components/doador-form/doador-form.component';
+import { DoadorService } from 'src/app/services/doador/doador.service';
 
 @NgModule({
   declarations: [DoadorHomeComponent, DoadorTableComponent, DoadorFormComponent],
@@ -46,6 +47,6 @@ import { DoadorFormComponent } from './components/doador-form/doador-form.compon
     ConfirmDialogModule,
     TooltipModule,
   ],
-  providers: [DialogService, ConfirmationService],
+  providers: [DialogService, ConfirmationService,DoadorService],
 })
 export class DoadorModule { }

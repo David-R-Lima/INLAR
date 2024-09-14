@@ -1,11 +1,8 @@
 <div class="grid">
   <div class="col-12">
-    <p-card
-      styleClass="shadow-3 m-5 text-indigo-800"
-      header="doador"
-    >
+    <p-card styleClass="shadow-3 m-5 text-indigo-800" header="Doadores">
       <p-table
-        [value]="doador"
+        [value]="doadores"
         [(selection)]="doadorSelected"
         [rows]="10"
         [paginator]="true"
@@ -13,21 +10,19 @@
         [tableStyle]="{ 'min-width': '75rem' }"
         [rowHover]="true"
         [showCurrentPageReport]="true"
-        dataKey="id"
-        currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} produtos"
+        dataKey="idDoador" 
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} doadores"
       >
         <ng-template pTemplate="header">
           <tr>
-            <th pSortableColumn="name">
+            <th pSortableColumn="nome">
               <div class="flex justify-content-between align-items-center">
-                <div class="flex justify-content-between align-items-center">
-                  Nome
-                </div>
-                <div class="flex justify-content-between align-items-center">
-                  <p-sortIcon field="name"></p-sortIcon>
+                <div>Nome</div>
+                <div>
+                  <p-sortIcon field="nome"></p-sortIcon>
                   <p-columnFilter
                     type="text"
-                    field="name"
+                    field="nome"
                     display="menu"
                     matchMode="contains"
                     [showMatchModes]="false"
@@ -39,14 +34,15 @@
             </th>
             <th>
               <div class="flex justify-content-center">
-                <p-button
-                  styleClass="p-button-info"
+                <button
+                  pButton
+                  pRipple
                   icon="pi pi-plus"
                   label="Adicionar"
-                  pTooltip="Adicionar doador"
+                  pTooltip="Adicionar Doador"
                   tooltipPosition="top"
-                  (onClick)="handleDoadorEvent(addDoadorAction)"
-                ></p-button>
+                  (click)="handleDoadorEvent('ADICIONAR DOADOR')"
+                ></button>
               </div>
             </th>
           </tr>
@@ -54,11 +50,9 @@
 
         <ng-template pTemplate="body" let-doador>
           <tr>
-            <td>{{ doador?.name }}</td>
+            <td>{{ doador.nome }}</td> <!-- Exibe o nome do doador -->
             <td>
-              <div
-                class="flex justify-content-center gap-3 align-content-center align-items-center"
-              >
+              <div class="flex justify-content-center gap-3 align-content-center align-items-center">
                 <button
                   pButton
                   pRipple
@@ -66,13 +60,7 @@
                   pTooltip="Editar doador"
                   tooltipPosition="top"
                   class="p-button-rounded p-button-warning"
-                  (click)="
-                    handleDoadorEvent(
-                      editDoadorAction,
-                      doador?.id,
-                      doador?.name
-                    )
-                  "
+                  (click)="handleDoadorEvent('EDITAR DOADOR', doador.idDoador, doador.nome)"
                 ></button>
                 <button
                   pButton
@@ -81,9 +69,7 @@
                   pTooltip="Remover doador"
                   tooltipPosition="top"
                   class="p-button-rounded p-button-danger"
-                  (click)="
-                    handleDeleteDoadorEvent(doador?.id, doador?.name)
-                  "
+                  (click)="handleDeleteDoadorEvent(doador.idDoador, doador.nome)"
                 ></button>
               </div>
             </td>
