@@ -44,7 +44,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       razaoSocial: [''], 
       rg: [''],
       genero: ['', Validators.required],
-      data_nascimento: ['', Validators.required],
+      datanasc: ['', Validators.required],
       contato1: ['', Validators.required],
       contato2: [''],
       cep: ['', Validators.required],
@@ -177,9 +177,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
   }
 
   private populateForm(beneficiario: GetBeneficiarioResponse): void {
-    const dataNascimento = beneficiario.dataNascimento
-      ? new Date(beneficiario.dataNascimento).toISOString().split('T')[0]
-      : '';
+    
 
     this.beneficiarioForm.patchValue({
       idBeneficiario: beneficiario.idBeneficiario,
@@ -190,7 +188,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       razaoSocial: beneficiario.razaoSocial, 
       rg: beneficiario.rg,
       genero: beneficiario.genero,
-      data_nascimento: dataNascimento,
+      datanasc: beneficiario.datanasc,
       contato1: beneficiario.contato1,
       contato2: beneficiario.contato2,
       cep: beneficiario.cep,

@@ -1,131 +1,197 @@
 <div>
   <form [formGroup]="beneficiarioForm" (ngSubmit)="handleSubmit()">
-    <div class="card flex flex-column md:flex-column gap-3">
+    <div class="card flex flex-column gap-3 custom-form">
 
       <!-- Campo oculto para ID do Beneficiário -->
       <input type="hidden" formControlName="idBeneficiario" />
 
       <!-- Nome -->
-      <input pInputText placeholder="Nome" formControlName="nome" />
+      <div class="form-group">
+        <label for="nome">Nome</label>
+        <input id="nome" pInputText placeholder="Nome" formControlName="nome" />
+      </div>
+
       <!-- Dropdown para escolher entre Pessoa Física ou Jurídica -->
-
-      <p-dropdown 
-[options]="tipoPessoaOptions" 
-formControlName="tipo_pessoa" 
-placeholder="Selecione o tipo de pessoa">
-</p-dropdown>
-
-      <!-- Estado (UF) -->
-      <p-dropdown 
-        [options]="estados" 
-        formControlName="uf" 
-        placeholder="Selecione um Estado">
-      </p-dropdown>
-
-      <!-- Campos para Pessoa Física -->
-      <div>
-        <input 
-          pInputText 
-          placeholder="CPF" 
-          formControlName="cpf" 
-          appCpfMask 
-          appCpfValidator 
-          style="margin-right: 13px;" 
-        />
-        <input 
-          pInputText 
-          placeholder="RG" 
-          formControlName="rg" 
-          maxlength="9" 
-          style="margin-right: 13px;" 
-        />
-        <input 
-          pInputText 
-          placeholder="Data de Nascimento" 
-          formControlName="data_nascimento" 
-          type="date" 
-          style="margin-right: 13px;" 
-        />
+      <div class="form-group">
+        <label for="tipoPessoa">Tipo de Pessoa</label>
         <p-dropdown 
-          [options]="generos" 
-          formControlName="genero" 
-          placeholder="Selecione o Gênero">
+          id="tipoPessoa"
+          [options]="tipoPessoaOptions" 
+          formControlName="tipo_pessoa" 
+          placeholder="Selecione o tipo de pessoa">
         </p-dropdown>
       </div>
-<!-- Campos para Pessoa Jurídica -->
-<div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'J'">
-  <input 
-    pInputText 
-    placeholder="CNPJ" 
-    formControlName="cnpj" 
-    mask="00.000.000/0000-00" 
-    style="margin-right: 13px;" 
-  />
-  <input 
-    pInputText 
-    placeholder="Razão Social" 
-    formControlName="razaoSocial" 
-    style="margin-right: 13px;" 
-  />
-</div>
+
+      <!-- Estado (UF) -->
+      <div class="form-group">
+        <label for="uf">Estado (UF)</label>
+        <p-dropdown 
+          id="uf"
+          [options]="estados" 
+          formControlName="uf" 
+          placeholder="Selecione um Estado">
+        </p-dropdown>
+      </div>
+
+      <!-- Campos para Pessoa Física -->
+      <div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'F'">
+        <div class="form-group">
+          <label for="cpf">CPF</label>
+          <input 
+            id="cpf"
+            pInputText 
+            placeholder="CPF" 
+            formControlName="cpf" 
+            appCpfMask 
+            appCpfValidator 
+          />
+        </div>
+        <div class="form-group">
+          <label for="rg">RG</label>
+          <input 
+            id="rg"
+            pInputText 
+            placeholder="RG" 
+            formControlName="rg" 
+            maxlength="9" 
+          />
+        </div>
+        <div class="form-group">
+          <label for="datanasc">Data de Nascimento</label>
+          <input 
+            id="datanasc"
+            pInputText 
+            placeholder="Data de Nascimento" 
+            formControlName="datanasc" 
+            type="date" 
+          />
+        </div>
+        <div class="form-group">
+          <label for="genero">Gênero</label>
+          <p-dropdown 
+            id="genero"
+            [options]="generos" 
+            formControlName="genero" 
+            placeholder="Selecione o Gênero">
+          </p-dropdown>
+        </div>
+      </div>
+
+      <!-- Campos para Pessoa Jurídica -->
+      <div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'J'">
+        <div class="form-group">
+          <label for="cnpj">CNPJ</label>
+          <input 
+            id="cnpj"
+            pInputText 
+            placeholder="CNPJ" 
+            formControlName="cnpj" 
+          />
+        </div>
+        <div class="form-group">
+          <label for="razaoSocial">Razão Social</label>
+          <input 
+            id="razaoSocial"
+            pInputText 
+            placeholder="Razão Social" 
+            formControlName="razaoSocial" 
+          />
+        </div>
+      </div>
+
       <!-- Contato -->
-      <input 
-        pInputText 
-        placeholder="Contato 1" 
-        formControlName="contato1" 
-        maxlength="11" 
-      />
-      <input 
-        pInputText 
-        placeholder="Contato 2" 
-        formControlName="contato2" 
-        maxlength="11" 
-      />
+      <div class="form-group">
+        <label for="contato1">Contato 1</label>
+        <input 
+          id="contato1"
+          pInputText 
+          placeholder="Contato 1" 
+          formControlName="contato1" 
+          maxlength="11" 
+        />
+      </div>
+      <div class="form-group">
+        <label for="contato2">Contato 2</label>
+        <input 
+          id="contato2"
+          pInputText 
+          placeholder="Contato 2" 
+          formControlName="contato2" 
+          maxlength="11" 
+        />
+      </div>
 
       <!-- Endereço -->
-      <input 
-        pInputText 
-        placeholder="CEP" 
-        formControlName="cep" 
-        maxlength="8" 
-      />
-      <input 
-        pInputText 
-        placeholder="Logradouro" 
-        formControlName="logradouro" 
-      />
-      <input 
-        pInputText 
-        placeholder="Número" 
-        formControlName="numero" 
-      />
-      <input 
-        pInputText 
-        placeholder="Complemento" 
-        formControlName="complemento" 
-      />
-      <input 
-        pInputText 
-        placeholder="Bairro" 
-        formControlName="bairro" 
-      />
-      <input 
-        pInputText 
-        placeholder="Cidade" 
-        formControlName="cidade" 
-      />
+      <div class="form-group">
+        <label for="cep">CEP</label>
+        <input 
+          id="cep"
+          pInputText 
+          placeholder="CEP" 
+          formControlName="cep" 
+          maxlength="8" 
+        />
+      </div>
+      <div class="form-group">
+        <label for="logradouro">Logradouro</label>
+        <input 
+          id="logradouro"
+          pInputText 
+          placeholder="Logradouro" 
+          formControlName="logradouro" 
+        />
+      </div>
+      <div class="form-group">
+        <label for="numero">Número</label>
+        <input 
+          id="numero"
+          pInputText 
+          placeholder="Número" 
+          formControlName="numero" 
+        />
+      </div>
+      <div class="form-group">
+        <label for="complemento">Complemento</label>
+        <input 
+          id="complemento"
+          pInputText 
+          placeholder="Complemento" 
+          formControlName="complemento" 
+        />
+      </div>
+      <div class="form-group">
+        <label for="bairro">Bairro</label>
+        <input 
+          id="bairro"
+          pInputText 
+          placeholder="Bairro" 
+          formControlName="bairro" 
+        />
+      </div>
+      <div class="form-group">
+        <label for="cidade">Cidade</label>
+        <input 
+          id="cidade"
+          pInputText 
+          placeholder="Cidade" 
+          formControlName="cidade" 
+        />
+      </div>
 
       <!-- Observações -->
-      <textarea 
-        pInputTextarea 
-        placeholder="Observações" 
-        formControlName="observacoes">
-      </textarea>
+      <div class="form-group">
+        <label for="observacoes">Observações</label>
+        <textarea 
+          id="observacoes"
+          pInputTextarea 
+          placeholder="Observações" 
+          formControlName="observacoes">
+        </textarea>
+      </div>
 
       <!-- Botão de Submissão -->
-      <div class="flex flex-row justify-content-center align-content-center align-items-center">
+      <div class="form-group flex justify-content-center">
         <p-button 
-           
           type="submit" 
           label="Concluir">
         </p-button>

@@ -6,7 +6,7 @@ import { GetBeneficiarioResponse } from 'src/app/models/interfaces/beneficiario/
 export interface Beneficiario {
   idBeneficiario?: number;
   nome: string;
-  datanasc?: string;
+  datanasc?: Date;
   tipopessoa?: string;
   genero?: string;
   cpf?: string;
