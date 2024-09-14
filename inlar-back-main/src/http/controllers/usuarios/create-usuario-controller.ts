@@ -13,6 +13,7 @@ import { CreateUsuario } from 'src/inlar/actions/usuarios/create-usuario';
 import { Usuario } from 'src/inlar/entities/usuario';
 import { AlreadyExistsError } from 'src/inlar/errors/already-exists-error';
 import { InternalError } from 'src/inlar/errors/internal-error';
+import { Public } from 'src/http/auth/public';
 
 const squema = z.object({
   usuario: z.string(),
@@ -23,11 +24,12 @@ const squema = z.object({
 type Schema = z.infer<typeof squema>;
 const validationPipe = new ZodValidationPipe(squema);
 
+@Public()
 @Controller('/usuarios')
 export class CreateUsuarioController {
   constructor(private createUsuario: CreateUsuario) {}
 
-  @Post()
+  @Post()  
   @HttpCode(201)
   async handle(
     @Body(validationPipe)

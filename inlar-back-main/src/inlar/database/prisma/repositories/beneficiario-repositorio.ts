@@ -59,10 +59,10 @@ export class BeneficiarioRepositorio {
     return prismaBeneficiario.map(BeneficiarioMapper.fromDatabase);
   }
 
-  async Delete(id: number): Promise<boolean> {
+  async Delete(idBeneficiario: number): Promise<boolean> {
     const res = await this.prisma.beneficiario.delete({
       where: {
-        IDBENEFICIARIO:id
+        IDBENEFICIARIO:idBeneficiario
       }
     })
     if( res ){

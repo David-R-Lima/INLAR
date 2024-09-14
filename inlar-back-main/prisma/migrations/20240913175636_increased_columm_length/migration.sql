@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `usuario` MODIFY `SENHA` VARCHAR(50) NOT NULL;

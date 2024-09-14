@@ -4,16 +4,14 @@ import {
     HttpCode,
     NotFoundException,
     Post,
-    BadRequestException,
+    UnauthorizedException,
   } from '@nestjs/common';
   
   import { z } from 'zod';
   import { ZodValidationPipe } from '../../pipes/zod-validation.pipe';
   import { AuthenticateUser } from 'src/inlar/actions/usuarios/authenticate-user';
-import { Usuario } from 'src/inlar/entities/usuario';
-import { AlreadyExistsError } from 'src/inlar/errors/already-exists-error';
-import { InternalError } from 'src/inlar/errors/internal-error';
 import { NotFoundError } from 'src/inlar/errors/not-found-error';
+import { Public } from 'src/http/auth/public';
   
   const squema = z.object({
     email: z.string().email(),
@@ -23,6 +21,7 @@ import { NotFoundError } from 'src/inlar/errors/not-found-error';
   type Schema = z.infer<typeof squema>;
   const validationPipe = new ZodValidationPipe(squema);
   
+  @Public()
   @Controller('/authenticate')
   export class AuthenticateUserController {
     constructor(private authenticateUser: AuthenticateUser) {}
@@ -38,12 +37,18 @@ import { NotFoundError } from 'src/inlar/errors/not-found-error';
         senha: body.senha,
       });
   
-      if (res instanceof Usuario) {
-        return res;
+      if (typeof res === 'string') {
+        return {
+          access_token: res
+        };
       }
   
       if (res instanceof NotFoundError) {
         throw new NotFoundException("Usuario not found");
+      }
+
+      if (res instanceof UnauthorizedException) {
+        throw new UnauthorizedException("Senha incorreta");
       }
   
       throw new NotFoundException();
