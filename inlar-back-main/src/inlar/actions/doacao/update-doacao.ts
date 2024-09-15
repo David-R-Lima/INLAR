@@ -30,14 +30,15 @@ export class UpdateDoacao {
     if (!doacaoExists) {
       return new NotFoundError("Doacao not found");
     }
-
+//Está aparecendo 6 erros a baixo//
     doacaoExists.setId_doador(data.id_doador);
     doacaoExists.setId_beneficiario(data.id_beneficiario);
-    doacaoExists.setSituacao(data.situacao);
     doacaoExists.setItens(data.itens);
     doacaoExists.setNumItens(data.numItens);
     doacaoExists.setQuantidade(data.quantidade);
     doacaoExists.setId_usuario(data.id_usuario);
+    //separando aqui//
+    doacaoExists.setSituacao(data.situacao);
     doacaoExists.setCep(data.cep);
     doacaoExists.setLogradouro(data.logradouro);
     doacaoExists.setNumero(data.numero);
