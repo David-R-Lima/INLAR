@@ -19,6 +19,7 @@ import { InternalError } from 'src/inlar/errors/internal-error';
   const squema = z.object({
     id_doador: z.coerce.number().optional(),
     id_beneficiario: z.coerce.number().optional(),
+    id_usuario: z.coerce.number(),
     descricao: z.string({
       required_error: 'Field: {nome} is required',
     }),
@@ -71,6 +72,7 @@ import { InternalError } from 'src/inlar/errors/internal-error';
         id: param.id_doacao,
         id_doador: param.id_doador,
         id_beneficiario: param.id_beneficiario,
+        id_usuario: param.id_usuario,
         cep: body.cep,
         logradouro: body.logradouro,
         numero: body.numero,
