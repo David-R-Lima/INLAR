@@ -67,6 +67,7 @@ export class DoacaoRepositorio {
     const res = await this.prisma.doacao.delete({
       where: {
         IDDOACAO:id
+  }
     })
     if( res ){
       return true
