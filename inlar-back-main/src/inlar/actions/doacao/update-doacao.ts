@@ -5,10 +5,9 @@ import { InternalError } from 'src/inlar/errors/internal-error';
 import { NotFoundError } from 'src/inlar/errors/not-found-error';
 
 interface Request {
-  id: number;
-  id_doador?: number;
-  id_beneficiario?: number;
   id_usuario: number;
+  id_doador?: number
+  descricao: string;
   cep?: string | null;
   logradouro?: string | null;
   numero?: string | null;
@@ -17,7 +16,13 @@ interface Request {
   cidade?: string | null;
   uf?: string | null;
   observacoes?: string | null;
-  situacao: string;
+  itens: {
+    tipo: number
+    numItens?: number
+    quantidade?: number
+    valor?: number
+    descricao?: string
+  }[]
 }
 
 @Injectable()
@@ -30,15 +35,6 @@ export class UpdateDoacao {
     if (!doacaoExists) {
       return new NotFoundError("Doacao not found");
     }
-//Está aparecendo 6 erros a baixo//
-    doacaoExists.setId_doador(data.id_doador);
-    doacaoExists.setId_beneficiario(data.id_beneficiario);
-    doacaoExists.setItens(data.itens);
-    doacaoExists.setNumItens(data.numItens);
-    doacaoExists.setQuantidade(data.quantidade);
-    doacaoExists.setId_usuario(data.id_usuario);
-    //separando aqui//
-    doacaoExists.setSituacao(data.situacao);
     doacaoExists.setCep(data.cep);
     doacaoExists.setLogradouro(data.logradouro);
     doacaoExists.setNumero(data.numero);
