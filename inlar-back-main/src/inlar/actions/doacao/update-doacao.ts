@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { BeneficiarioRepositorio } from 'src/inlar/database/prisma/repositories/beneficiario-repositorio';
-import { Beneficiario } from 'src/inlar/entities/beneficiario';
+import { DoacaoRepositorio } from 'src/inlar/database/prisma/repositories/doacao-repositorio';
+import { Doacao } from 'src/inlar/entities/doacao';
 import { InternalError } from 'src/inlar/errors/internal-error';
 import { NotFoundError } from 'src/inlar/errors/not-found-error';
 
@@ -8,6 +8,7 @@ interface Request {
   id: number;
   id_doador?: number;
   id_beneficiario?: number;
+  id_usuario: number;
   cep?: string | null;
   logradouro?: string | null;
   numero?: string | null;
@@ -20,23 +21,23 @@ interface Request {
 }
 
 @Injectable()
-export class UpdateBeneficiario {
-  constructor(private beneficiarioRepositorio: BeneficiarioRepositorio) {}
+export class UpdateDoacao {
+  constructor(private doacaoRepositorio: DoacaoRepositorio) {}
 
-  async execute(data: Request): Promise<Beneficiario | NotFoundError | InternalError> {
+  async execute(data: Request): Promise<Doacao | NotFoundError | InternalError> {
     const doacaoExists = await this.doacaoRepositorio.findById(data.id);
     
     if (!doacaoExists) {
       return new NotFoundError("Doacao not found");
     }
 
-    doacaoExists.setNome(data.id_doador);
-    doacaoExists.setDataNascimento(data.id_beneficiario);
-    doacaoExists.setTipoPessoa(data.situacao);
-    doacaoExists.setGenero(data.itens);
-    doacaoExists.setCpf(data.numItens);
-    doacaoExists.setCnpj(data.quantidade);
-    doacaoExists.setRg(data.id_usuario);
+    doacaoExists.setId_doador(data.id_doador);
+    doacaoExists.setId_beneficiario(data.id_beneficiario);
+    doacaoExists.setSituacao(data.situacao);
+    doacaoExists.setItens(data.itens);
+    doacaoExists.setNumItens(data.numItens);
+    doacaoExists.setQuantidade(data.quantidade);
+    doacaoExists.setId_usuario(data.id_usuario);
     doacaoExists.setCep(data.cep);
     doacaoExists.setLogradouro(data.logradouro);
     doacaoExists.setNumero(data.numero);
@@ -47,7 +48,7 @@ export class UpdateBeneficiario {
 
 
     try {
-        await this.beneficiarioRepositorio.update(data.id, doacaoExists);
+        await this.doacaoRepositorio.update(data.id, doacaoExists);
     } catch (error) {
         return new InternalError(error?.message ?? "Internal Error")
     }
