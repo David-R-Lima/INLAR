@@ -78,7 +78,6 @@ import { InternalError } from 'src/inlar/errors/internal-error';
         bairro: body.bairro,
         cidade: body.cidade,
         uf: body.uf,
-        observacoes: body.observacoes,
         itens: body.itens,
         numItens: body.numItens,
         quantidade: body.quantidade,
