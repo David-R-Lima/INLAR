@@ -58,18 +58,34 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       ativo: [true]
     });
 
-    this.beneficiarioForm.get('tipoPessoa')?.valueChanges.subscribe(tipo => {
+    this.beneficiarioForm.get('tipo_pessoa')?.valueChanges.subscribe(tipo => {
       if (tipo === 'F') {
+        // Pessoa Física
         this.beneficiarioForm.get('cpf')?.setValidators([Validators.required, this.cpfValidator]);
+        this.beneficiarioForm.get('rg')?.setValidators([Validators.required]);
+        this.beneficiarioForm.get('datanasc')?.setValidators([Validators.required]);
+    
+        // Limpa validação de CNPJ e Razão Social
         this.beneficiarioForm.get('cnpj')?.clearValidators();
         this.beneficiarioForm.get('razaoSocial')?.clearValidators();
       } else if (tipo === 'J') {
-        this.beneficiarioForm.get('cpf')?.clearValidators();
+        // Pessoa Jurídica
         this.beneficiarioForm.get('cnpj')?.setValidators([Validators.required]);
         this.beneficiarioForm.get('razaoSocial')?.setValidators([Validators.required]);
+    
+        // Limpa validação de CPF, RG e Data de Nascimento
+        this.beneficiarioForm.get('cpf')?.clearValidators();
+        this.beneficiarioForm.get('rg')?.clearValidators();
+        this.beneficiarioForm.get('datanasc')?.clearValidators();
       }
-      this.beneficiarioForm.updateValueAndValidity();
+      // Atualiza o status dos campos
+      this.beneficiarioForm.get('cpf')?.updateValueAndValidity();
+      this.beneficiarioForm.get('rg')?.updateValueAndValidity();
+      this.beneficiarioForm.get('datanasc')?.updateValueAndValidity();
+      this.beneficiarioForm.get('cnpj')?.updateValueAndValidity();
+      this.beneficiarioForm.get('razaoSocial')?.updateValueAndValidity();
     });
+    
 
     this.estados = [
       { label: 'Acre', value: 'AC' },
@@ -131,20 +147,43 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
 
   handleSubmit(): void {
     if (this.beneficiarioForm.valid) {
-      const formData = this.beneficiarioForm.value;
-      
-      if (formData.tipo_pessoa === 'F') {
-        formData.cnpj = ''; 
+      const formData = { ...this.beneficiarioForm.value }; // Faz uma cópia do formulário
+  
+      if (formData.datanasc) {
+        const dateString = formData.datanasc;
+        formData.datanasc = new Date(dateString).toISOString();  // Converte a string para formato ISO
       }
+
+      // Remove a formatação do CPF e CNPJ
+      if (formData.tipo_pessoa === 'F' && formData.cpf) {
+        formData.cpf = formData.cpf.replace(/\D/g, '');  // Remove todos os caracteres não numéricos
+        formData.cnpj = '';  // Limpa o CNPJ para Pessoa Física
+      }
+      if (formData.tipo_pessoa === 'J' && formData.cnpj) {
+        formData.cnpj = formData.cnpj.replace(/\D/g, '');  // Remove todos os caracteres não numéricos
+        formData.cpf = '';  // Limpa o CPF para Pessoa Jurídica
+      }
+  
+      // Remove a formatação dos números de telefone (Contato 1 e Contato 2)
+      if (formData.contato1) {
+        formData.contato1 = formData.contato1.replace(/\D/g, '');  // Remove os caracteres não numéricos
+      }
+      if (formData.contato2) {
+        formData.contato2 = formData.contato2.replace(/\D/g, '');  // Remove os caracteres não numéricos
+      }
+  
+      // Verifica se está editando ou adicionando
       if (this.isEditing) {
-        this.editBeneficiario(formData);
+        this.editBeneficiario(formData);  // Chama o método de edição
       } else {
-        this.addBeneficiario(formData);
+        this.addBeneficiario(formData);  // Chama o método de adição
       }
     } else {
       this.handleErrorMessage('Formulário inválido. Verifique os campos obrigatórios.');
     }
   }
+  
+  
 
   private addBeneficiario(formData: any): void {
     console.log('Adicionando beneficiário com os dados:', formData); 
@@ -188,7 +227,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       razaoSocial: beneficiario.razaoSocial, 
       rg: beneficiario.rg,
       genero: beneficiario.genero,
-      datanasc: beneficiario.datanasc,
+      datanasc: beneficiario.datanasc? new Date(beneficiario.datanasc).toISOString().split('T')[0] : null,
       contato1: beneficiario.contato1,
       contato2: beneficiario.contato2,
       cep: beneficiario.cep,

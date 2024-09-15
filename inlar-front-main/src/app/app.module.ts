@@ -23,6 +23,7 @@ import { HomeComponent } from './modules/home/home.component';
 import { DoadorService } from './services/doador/doador.service';
 import { BeneficiarioService } from './services/beneficiario/beneficiario.service';
 import { TelefoneMaskDirective } from './directive/TELEFONE/telefone-mask.directive';
+import { InputMaskModule } from 'primeng/inputmask';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { TelefoneMaskDirective } from './directive/TELEFONE/telefone-mask.direct
     CnpjValidatorDirective,
     CpfValidatorDirective],
   imports: [
+    InputMaskModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

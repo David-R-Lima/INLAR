@@ -37,14 +37,13 @@
       <div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'F'">
         <div class="form-group">
           <label for="cpf">CPF</label>
-          <input 
+          <p-inputMask 
             id="cpf"
-            pInputText 
-            placeholder="CPF" 
-            formControlName="cpf" 
-            appCpfMask 
-            appCpfValidator 
-          />
+            formControlName="cpf"
+            mask="999.999.999-99" 
+            placeholder="Digite o CPF"
+            slotChar="_"  
+          ></p-inputMask>
         </div>
         <div class="form-group">
           <label for="rg">RG</label>
@@ -81,12 +80,13 @@
       <div *ngIf="beneficiarioForm.get('tipo_pessoa')?.value === 'J'">
         <div class="form-group">
           <label for="cnpj">CNPJ</label>
-          <input 
+          <p-inputMask
             id="cnpj"
-            pInputText 
-            placeholder="CNPJ" 
-            formControlName="cnpj" 
-          />
+            formControlName="cnpj"
+            mask="99.999.999/9999-99"  
+            placeholder="Digite o CNPJ"
+            slotChar="_"
+          ></p-inputMask>
         </div>
         <div class="form-group">
           <label for="razaoSocial">Razão Social</label>
@@ -102,25 +102,25 @@
       <!-- Contato -->
       <div class="form-group">
         <label for="contato1">Contato 1</label>
-        <input 
+        <p-inputMask
           id="contato1"
-          pInputText 
-          placeholder="Contato 1" 
-          formControlName="contato1" 
-          maxlength="11" 
-        />
+          formControlName="contato1"
+          mask="(99) 99999-9999" 
+          placeholder="Digite o Telefone"
+          slotChar="_"  
+        ></p-inputMask>
       </div>
+      
       <div class="form-group">
         <label for="contato2">Contato 2</label>
-        <input 
+        <p-inputMask
           id="contato2"
-          pInputText 
-          placeholder="Contato 2" 
-          formControlName="contato2" 
-          maxlength="11" 
-        />
+          formControlName="contato2"
+          mask="(99) 99999-9999"  
+          placeholder="Digite o Telefone"
+          slotChar="_"
+        ></p-inputMask>
       </div>
-
       <!-- Endereço -->
       <div class="form-group">
         <label for="cep">CEP</label>
