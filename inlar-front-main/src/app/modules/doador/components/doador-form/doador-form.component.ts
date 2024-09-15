@@ -108,24 +108,37 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
 
   handleSubmit(): void {
     if (this.doadorForm.valid) {
-      const formData = { ...this.doadorForm.value };
+      const formData = { ...this.doadorForm.value }; // Cópia do formulário
   
+      // Remover a formatação do CPF e CNPJ
+      if (formData.tipopessoa === 'F' && formData.cpf) {
+        formData.cpf = formData.cpf.replace(/\D/g, '');  // Remove todos os caracteres não numéricos
+        formData.cnpj = '';  // Limpa o campo CNPJ para Pessoa Física
+      }
+      if (formData.tipopessoa === 'J' && formData.cnpj) {
+        formData.cnpj = formData.cnpj.replace(/\D/g, '');  // Remove todos os caracteres não numéricos
+        formData.cpf = '';  // Limpa o campo CPF para Pessoa Jurídica
+      }
+  
+      // Remover a formatação dos números de telefone
+      if (formData.contato1) {
+        formData.contato1 = formData.contato1.replace(/\D/g, '');  // Remove os caracteres não numéricos
+      }
+      if (formData.contato2) {
+        formData.contato2 = formData.contato2.replace(/\D/g, '');  // Remove os caracteres não numéricos
+      }
+  
+      // Agora envia os dados processados ao back-end
       if (this.isEditing) {
-        // Edição de um doador existente
-        if (formData.id) {
-          this.editDoador(formData);
-        } else {
-          this.handleErrorMessage('Erro ao editar: ID do doador não encontrado.');
-        }
+        this.editDoador(formData);  // Edição
       } else {
-        // Adicionar um novo doador (sem ID)
-        delete formData.id;
-        this.addDoador(formData);
+        this.addDoador(formData);  // Adição
       }
     } else {
       this.handleErrorMessage('Formulário inválido. Verifique os campos obrigatórios.');
     }
   }
+  
   
   
   private addDoador(formData: any): void {

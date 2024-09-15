@@ -14,7 +14,10 @@ import { cnpj, cpf } from 'cpf-cnpj-validator';
      nome: z.string({
        required_error: 'Field: {nome} is required',
      }),
-     datanasc: z.date().optional(),
+     datanasc: z
+     .string()
+     .optional()
+     .transform((str) => (str ? new Date(str) : undefined)),
      tipo_pessoa: z.string({
        required_error: 'Field: {tipo_pessoa} is required',
      }),
