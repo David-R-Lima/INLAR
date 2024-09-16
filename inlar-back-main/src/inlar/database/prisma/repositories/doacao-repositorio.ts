@@ -17,12 +17,12 @@ export class DoacaoRepositorio {
     return DoacaoMapper.fromDatabase(res);
   }
 
-  async update(idDoacao: number, doacao: Doacao): Promise<Doacao | null> {
+  async update(id: number, doacao: Doacao): Promise<Doacao | null> {
     const data = DoacaoMapper.toDatabase(doacao);
 
     const res = await this.prisma.doacao.update({
       where: {
-        IDDOACAO: idDoacao,
+        IDDOACAO: id,
       },
       data,
     });
@@ -34,10 +34,10 @@ export class DoacaoRepositorio {
     return null;
   }
 
-  async findById(idDoacao: number): Promise<Doacao | null> {
+  async findById(id: number): Promise<Doacao | null> {
     const prismaDoacao = await this.prisma.doacao.findUnique({
       where: {
-        IDDOACAO: idDoacao,
+        IDDOACAO: id,
       },
       include: {
         doacaoItens: true
@@ -63,11 +63,11 @@ export class DoacaoRepositorio {
     return prismaDoacao.map(DoacaoMapper.fromDatabase);
   }
 
-  async Delete(idDoacao: number): Promise<boolean> {
+  async Delete(id: number): Promise<boolean> {
     const res = await this.prisma.doacao.delete({
       where: {
-        IDDOACAO:idDoacao
-      }
+        IDDOACAO:id
+  }
     })
     if( res ){
       return true

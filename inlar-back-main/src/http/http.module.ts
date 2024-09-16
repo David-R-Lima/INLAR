@@ -60,6 +60,10 @@ import { DeleteDoacaoById } from 'src/inlar/actions/doacao/delete-doacao';
 import { DeleteDoacaoByIdController } from './controllers/doacao/delete-doacao-by-controller';
 import { CryptographyModule } from 'src/inlar/cryptography/cryptography.module';
 import { AuthModule } from './auth/auth.module';
+import { UpdateDoacao } from 'src/inlar/actions/doacao/update-doacao';
+import { UpdateDoacaoController } from './controllers/doacao/update-doacao-by-controller';
+import { DeleteDoacaoItensById } from 'src/inlar/actions/doacao-itens/delete-doacao-item';
+import { DeleteDoacaoItensByIdController } from './controllers/doacao-itens/delete-doacao-item-by-controller';
 
 @Module({
   imports: [PrismaModule, CryptographyModule, AuthModule],
@@ -92,7 +96,9 @@ import { AuthModule } from './auth/auth.module';
     GetBeneficiarioById,
     UpdateBeneficiario,
     DeleteBeneficiarioById,
-    DeleteDoacaoById
+    DeleteDoacaoById,
+    UpdateDoacao,
+    DeleteDoacaoItensById
   ],
   controllers: [
     CreateUsuarioController,
@@ -123,7 +129,9 @@ import { AuthModule } from './auth/auth.module';
     GetBeneficiarioByPageController,
     UpdateBeneficiarioController,
     DeleteBeneficiarioByIdController,
-    DeleteDoacaoByIdController
+    DeleteDoacaoByIdController,
+    UpdateDoacaoController,
+    DeleteDoacaoItensByIdController
   ],
 })
 export class HttpModule {}
