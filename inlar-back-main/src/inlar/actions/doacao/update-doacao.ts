@@ -5,8 +5,10 @@ import { InternalError } from 'src/inlar/errors/internal-error';
 import { NotFoundError } from 'src/inlar/errors/not-found-error';
 
 interface Request {
+  id: number
   id_usuario: number;
   id_doador?: number
+  id_beneficiario?: number
   descricao: string;
   cep?: string | null;
   logradouro?: string | null;
@@ -16,7 +18,11 @@ interface Request {
   cidade?: string | null;
   uf?: string | null;
   observacoes?: string | null;
-  itens: {
+  numItens?: number | null
+  quantidade?: number | null
+  valor?: number | null
+  situacao?: string | null;
+  itens?: {
     tipo: number
     numItens?: number
     quantidade?: number
