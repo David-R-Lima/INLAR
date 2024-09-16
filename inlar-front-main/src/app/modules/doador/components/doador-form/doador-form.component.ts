@@ -7,7 +7,6 @@ import { takeUntil } from 'rxjs/operators';
 import { DoadorService } from 'src/app/services/doador/doador.service';
 import { GetDoadorResponse } from 'src/app/models/interfaces/doador/responses/GetDoadorResponse';
 import { isValid as isValidCPF } from '@fnando/cpf';
-import { isValid as isValidCNPJ } from '@fnando/cnpj';
 
 @Component({
   selector: 'app-doador-form',
@@ -17,10 +16,14 @@ import { isValid as isValidCNPJ } from '@fnando/cnpj';
 export class DoadorFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
 
+  public tipoPessoaOptions = [
+    { label: 'Pessoa Física', value: 'F' },
+    { label: 'Pessoa Jurídica', value: 'J' }
+  ];
+
   public doadorForm: FormGroup;
   public isEditing = false;
   public estados: any[];
-  public tiposPessoa: any[];
 
   constructor(
     public ref: DynamicDialogRef,
@@ -30,22 +33,42 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
     private doadorService: DoadorService
   ) {
     this.doadorForm = this.formBuilder.group({
-      id: [null],
+      idDoador: [null],
       nome: ['', Validators.required],
-      tipopessoa: ['', Validators.required],
+      tipo_pessoa: ['F', Validators.required],
       cpf: ['', this.cpfValidator],
-      cnpj: ['', this.cnpjValidator],
+      cnpj: [''],
       contato1: ['', Validators.required],
       contato2: [''],
-      cep: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]], // CEP com 8 dígitos
-      logradoudo: ['', Validators.required],
+      cep: ['', Validators.required],
+      logradouro: ['', Validators.required],
       numero: ['', Validators.required],
       complemento: [''],
       bairro: ['', Validators.required],
       cidade: ['', Validators.required],
-      siglaestado: ['', Validators.required],
+      uf: ['', Validators.required],
       observacoes: [''],
-      ativo: [true, Validators.required]
+      ativo: [true]
+    });
+
+   
+    this.doadorForm.get('tipo_pessoa')?.valueChanges.subscribe(tipo => {
+      if (tipo === 'F') {
+        
+        this.doadorForm.get('cpf')?.setValidators([Validators.required, this.cpfValidator]);
+    
+        
+        this.doadorForm.get('cnpj')?.clearValidators();
+      } else if (tipo === 'J') {
+        
+        this.doadorForm.get('cnpj')?.setValidators([Validators.required]);
+
+       
+        this.doadorForm.get('cpf')?.clearValidators();
+      }
+      
+      this.doadorForm.get('cpf')?.updateValueAndValidity();
+      this.doadorForm.get('cnpj')?.updateValueAndValidity();
     });
 
     this.estados = [
@@ -77,24 +100,18 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
       { label: 'Sergipe', value: 'SE' },
       { label: 'Tocantins', value: 'TO' }
     ];
-
-    this.tiposPessoa = [
-      { label: 'Física', value: 'F' },
-      { label: 'Jurídica', value: 'J' }
-    ];
   }
 
   ngOnInit(): void {
     const doadorData = this.config.data?.event;
-    console.log('Dados recebidos ao editar:', doadorData);
 
     if (doadorData) {
       this.isEditing = true;
-      doadorData.id = doadorData.id; // Confirmação de atribuição do ID
+      doadorData.idDoador = doadorData.id; 
       this.doadorService.getDoadorById(doadorData.id)
         .subscribe({
           next: (doador: GetDoadorResponse) => {
-            this.populateForm(doador); // Preenche o formulário com os dados recebidos
+            this.populateForm(doador); 
           },
           error: (err) => {
             this.handleErrorMessage('Erro ao buscar dados do doador.');
@@ -108,99 +125,85 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
 
   handleSubmit(): void {
     if (this.doadorForm.valid) {
-      const formData = { ...this.doadorForm.value }; // Cópia do formulário
-  
-      // Remover a formatação do CPF e CNPJ
-      if (formData.tipopessoa === 'F' && formData.cpf) {
-        formData.cpf = formData.cpf.replace(/\D/g, '');  // Remove todos os caracteres não numéricos
-        formData.cnpj = '';  // Limpa o campo CNPJ para Pessoa Física
+      const formData = { ...this.doadorForm.value };
+
+      
+      if (formData.tipo_pessoa === 'F' && formData.cpf) {
+        formData.cpf = formData.cpf.replace(/\D/g, '');
+        formData.cnpj = '';  
       }
-      if (formData.tipopessoa === 'J' && formData.cnpj) {
-        formData.cnpj = formData.cnpj.replace(/\D/g, '');  // Remove todos os caracteres não numéricos
-        formData.cpf = '';  // Limpa o campo CPF para Pessoa Jurídica
-      }
-  
-      // Remover a formatação dos números de telefone
+
+     
       if (formData.contato1) {
-        formData.contato1 = formData.contato1.replace(/\D/g, '');  // Remove os caracteres não numéricos
+        formData.contato1 = formData.contato1.replace(/\D/g, '');  
       }
+      
       if (formData.contato2) {
-        formData.contato2 = formData.contato2.replace(/\D/g, '');  // Remove os caracteres não numéricos
+        formData.contato2 = formData.contato2.replace(/\D/g, '');  
       }
   
-      // Agora envia os dados processados ao back-end
+      if (formData.tipo_pessoa === 'J' && formData.cnpj) {
+        formData.cnpj = formData.cnpj.replace(/\D/g, '');
+        formData.cpf = '';  
+      }
+
+      
       if (this.isEditing) {
-        this.editDoador(formData);  // Edição
+        this.editDoador(formData);  
       } else {
-        this.addDoador(formData);  // Adição
+        this.addDoador(formData);  
       }
     } else {
       this.handleErrorMessage('Formulário inválido. Verifique os campos obrigatórios.');
     }
   }
-  
-  
-  
+
   private addDoador(formData: any): void {
-    formData.tipopessoa = formData.tipopessoa === 'J' ? 'J' : 'F';  // Verifica tipo de pessoa
-    console.log('Adicionando doador com os dados:', formData);  // Verificar dados antes de enviar
-  
+    console.log('Adicionando doador com os dados:', formData);
     this.doadorService.createDoador(formData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: GetDoadorResponse) => {
           this.handleSuccessMessage('Doador criado com sucesso!');
-          this.ref.close();  // Fecha o modal após sucesso
+          this.ref.close();
         },
         error: (err) => {
           this.handleErrorMessage('Erro ao criar doador!');
-          console.error('Erro ao adicionar doador:', err);  // Exibe o erro completo no console
         }
       });
   }
-  
 
   private editDoador(formData: any): void {
-    if (!formData.id) {
-      this.handleErrorMessage('Erro ao editar: ID do doador não encontrado.');
-      return;
-    }
-  
-    formData.tipopessoa = formData.tipopessoa === 'J' ? 'J' : 'F';  // Verifica tipo de pessoa
-    console.log('Editando doador com os dados:', formData);  // Verificar dados antes de enviar
-  
-    this.doadorService.updateDoador(formData.id, formData)
+    const payload = { ...formData, id: formData.idDoador };
+    this.doadorService.updateDoador(payload.id, payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.handleSuccessMessage('Doador editado com sucesso!');
-          this.ref.close();  // Fecha o modal após sucesso
+          this.ref.close();
         },
         error: (err) => {
           this.handleErrorMessage('Erro ao editar doador!');
-          console.error('Erro ao editar doador:', err);  // Exibe o erro completo no console
         }
       });
   }
-  
-  private populateForm(doador: GetDoadorResponse): void {
-    const dataCadastro = doador.datacad ? new Date(doador.datacad).toISOString().split('T')[0] : '';
 
+  private populateForm(doador: GetDoadorResponse): void {
     this.doadorForm.patchValue({
-      id: doador.id,
+      idDoador: doador.idDoador,
       nome: doador.nome,
-      tipopessoa: doador.tipopessoa,
+      tipo_pessoa: doador.tipoPessoa,
       cpf: doador.cpf,
       cnpj: doador.cnpj,
       contato1: doador.contato1,
       contato2: doador.contato2,
       cep: doador.cep,
-      logradoudo: doador.logradoudo,
+      logradouro: doador.logradouro,
       numero: doador.numero,
       complemento: doador.complemento,
       bairro: doador.bairro,
       cidade: doador.cidade,
-      siglaestado: doador.siglaestado,
+      uf: doador.uf,
       observacoes: doador.observacoes,
       ativo: doador.ativo
     });
@@ -218,14 +221,6 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
     const value = control.value;
     if (value && !isValidCPF(value.replace(/\D/g, ''))) {
       return { 'invalidCpf': true };
-    }
-    return null;
-  }
-
-  cnpjValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-    if (value && !isValidCNPJ(value.replace(/\D/g, ''))) {
-      return { 'invalidCnpj': true };
     }
     return null;
   }

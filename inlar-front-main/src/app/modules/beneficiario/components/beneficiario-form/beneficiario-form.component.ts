@@ -227,7 +227,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       razaoSocial: beneficiario.razaoSocial, 
       rg: beneficiario.rg,
       genero: beneficiario.genero,
-      datanasc: beneficiario.datanasc? new Date(beneficiario.datanasc).toISOString().split('T')[0] : null,
+      datanasc: beneficiario.datanasc,
       contato1: beneficiario.contato1,
       contato2: beneficiario.contato2,
       cep: beneficiario.cep,

@@ -1,5 +1,5 @@
 export interface EditDoadorAction {
   action: string;
-  id?: string;
+  id?: number;
   doadorName?: string;
 }

@@ -11,7 +11,7 @@ import { GetDoadorResponse } from 'src/app/models/interfaces/doador/responses/Ge
 })
 export class DoadorTableComponent implements OnInit {
 
-  @Input() public doadores: Array<GetDoadorResponse> = []; // Variável de input para os doadores
+  @Input() public doador: Array<GetDoadorResponse> = []; // Variável de input para os doadores
   @Output() public DoadorEvent = new EventEmitter<EditDoadorAction>(); // Emissor para eventos de edição de doador
   @Output() public deleteDoadorEvent = new EventEmitter<DeleteDoadorAction>(); // Emissor para eventos de deleção de doador
 
@@ -21,7 +21,7 @@ export class DoadorTableComponent implements OnInit {
 
   ngOnInit(): void {
     // Se necessário, adicione lógica de inicialização aqui
-    console.log('DoadorTableComponent initialized with', this.doadores);
+    console.log('DoadorTableComponent initialized with', this.doador);
   }
 
   handleDeleteDoadorEvent(doador_id: string, doadorName: string): void {
@@ -33,8 +33,7 @@ export class DoadorTableComponent implements OnInit {
   handleDoadorEvent(action: string, id?: number, doadorName?: string): void {
     console.log('ID recebido:', id, 'Tipo:', typeof id);
     if (action && action !== '') {
-      // Converter id para string antes de emitir, se id existir
-      this.DoadorEvent.emit({ action, id: id?.toString(), doadorName });
+      this.DoadorEvent.emit({ action, id, doadorName });
     }
   }
 }

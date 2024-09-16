@@ -32,7 +32,7 @@ export class DoadorHomeComponent implements OnInit, OnDestroy {
   }
 
   getDoadores() {
-    this.doadorService.getDoadores(1)  // Remova os colchetes aqui
+    this.doadorService.getDoadores(1)  
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: GetDoadorResponse[]) => {
@@ -95,6 +95,7 @@ export class DoadorHomeComponent implements OnInit, OnDestroy {
   }
 
   handleDoadorAction(event: any): void {
+    const isEditing = event && event.action !== 'ADICIONAR DOADOR';
     if (event) {
       this.ref = this.dialogService.open(DoadorFormComponent, {
         header: event?.action,
@@ -103,7 +104,7 @@ export class DoadorHomeComponent implements OnInit, OnDestroy {
         baseZIndex: 10000,
         maximizable: true,
         data: {
-          event: event,
+          event: isEditing ? event : null,
         },
       });
 

@@ -1,18 +1,19 @@
 export interface GetDoadorResponse {
-  id: number;
+  idDoador: number;
   nome: string;
-  tipopessoa?: string;
+  tipoPessoa?: string;
   cpf?: string;
   cnpj?: string;
   contato1?: string;
   contato2?: string;
   cep?: string;
-  logradoudo?: string;
+  logradouro?: string;
   numero?: string;
   complemento?: string;
   bairro?: string;
   cidade?: string;
-  siglaestado?: string;
+  siglaEstado?:string;
+  uf?: string;
   observacoes?: string;
   datacad?: string;
   ativo: boolean;  
