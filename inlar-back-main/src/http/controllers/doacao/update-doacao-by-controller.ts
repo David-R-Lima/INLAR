@@ -31,6 +31,10 @@ import { InternalError } from 'src/inlar/errors/internal-error';
     cidade: z.string().optional(),
     uf: z.string().optional(),
     observacoes: z.string().optional(),
+    numItens: z.coerce.number().optional(),
+    quantidade: z.coerce.number().optional(),
+    valor: z.coerce.number().optional(),
+    situacao: z.string().optional(),
     itens: z.array(
         z.object({
           tipo: z.coerce.number({
@@ -70,9 +74,9 @@ import { InternalError } from 'src/inlar/errors/internal-error';
     ) {
       const res = await this.updateDoacao.execute({
         id: param.id_doacao,
-        id_doador: param.id_doador,
-        id_beneficiario: param.id_beneficiario,
-        id_usuario: param.id_usuario,
+        id_doador: body.id_doador,
+        id_beneficiario: body.id_beneficiario,
+        id_usuario: body.id_usuario,
         cep: body.cep,
         logradouro: body.logradouro,
         numero: body.numero,
@@ -80,7 +84,7 @@ import { InternalError } from 'src/inlar/errors/internal-error';
         bairro: body.bairro,
         cidade: body.cidade,
         uf: body.uf,
-        itens: body.itens,
+        // itens: body.itens,
         numItens: body.numItens,
         quantidade: body.quantidade,
         valor: body.valor,
