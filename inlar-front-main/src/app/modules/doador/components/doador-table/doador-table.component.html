@@ -10,7 +10,7 @@
         [tableStyle]="{ 'min-width': '75rem' }"
         [rowHover]="true"
         [showCurrentPageReport]="true"
-        dataKey="idDoador" 
+        dataKey="idDoador"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} doadores"
       >
         <ng-template pTemplate="header">
@@ -32,6 +32,26 @@
                 </div>
               </div>
             </th>
+
+            <!-- Coluna para Estado (UF) -->
+            <th pSortableColumn="uf">
+              <div class="flex justify-content-between align-items-center">
+                <div>Estado (UF)</div>
+                <div>
+                  <p-sortIcon field="uf"></p-sortIcon>
+                  <p-columnFilter
+                    type="text"
+                    field="uf"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
+                </div>
+              </div>
+            </th>
+
             <th>
               <div class="flex justify-content-center">
                 <button
@@ -50,7 +70,8 @@
 
         <ng-template pTemplate="body" let-doador>
           <tr>
-            <td>{{ doador.nome }}</td> <!-- Exibe o nome do doador -->
+            <td>{{ doador.nome }}</td>
+            <td>{{ doador.uf }}</td>
             <td>
               <div class="flex justify-content-center gap-3 align-content-center align-items-center">
                 <button

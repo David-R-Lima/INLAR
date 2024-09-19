@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DoadorService } from 'src/app/services/doador/doador.service';
 import { GetDoadorResponse } from 'src/app/models/interfaces/doador/responses/GetDoadorResponse';
 import { isValid as isValidCPF } from '@fnando/cpf';
+import { isValid as isValidCNPJ } from '@fnando/cnpj';
 
 @Component({
   selector: 'app-doador-form',
@@ -37,7 +38,7 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
       nome: ['', Validators.required],
       tipo_pessoa: ['F', Validators.required],
       cpf: ['', this.cpfValidator],
-      cnpj: [''],
+      cnpj: ['',this.cnpjValidator],
       contato1: ['', Validators.required],
       contato2: [''],
       cep: ['', Validators.required],
@@ -61,7 +62,7 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
         this.doadorForm.get('cnpj')?.clearValidators();
       } else if (tipo === 'J') {
         
-        this.doadorForm.get('cnpj')?.setValidators([Validators.required]);
+        this.doadorForm.get('cnpj')?.setValidators([Validators.required, this.cnpjValidator]);
 
        
         this.doadorForm.get('cpf')?.clearValidators();
@@ -224,7 +225,13 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-
+  cnpjValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (value && !isValidCNPJ(value.replace(/\D/g,  ''))) {
+       return { 'invalidCnpj': true};
+    }
+      return null;
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

@@ -7,7 +7,6 @@ export interface GetBeneficiarioResponse {
   genero?: string;
   datanasc?: Date;
   cnpj?: string;
-  razaoSocial?: string;
   contato1?: string;
   contato2?: string;
   cep?: string;

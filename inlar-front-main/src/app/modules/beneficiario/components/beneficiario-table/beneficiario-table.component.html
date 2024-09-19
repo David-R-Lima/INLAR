@@ -32,6 +32,23 @@
                 </div>
               </div>
             </th>
+            <th pSortableColumn="uf">
+              <div class="flex justify-content-between align-items-center">
+                <div>Estado (UF)</div>
+                <div>
+                  <p-sortIcon field="uf"></p-sortIcon>
+                  <p-columnFilter
+                    type="text"
+                    field="uf"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
+                </div>
+              </div>
+            </th>
             <th>
               <div class="flex justify-content-center">
                 <button
@@ -47,10 +64,10 @@
             </th>
           </tr>
         </ng-template>
-
         <ng-template pTemplate="body" let-beneficiario>
           <tr>
             <td>{{ beneficiario.nome }}</td>
+            <td>{{ beneficiario.uf }}</td>
             <td>
               <div class="flex justify-content-center gap-3 align-content-center align-items-center">
                 <button

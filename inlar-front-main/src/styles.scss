@@ -224,3 +224,44 @@ form {
     }
   }
 }
+
+
+.p-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.p-table th,
+.p-table td {
+  padding: 12px 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.p-table th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.p-table td {
+  border-bottom: 1px solid #ddd;
+}
+
+.p-button-rounded {
+  border-radius: 50% !important;
+  padding: 0.5rem !important;
+}
+
+.p-button-warning {
+  background-color: #f8c146 !important;
+}
+
+.p-button-danger {
+  background-color: #e74c3c !important;
+}
+
+.p-button {
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+}
+

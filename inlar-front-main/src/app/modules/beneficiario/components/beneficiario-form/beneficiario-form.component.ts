@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BeneficiarioService } from 'src/app/services/beneficiario/beneficiario.service';
 import { GetBeneficiarioResponse } from 'src/app/models/interfaces/beneficiario/responses/GetBeneficiarioResponse';
 import { isValid as isValidCPF } from '@fnando/cpf';
+import { isValid as isValidCNPJ } from '@fnando/cnpj';
 
 @Component({
   selector: 'app-beneficiario-form',
@@ -40,8 +41,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       nome: ['', Validators.required],
       tipo_pessoa: ['F', Validators.required],
       cpf: ['', this.cpfValidator],
-      cnpj: [''], 
-      razaoSocial: [''], 
+      cnpj: ['', this.cnpjValidator], 
       rg: [''],
       genero: ['', Validators.required],
       datanasc: ['', Validators.required],
@@ -60,30 +60,18 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
 
     this.beneficiarioForm.get('tipo_pessoa')?.valueChanges.subscribe(tipo => {
       if (tipo === 'F') {
-        // Pessoa Física
         this.beneficiarioForm.get('cpf')?.setValidators([Validators.required, this.cpfValidator]);
-        this.beneficiarioForm.get('rg')?.setValidators([Validators.required]);
-        this.beneficiarioForm.get('datanasc')?.setValidators([Validators.required]);
-    
-        // Limpa validação de CNPJ e Razão Social
+        
         this.beneficiarioForm.get('cnpj')?.clearValidators();
-        this.beneficiarioForm.get('razaoSocial')?.clearValidators();
+        this.beneficiarioForm.get('cnpj')?.setValue(''); 
       } else if (tipo === 'J') {
-        // Pessoa Jurídica
-        this.beneficiarioForm.get('cnpj')?.setValidators([Validators.required]);
-        this.beneficiarioForm.get('razaoSocial')?.setValidators([Validators.required]);
-    
-        // Limpa validação de CPF, RG e Data de Nascimento
+        this.beneficiarioForm.get('cnpj')?.setValidators([Validators.required, this.cnpjValidator]);
+        
         this.beneficiarioForm.get('cpf')?.clearValidators();
-        this.beneficiarioForm.get('rg')?.clearValidators();
-        this.beneficiarioForm.get('datanasc')?.clearValidators();
+        this.beneficiarioForm.get('cpf')?.setValue(''); 
       }
-      // Atualiza o status dos campos
       this.beneficiarioForm.get('cpf')?.updateValueAndValidity();
-      this.beneficiarioForm.get('rg')?.updateValueAndValidity();
-      this.beneficiarioForm.get('datanasc')?.updateValueAndValidity();
       this.beneficiarioForm.get('cnpj')?.updateValueAndValidity();
-      this.beneficiarioForm.get('razaoSocial')?.updateValueAndValidity();
     });
     
 
@@ -224,7 +212,6 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       tipo_pessoa: beneficiario.tipoPessoa,
       cpf: beneficiario.cpf,
       cnpj: beneficiario.cnpj,
-      razaoSocial: beneficiario.razaoSocial, 
       rg: beneficiario.rg,
       genero: beneficiario.genero,
       datanasc: beneficiario.datanasc,
@@ -257,6 +244,13 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
     }
     return null;
   }
+cnpjValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  if (value && !isValidCNPJ(value.replace(/\D/g,  ''))) {
+     return { 'invalidCnpj': true};
+  }
+    return null;
+}
 
   ngOnDestroy(): void {
     this.destroy$.next();

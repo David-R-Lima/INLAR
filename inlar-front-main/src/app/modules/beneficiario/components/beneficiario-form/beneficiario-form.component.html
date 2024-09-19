@@ -45,35 +45,6 @@
             slotChar="_"  
           ></p-inputMask>
         </div>
-        <div class="form-group">
-          <label for="rg">RG</label>
-          <input 
-            id="rg"
-            pInputText 
-            placeholder="RG" 
-            formControlName="rg" 
-            maxlength="9" 
-          />
-        </div>
-        <div class="form-group">
-          <label for="datanasc">Data de Nascimento</label>
-          <input 
-            id="datanasc"
-            pInputText 
-            placeholder="Data de Nascimento" 
-            formControlName="datanasc" 
-            type="date" 
-          />
-        </div>
-        <div class="form-group">
-          <label for="genero">Gênero</label>
-          <p-dropdown 
-            id="genero"
-            [options]="generos" 
-            formControlName="genero" 
-            placeholder="Selecione o Gênero">
-          </p-dropdown>
-        </div>
       </div>
 
       <!-- Campos para Pessoa Jurídica -->
@@ -88,15 +59,39 @@
             slotChar="_"
           ></p-inputMask>
         </div>
-        <div class="form-group">
-          <label for="razaoSocial">Razão Social</label>
-          <input 
-            id="razaoSocial"
-            pInputText 
-            placeholder="Razão Social" 
-            formControlName="razaoSocial" 
-          />
-        </div>
+      </div>
+
+      <!-- Campos que aparecem para ambos os tipos de Pessoa -->
+      <div class="form-group">
+        <label for="rg">RG</label>
+        <input 
+          id="rg"
+          pInputText 
+          placeholder="RG" 
+          formControlName="rg" 
+          maxlength="9" 
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="datanasc">Data de Nascimento</label>
+        <input 
+          id="datanasc"
+          pInputText 
+          placeholder="Data de Nascimento" 
+          formControlName="datanasc" 
+          type="date" 
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="genero">Gênero</label>
+        <p-dropdown 
+          id="genero"
+          [options]="generos" 
+          formControlName="genero" 
+          placeholder="Selecione o Gênero">
+        </p-dropdown>
       </div>
 
       <!-- Contato -->
@@ -121,6 +116,7 @@
           slotChar="_"
         ></p-inputMask>
       </div>
+
       <!-- Endereço -->
       <div class="form-group">
         <label for="cep">CEP</label>
@@ -132,6 +128,7 @@
           maxlength="8" 
         />
       </div>
+
       <div class="form-group">
         <label for="logradouro">Logradouro</label>
         <input 
@@ -141,6 +138,7 @@
           formControlName="logradouro" 
         />
       </div>
+
       <div class="form-group">
         <label for="numero">Número</label>
         <input 
@@ -150,6 +148,7 @@
           formControlName="numero" 
         />
       </div>
+
       <div class="form-group">
         <label for="complemento">Complemento</label>
         <input 
@@ -159,6 +158,7 @@
           formControlName="complemento" 
         />
       </div>
+
       <div class="form-group">
         <label for="bairro">Bairro</label>
         <input 
@@ -168,6 +168,7 @@
           formControlName="bairro" 
         />
       </div>
+
       <div class="form-group">
         <label for="cidade">Cidade</label>
         <input 
