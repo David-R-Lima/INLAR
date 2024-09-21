@@ -1,12 +1,14 @@
+import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './modules/home/home.component';
-import { NgModule } from '@angular/core';
+import { AuthGuard } from './guards/auth-guard.service';
 
 const routes: Routes = [
+  
   {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
+     path: '',
+     redirectTo: 'dashboard',
+     pathMatch: 'full',
   },
   {
     path: 'home',
@@ -33,14 +35,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/doador/doador.module').then(
         (m) => m.DoadorModule
-      ),
-    // canActivate: [AuthGuard],
-  },
-  {
-    path: 'doacao',
-    loadChildren: () =>
-      import('./modules/doacao/doacao.module').then(
-        (m) => m.DoacaoModule
       ),
     // canActivate: [AuthGuard],
   },
