@@ -24,6 +24,8 @@ import { DoadorService } from './services/doador/doador.service';
 import { BeneficiarioService } from './services/beneficiario/beneficiario.service';
 import { TelefoneMaskDirective } from './directive/TELEFONE/telefone-mask.directive';
 import { InputMaskModule } from 'primeng/inputmask';
+import { DoacaoService } from './services/doacao/doacao.service';
+
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { InputMaskModule } from 'primeng/inputmask';
     CpfMaskDirective,
     TelefoneMaskDirective,
     CnpjValidatorDirective,
-    CpfValidatorDirective],
+    CpfValidatorDirective,
+    ],
   imports: [
     InputMaskModule,
     BrowserModule,
@@ -49,7 +52,7 @@ import { InputMaskModule } from 'primeng/inputmask';
     ToastModule,
     SelectButtonModule
   ],
-  providers: [CookieService, MessageService,DoadorService,BeneficiarioService,],
+  providers: [CookieService, MessageService,DoadorService,BeneficiarioService,DoacaoService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
