@@ -39,6 +39,7 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
       tipo_pessoa: ['F', Validators.required],
       cpf: ['', this.cpfValidator],
       cnpj: ['',this.cnpjValidator],
+      genero: ['', Validators.required],
       contato1: ['', Validators.required],
       contato2: [''],
       cep: ['', Validators.required],
@@ -101,7 +102,14 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
       { label: 'Sergipe', value: 'SE' },
       { label: 'Tocantins', value: 'TO' }
     ];
+    this.generos = [
+      { label: 'Masculino', value: 'M' },
+      { label: 'Feminino', value: 'F' },
+      { label: 'Outro', value: 'Outro' },
+      { label: 'Prefiro não informar', value: 'Prefiro não informar' }
+    ];
   }
+  
 
   ngOnInit(): void {
     const doadorData = this.config.data?.event;
