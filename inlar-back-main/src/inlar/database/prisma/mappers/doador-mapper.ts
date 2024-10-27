@@ -6,6 +6,7 @@ export class DoadorMapper {
     return {
       NOME: doador.getNome(),
       TIPOPESSOA: doador.getTipoPessoa(),
+      GENERO: doador.getGenero(),
       CPF: doador.getCpf(),
       CNPJ: doador.getCnpj(),
       CONTATO1: doador.getContato1(),
@@ -26,6 +27,7 @@ export class DoadorMapper {
     const doador = new Doador({
       nome: raw.NOME,
       tipoPessoa: raw.TIPOPESSOA,
+      genero: raw.GENERO,
       cpf: raw.CPF,
       cnpj: raw.CNPJ,
       contato1: raw.CONTATO1,

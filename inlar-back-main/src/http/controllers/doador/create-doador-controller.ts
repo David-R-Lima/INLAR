@@ -19,6 +19,7 @@ const squema = z.object({
   tipo_pessoa: z.string({
     required_error: 'Field: {tipo_pessoa} is required',
   }),
+  genero: z.string().optional(),
   cpf: z.string().max(11, { message: 'Cannot exceed 11 caracters' }).refine((value) => {
     if(!value) return true
     if (cpf.isValid(value)) return true
@@ -94,6 +95,7 @@ export class CreateDoadorController {
     const res = await this.createDoador.execute({
       nome: body.nome,
       tipoPessoa: body.tipo_pessoa,
+      genero: body.genero,
       cpf: body.cpf,
       cnpj: body.cnpj,
       contato1: body.contato1,

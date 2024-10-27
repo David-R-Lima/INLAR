@@ -18,6 +18,8 @@ import { cnpj, cpf } from 'cpf-cnpj-validator';
 const squema = z.object({
   nome: z.string().optional(),
   tipo_pessoa: z.string().optional(),
+  genero: z.string().optional(),
+
   cpf: z.string().max(11, { message: 'Cannot exceed 11 caracters' }).refine((value) => {
     if(!value) return true
     if (cpf.isValid(value)) return true

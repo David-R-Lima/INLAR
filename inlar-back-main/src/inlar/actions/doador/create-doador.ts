@@ -6,6 +6,7 @@ import { InternalError } from 'src/inlar/errors/internal-error';
 interface Request {
   nome: string;
   tipoPessoa: string;
+  genero?: string;
   cpf?: string;
   cnpj?: string | null;
   contato1?: string | null;
@@ -28,6 +29,7 @@ export class CreateDoador {
     const doador = new Doador({
       nome: data.nome,
       tipoPessoa: data.tipoPessoa,
+      genero: data.genero,
       cpf: data.cpf,
       cnpj: data.cnpj,
       contato1: data.contato1,

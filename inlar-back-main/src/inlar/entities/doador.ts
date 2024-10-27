@@ -2,6 +2,7 @@ interface Props {
   idDoador?: number;
   nome?: string;
   tipoPessoa?: string;
+  genero?: string;
   cpf?: string;
   cnpj?: string | null;
   contato1?: string | null;
@@ -21,6 +22,7 @@ interface Props {
 export class Doador {
   private nome: string;
   private tipoPessoa: string;
+  private genero: string;
   private cpf: string;
   private cnpj: string | null;
   private contato1: string | null;
@@ -40,6 +42,7 @@ export class Doador {
   constructor(props: Props = {}) {
     this.nome = props.nome || '';
     this.tipoPessoa = props.tipoPessoa || '';
+    this.genero = props.genero || '';
     this.cpf = props.cpf || '';
     this.cnpj = props.cnpj || null;
     this.contato1 = props.contato1 || null;
@@ -73,6 +76,14 @@ export class Doador {
 
   setTipoPessoa(tipoPessoa: string) {
     this.tipoPessoa = tipoPessoa;
+  }
+
+  getGenero(): string {
+    return this.genero;
+  }
+
+  setGenero(genero: string) {
+    this.genero = genero;
   }
 
   getCpf(): string {
