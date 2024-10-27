@@ -25,7 +25,7 @@ export class CreateUsuario {
     }
 
     const hashedSenha = await this.bcryptHasher.hash(data.senha);
-    
+        
     const usuario = new Usuario({
       usuario: data.usuario,
       email: data.email,

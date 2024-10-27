@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `doador` ADD COLUMN `GENERO` VARCHAR(191) NULL;

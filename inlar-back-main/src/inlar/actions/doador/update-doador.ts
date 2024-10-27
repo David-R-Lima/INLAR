@@ -8,6 +8,7 @@ interface Request {
   idDoador: number;
   nome: string;
   tipoPessoa: string;
+  genero?: string;
   cpf?: string;
   cnpj?: string | null;
   contato1?: string | null;
@@ -35,6 +36,7 @@ export class UpdateDoador {
 
     doadorExists.setNome(data.nome);
     doadorExists.setTipoPessoa(data.tipoPessoa);
+    doadorExists.setGenero(data.genero);
     doadorExists.setCpf(data.cpf);
     doadorExists.setCnpj(data.cnpj);
     doadorExists.setContato1(data.contato1);

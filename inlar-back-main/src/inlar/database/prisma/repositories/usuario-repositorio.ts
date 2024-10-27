@@ -9,6 +9,7 @@ export class UsuarioRepositorio {
 
   async create(usuario: Usuario): Promise<Usuario> {
     const data = UsuarioMapper.toDatabase(usuario);
+    console.log('data: ', data);
 
     const prismaUsuario = await this.prisma.usuario.create({
       data,
