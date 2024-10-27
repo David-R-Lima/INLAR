@@ -107,7 +107,9 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
 
     this.generos = [
       { label: 'Masculino', value: 'M' },
-      { label: 'Feminino', value: 'F' }
+      { label: 'Feminino', value: 'F' },
+      { label: 'Outro', value: 'Outro' },
+      { label: 'Prefiro não informar', value: 'Prefiro não informar' }
     ];
   }
 
