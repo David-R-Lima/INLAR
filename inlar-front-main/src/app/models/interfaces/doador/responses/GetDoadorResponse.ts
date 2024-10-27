@@ -4,6 +4,7 @@ export interface GetDoadorResponse {
   tipoPessoa?: string;
   cpf?: string;
   cnpj?: string;
+  genero?: string;
   contato1?: string;
   contato2?: string;
   cep?: string;

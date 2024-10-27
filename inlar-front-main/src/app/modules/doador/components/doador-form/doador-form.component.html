@@ -52,6 +52,16 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <label for="genero">Gênero</label>
+        <p-dropdown 
+          id="genero"
+          [options]="generos" 
+          formControlName="genero" 
+          placeholder="Selecione o Gênero">
+        </p-dropdown>
+      </div>
+      
       <!-- Contato 1 -->
       <div class="form-group">
         <label for="contato1">Contato 1</label>
