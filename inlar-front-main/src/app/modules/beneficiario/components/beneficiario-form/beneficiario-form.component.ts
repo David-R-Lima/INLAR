@@ -136,7 +136,6 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit(): void {
-    console.log(this.beneficiarioForm.errors)
     if (this.beneficiarioForm.valid) {
       const formData = { ...this.beneficiarioForm.value }; // Faz uma cópia do formulário
   
@@ -186,7 +185,6 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
           this.ref.close();
         },
         error: (err) => {
-          console.log('err: ', err);
           this.handleErrorMessage('Erro ao criar beneficiário!');
         }
       });
