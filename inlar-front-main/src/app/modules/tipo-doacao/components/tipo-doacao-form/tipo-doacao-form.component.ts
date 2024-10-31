@@ -5,7 +5,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TipoDoacaoService } from 'src/app/services/tipo-doacao/tipo-doacao.service';
-
+import { GetTipoDoacaoResponse } from 'src/app/models/interfaces/tipo-doacao/responses/GetTipoDoacaoAction';
 
 @Component({
   selector: 'app-tipo-doacao-form',
