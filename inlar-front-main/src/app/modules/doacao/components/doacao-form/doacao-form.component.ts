@@ -11,7 +11,7 @@ import { GetDoacaoResponse } from 'src/app/models/interfaces/doacao/responses/Ge
     selector: 'app-doacao-form',
     templateUrl: './doacao-form.component.html',
     styleUrls: []
-  })
+})
 export class DoacaoFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
 
@@ -47,7 +47,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     if (doacaoData) {
       this.isEditing = true;
       doacaoData.idDoacao = doacaoData.id; 
-      this.doacaoService.getDoadorById(doacaoData.id)
+      this.doacaoService.getDoacaoById(doacaoData.id)
         .subscribe({
           next: (doacao: GetDoacaoResponse) => {
             this.populateForm(doacao); 
