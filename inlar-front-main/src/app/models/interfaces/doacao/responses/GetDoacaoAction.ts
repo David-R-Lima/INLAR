@@ -12,4 +12,5 @@ export interface GetDoacaoResponse {
     siglaestado?: string;
     situacao: string;
     ativo?: boolean;
+    data: Date;
 }

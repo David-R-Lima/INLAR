@@ -24,14 +24,14 @@ export class DoacaoTableComponent implements OnInit {
       console.log('DoacaoTableComponent initialized with', this.doacao);
     }
   
-    handleDeleteDoacaoEvent(doacao_id: string, doacaoName: string): void {
-      if (doacao_id !== '' && doacaoName !== '') {
-        this.deleteDoacaoEvent.emit({ doacao_id, doacaoName }); // Emitir evento de deletar doador
+    handleDeleteDoacaoEvent(doacao_id: string): void {
+      if (doacao_id !== '') {
+        this.deleteDoacaoEvent.emit({doacao_id}); // Emitir evento de deletar doador
       }
     }
   
-    handleDoacaoEvent(action: string, id?: number, doacaoName?: string): void {
-      console.log('ID recebido:', id, 'Tipo:', typeof id);
+    handleDoacaoEvent(action: string, id?: number, doacaoName?: string, data?: Date): void {
+      console.log('ID recebido:', id, 'Tipo:', typeof id, 'Data: ', typeof data);
       if (action && action !== '') {
         this.DoacaoEvent.emit({ action, id, doacaoName });
       }

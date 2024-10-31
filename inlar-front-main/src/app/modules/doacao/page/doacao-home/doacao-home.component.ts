@@ -56,7 +56,7 @@ export class  DoacaoHomeComponent implements OnInit, OnDestroy {
   handleDeleteDoacaoAction(event: DeleteDoacaoAction): void {
     if (event) {
       this.confirmationService.confirm({
-        message: `Confirma a exclusão da doação: ${event?.doacaoName}`,
+        message: `Confirma a exclusão da doação?`,
         header: 'Confirmação de exclusão',
         icon: 'pi pi-exclamation-triangle',
         acceptLabel: 'Sim',

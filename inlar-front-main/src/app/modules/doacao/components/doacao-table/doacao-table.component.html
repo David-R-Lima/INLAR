@@ -3,7 +3,7 @@
       <p-card styleClass="shadow-3 m-5 text-indigo-800" header="Doações">
         <p-table
           [value]="doacao"
-          [(selection)]="doacaoelected"
+          [(selection)]="doacaodelected"
           [rows]="10"
           [paginator]="true"
           [responsive]="true"
@@ -59,11 +59,11 @@
                   <button
                     pButton
                     pRipple
-                    icon="pi pi-plus"
+                    icon="pi pi-plus" 
                     label="Adicionar"
                     pTooltip="Adicionar Doação"
                     tooltipPosition="top"
-                    (click)="handleDoadorEvent('ADICIONAR DOACAO')"
+                    (click)="handleDoacaoEvent('ADICIONAR DOACAO')"
                   ></button>
                 </div>
               </th>
@@ -72,8 +72,9 @@
   
           <ng-template pTemplate="body" let-doador>
             <tr>
-              <td>{{ doacao.id }}</td>
-              <td>{{ doacao.nome }}</td>
+              <td>{{ doacao.id_doacao }}</td>
+              <td>{{ doacao.descricao }}</td>
+              <td>{{ doacao.data }}</td>
               <td>
                 <div class="flex justify-content-center gap-3 align-content-center align-items-center">
                   <button
@@ -83,7 +84,7 @@
                     pTooltip="Editar doação"
                     tooltipPosition="top"
                     class="p-button-rounded p-button-warning"
-                    (click)="handleDoacaoEvent('EDITAR DOACAO', doacao.idDoacao, doacao.nome)"
+                    (click)="handleDoacaoEvent('EDITAR DOACAO', doacao.idDoacao, doacao.descricao, doacao.data)"
                   ></button>
                   <button
                     pButton
@@ -92,7 +93,7 @@
                     pTooltip="Remover doação"
                     tooltipPosition="top"
                     class="p-button-rounded p-button-danger"
-                    (click)="handleDeleteDoacaoEvent(doacao.idDoacao, doacao.nome)"
+                    (click)="handleDeleteDoacaoEvent(doacao.id_doacao)"
                   ></button>
                 </div>
               </td>
