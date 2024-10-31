@@ -25,7 +25,7 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
   public doadorForm: FormGroup;
   public isEditing = false;
   public estados: any[];
-  public genero: any[];
+  public generos: any[];
 
   constructor(
     public ref: DynamicDialogRef,
@@ -104,7 +104,7 @@ export class DoadorFormComponent implements OnInit, OnDestroy {
       { label: 'Tocantins', value: 'TO' }
     ];
 
-    this.genero = [
+    this.generos = [
       { label: 'Masculino', value: 'M' },
       { label: 'Feminino', value: 'F' },
       { label: 'Outro', value: 'Outro' },

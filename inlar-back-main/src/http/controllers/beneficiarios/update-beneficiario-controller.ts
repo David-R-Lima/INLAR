@@ -19,7 +19,7 @@ import { cnpj, cpf } from 'cpf-cnpj-validator';
 
    const squema = z.object({
      nome: z.string(),
-     datanasc: z.coerce.date().optional(),
+     datanasc: z.string().optional(),
      tipo_pessoa: z.string(),
      genero: z.string().optional(),
      cpf: z.string().max(11, { message: 'Cannot exceed 11 caracters' }).refine((value) => {
@@ -86,7 +86,7 @@ import { cnpj, cpf } from 'cpf-cnpj-validator';
        const res = await this.updateBeneficiario.execute({
          id: param.id_beneficiario,
          nome: body.nome,
-         dataNasc: body.datanasc,
+         dataNasc: body.datanasc ? new Date(body.datanasc) : undefined,
          tipoPessoa: body.tipo_pessoa,
          genero: body.genero,
          cpf: body.cpf,

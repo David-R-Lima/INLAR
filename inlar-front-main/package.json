@@ -21,6 +21,8 @@
     "@fnando/cnpj": "^1.0.2",
     "@fnando/cpf": "^1.0.2",
     "chart.js": "^4.3.0",
+    "dayjs": "^1.11.13",
+    "dayjs-plugin-utc": "^0.1.2",
     "ngx-cookie-service": "^15.0.0",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
