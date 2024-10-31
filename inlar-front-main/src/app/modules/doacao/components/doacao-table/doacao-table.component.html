@@ -56,7 +56,7 @@
                     pRipple
                     icon="pi pi-plus"
                     label="Adicionar"
-                    pTooltip="Adicionar Beneficiário"
+                    pTooltip="Adicionar Doaçao"
                     tooltipPosition="top"
                     (click)="handleBeneficiarioEvent('ADICIONAR BENEFICIARIO')"
                   ></button>
@@ -66,27 +66,27 @@
           </ng-template>
           <ng-template pTemplate="body" let-beneficiario>
             <tr>
-              <td>{{ beneficiario.nome }}</td>
-              <td>{{ beneficiario.uf }}</td>
+              <td>{{ doacao.descricao }}</td>
+              <td>{{ doacao.DATACAD }}</td>
               <td>
                 <div class="flex justify-content-center gap-3 align-content-center align-items-center">
                   <button
                     pButton
                     pRipple
                     icon="pi pi-pencil"
-                    pTooltip="Editar beneficiário"
+                    pTooltip="Editar Doação"
                     tooltipPosition="top"
                     class="p-button-rounded p-button-warning"
-                    (click)="handleBeneficiarioEvent('EDITAR BENEFICIARIO', beneficiario.idBeneficiario, beneficiario.nome)"
+                    (click)="handleDoacaoEvent('EDITAR DOACAO', doacao.iddoacao, doacao.nome)"
                   ></button>
                   <button
                     pButton
                     pRipple
                     icon="pi pi-trash"
-                    pTooltip="Remover beneficiário"
+                    pTooltip="Remover Doação"
                     tooltipPosition="top"
                     class="p-button-rounded p-button-danger"
-                    (click)="handleDeleteBeneficiarioEvent(beneficiario.idBeneficiario, beneficiario.nome)"
+                    (click)="handleDoacaoEvent('EDITAR DOACAO', doacao.iddoacao, doacao.nome)"
                   ></button>
                 </div>
               </td>
