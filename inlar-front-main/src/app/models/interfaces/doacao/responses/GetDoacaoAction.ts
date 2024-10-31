@@ -23,6 +23,6 @@ export interface DoacaoItens {
     numItems: number
     descricao?: string
     quantidade?: number
-    // valorMonetario?: number
+    valorMonetario?: number
     dataCadastro?: Date
 }

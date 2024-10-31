@@ -24,9 +24,9 @@ export class DoacaoItensTableComponent implements OnInit {
         console.log('DoacaoItensTableComponent initialized with', this.doacaoitens);
     }
 
-    handleDeleteDoacaoItensEvent(iditemdoacao: string): void {
-        if (iditemdoacao !== '') {
-          this.deleteDoacaoItensEvent.emit({ iditemdoacao }); // Emitir evento de deletar tipo doacao
+    handleDeleteDoacaoItensEvent(doacaoitens_id: string): void {
+        if (doacaoitens_id !== '') {
+          this.deleteDoacaoItensEvent.emit({ doacaoitens_id }); // Emitir evento de deletar tipo doacao
         }
     }
     
