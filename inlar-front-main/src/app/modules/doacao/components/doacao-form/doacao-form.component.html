@@ -1,0 +1,176 @@
+<div>
+    <form [formGroup]="doacaoForm" (ngSubmit)="handleSubmit()">
+      <div class="card flex flex-column gap-3 custom-form">
+  
+        <!-- Campo oculto para ID da Doacao -->
+        <input type="hidden" formControlName="idDoacao" />
+  
+        <!-- Dropdown para escolher o Doador -->
+        <div class="form-group">
+          <label for="doador">Doador</label>
+          <p-dropdown 
+            id="doador"
+            [options]="doadorOptions" 
+            formControlName="doador" 
+            placeholder="Selecione o doador">
+          </p-dropdown>
+        </div>
+
+        <!-- Abrir cadastro de doador-->
+        <button onclick="abrirCadastrodoador()">+</button>
+
+        <script>
+            function abrirCadastrodoador() {
+                window.location.href = 'doador-form.component.html';
+            }
+        </script>
+ 
+        <!-- Dropdown para escolher o Beneficiario -->
+        <div class="form-group">
+          <label for="beneficiario">Beneficiario</label>
+           <p-dropdown 
+              id="beneficiario"
+              [options]="beneficiarioOptions" 
+              formControlName="beneficiario" 
+              placeholder="Selecione o Beneficiario">
+            </p-dropdown>
+        </div>
+
+        <!-- Abrir cadastro de Beneficiario-->
+        <button onclick="abrirCadastrobeneficiario()">+</button>
+
+        <script>
+            function abrirCadastrobeneficiario() {
+                window.location.href = 'beneficiario-form.component.html';
+            }
+        </script>
+
+        <!-- Dropdown para escolher o Usuario -->
+        <div class="form-group">
+            <label for="usuario">Usuario</label>
+                <p-dropdown 
+                    id="usuario"
+                    [options]="usuarioOptions" 
+                    formControlName="usuario" 
+                    placeholder="Selecione o Usuario">
+                </p-dropdown>
+        </div>
+
+        <!-- Endereço -->
+        <div class="form-group">
+            <label for="cep">CEP</label>
+            <input 
+              id="cep"
+              pInputText 
+              placeholder="CEP" 
+              formControlName="cep" 
+              maxlength="8" 
+            />
+        </div>
+    
+      <div class="form-group">
+            <label for="logradouro">Logradouro</label>
+            <input 
+              id="logradouro"
+              pInputText 
+              placeholder="Logradouro" 
+              formControlName="logradouro" 
+            />
+          </div>
+    
+          <div class="form-group">
+            <label for="numero">Número</label>
+            <input 
+              id="numero"
+              pInputText 
+              placeholder="Número" 
+              formControlName="numero" 
+            />
+          </div>
+    
+          <div class="form-group">
+            <label for="complemento">Complemento</label>
+            <input 
+              id="complemento"
+              pInputText 
+              placeholder="Complemento" 
+              formControlName="complemento" 
+            />
+          </div>
+    
+          <div class="form-group">
+            <label for="bairro">Bairro</label>
+            <input 
+              id="bairro"
+              pInputText 
+              placeholder="Bairro" 
+              formControlName="bairro" 
+            />
+          </div>
+    
+          <div class="form-group">
+            <label for="cidade">Cidade</label>
+            <input 
+              id="cidade"
+              pInputText 
+              placeholder="Cidade" 
+              formControlName="cidade" 
+            />
+          </div>
+
+        <!-- Estado (UF) -->
+        <div class="form-group">
+          <label for="uf">Estado (UF)</label>
+          <p-dropdown 
+            id="uf"
+            [options]="estados" 
+            formControlName="uf" 
+            placeholder="Selecione um Estado">
+          </p-dropdown>
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <input 
+              id="descricao"
+              pInputText 
+              placeholder="Descricão" 
+              formControlName="descricao" 
+            />
+          </div>
+
+          <!-- Quantidade -->
+          <div class="form-group">
+            <label for="qtde">Quantidade</label>
+            <input 
+              id="qtde"
+              pInputText 
+              placeholder="Quantidade" 
+              formControlName="qtde" 
+            />
+          </div>
+
+        <!-- Valor monetário -->
+        <div class="form-group">
+          <label for="valormonetario">Valor Monetário</label>
+          <p-inputMask
+            id="valormonetario"
+            formControlName="valormonetario"
+            mask="R$     " 
+            placeholder="Digite o Valor Monetário"
+            slotChar="_"  
+          ></p-inputMask>
+        </div>
+  
+        <!-- Botão de Submissão -->
+        <div class="form-group flex justify-content-center">
+          <p-button 
+            type="submit" 
+            label="Concluir">
+          </p-button>
+        </div>
+      </div>
+    </form>
+  </div>
+  
