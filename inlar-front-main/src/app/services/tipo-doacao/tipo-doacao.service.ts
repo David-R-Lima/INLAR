@@ -18,24 +18,24 @@ export class TipoDoacaoService {
 
   constructor(private http: HttpClient) {}
 
-  getDoacoes(page: number): Observable<GetTipoDoacaoResponse[]> {
+  getTipoDoacoes(page: number): Observable<GetTipoDoacaoResponse[]> {
     const params = new HttpParams().set('page', page.toString());
     return this.http.get<GetTipoDoacaoResponse[]>(`${this.apiUrl}/tipo-doacao`, { params });
   }
 
-  getDoacaoById(idTipoDoacao: number): Observable<GetTipoDoacaoResponse> {
+  getTipoDoacaoById(idTipoDoacao: number): Observable<GetTipoDoacaoResponse> {
     return this.http.get<GetTipoDoacaoResponse>(`${this.apiUrl}/tipo-doacao/${idTipoDoacao}`);
   }
 
-  createDoacao(tipodoacao: TipoDoacao): Observable<GetTipoDoacaoResponse> {
+  createTipoDoacao(tipodoacao: TipoDoacao): Observable<GetTipoDoacaoResponse> {
     return this.http.post<GetTipoDoacaoResponse>(`${this.apiUrl}/tipo-doacao`, tipodoacao);
   }
 
-  updateDoacao(idTipoDoacao: number, tipodoacao: TipoDoacao): Observable<GetTipoDoacaoResponse> {
+  updateTipoDoacao(idTipoDoacao: number, tipodoacao: TipoDoacao): Observable<GetTipoDoacaoResponse> {
     return this.http.put<GetTipoDoacaoResponse>(`${this.apiUrl}/tipo-doacao/${idTipoDoacao}`, tipodoacao);
   }
 
-  deleteDoacao(idTipoDoacao: number): Observable<void> {
+  deleteTipoDoacao(idTipoDoacao: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/tipo-doacao/${idTipoDoacao}`);
   }
 }

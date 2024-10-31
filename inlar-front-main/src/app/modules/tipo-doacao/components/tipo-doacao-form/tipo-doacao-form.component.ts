@@ -15,7 +15,6 @@ import { GetTipoDoacaoResponse } from 'src/app/models/interfaces/tipo-doacao/res
 export class TipoDoacaoFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
 
-
   public tipodoacaoForm: FormGroup;
   public isEditing = false;
 
@@ -34,78 +33,77 @@ export class TipoDoacaoFormComponent implements OnInit, OnDestroy {
 
    
 
-  ngOnInit(): void {
-    const tipodoacaoData = this.config.data?.event;
-
-    if (tipodoacaoData) {
-      this.isEditing = true;
-      tipodoacaoData.idTipoDoacao = tipodoacaoData.id; 
-      this.tipodoacaoService.getTipoDoacaoById(tipodoacaoData.id)
-        .subscribe({
-          next: (tipodoacao: GetTipoDoacaoResponse) => {
-            this.populateForm(tipodoacao); 
-          },
-          error: (err) => {
-            this.handleErrorMessage('Erro ao buscar dados do tipo doacao.');
+    ngOnInit(): void {
+        const tipodoacaoData = this.config.data?.event;
+    
+        if (tipodoacaoData) {
+          this.isEditing = true;
+          tipodoacaoData.idTipoDoacao = tipodoacaoData.id; 
+          this.tipodoacaoService.getDoadorById(tipodoacaoData.id)
+            .subscribe({
+              next: (tipodoacao: GetTipoDoacaoResponse) => {
+                this.populateForm(tipodoacao); 
+              },
+              error: (err) => {
+                this.handleErrorMessage('Erro ao buscar dados da doacao.');
+              }
+            });
+        } else {
+          this.isEditing = false;
+          this.tipodoacaoForm.reset();
+        }
+      }    
+      
+      handleSubmit(): void {
+        if (this.tipodoacaoForm.valid) {
+          const formData = { ...this.tipodoacaoForm.value };  
+          
+          if (this.isEditing) {
+            this.editTipoDoacao(formData);  
+          } else {
+            this.addTipoDoacao(formData);  
           }
-        });
-    } else {
-      this.isEditing = false;
-      this.tipodoacaoForm.reset();
-    }
-  }
-
-
-
-  private addTipoDoacao(formData: any): void {
-    console.log('Adicionando tipo doacao com os dados:', formData);
-    this.tipodoacaoService.createTipoDoacao(formData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response: GetTipoDoacaoResponse) => {
-          this.handleSuccessMessage('Tipo doacao criado com sucesso!');
-          this.ref.close();
-        },
-        error: (err) => {
-          this.handleErrorMessage('Erro ao criar tipo doacao!');
+        } else {
+          this.handleErrorMessage('Formulário inválido. Verifique os campos obrigatórios.');
         }
-      });
-  }
-
-  private editTipoDoacao(formData: any): void {
-    const payload = { ...formData, id: formData.idTipoDoacao };
-    this.tipodoacaoService.updateTipoDoacao(payload.id, payload)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.handleSuccessMessage('Tipo doacao editado com sucesso!');
-          this.ref.close();
-        },
-        error: (err) => {
-          this.handleErrorMessage('Erro ao editar tipo doacao!');
-        }
-      });
-  }
+      }
+    
+      private addTipoDoacao(formData: any): void {
+        console.log('Adicionando doação com os dados:', formData);
+        this.tipodoacaoService.createTipoDoacao(formData)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (response: GetTipoDoacaoResponse) => {
+              this.handleSuccessMessage('Tipo doação registrada com sucesso!');
+              this.ref.close();
+            },
+            error: (err) => {
+              this.handleErrorMessage('Erro ao registrar tipo doação!');
+            }
+          });
+      }
+    
+      private editTipoDoacao(formData: any): void {
+        const payload = { ...formData, id: formData.idDoacao };
+        this.tipodoacaoService.updateTipoDoacao(payload.id, payload)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.handleSuccessMessage('Tipo doação editada com sucesso!');
+              this.ref.close();
+            },
+            error: (err) => {
+              this.handleErrorMessage('Erro ao editar tipo doação!');
+            }
+          });
+      }
+    
 
   private populateForm(tipodoacao: GetTipoDoacaoResponse): void {
     this.tipodoacaoForm.patchValue({
       idTipoDoacao: tipodoacao.idTipoDoacao,
-      nome: doador.nome,
-      tipo_pessoa: doador.tipoPessoa,
-      cpf: doador.cpf,
-      cnpj: doador.cnpj,
-      genero: doador.genero,
-      contato1: doador.contato1,
-      contato2: doador.contato2,
-      cep: doador.cep,
-      logradouro: doador.logradouro,
-      numero: doador.numero,
-      complemento: doador.complemento,
-      bairro: doador.bairro,
-      cidade: doador.cidade,
-      uf: doador.uf,
-      observacoes: doador.observacoes,
-      ativo: doador.ativo
+      descricao: tipodoacao.descricao,
+      ativo: tipodoacao.ativo
     });
   }
 
