@@ -63,6 +63,10 @@ import { UpdateDoacao } from 'src/inlar/actions/doacao/update-doacao';
 import { UpdateDoacaoController } from './controllers/doacao/update-doacao-by-controller';
 import { DeleteDoacaoItensById } from 'src/inlar/actions/doacao-itens/delete-doacao-item';
 import { DeleteDoacaoItensByIdController } from './controllers/doacao-itens/delete-doacao-item-by-controller';
+import { GetAllDoadores } from 'src/inlar/actions/doador/get-all-doadores';
+import { GetAllDoadoresController } from './controllers/doador/get-all-doadores-controller';
+import { GetAllBeneficiarios } from 'src/inlar/actions/beneficiario/get-all-beneficiarios';
+import { GetAllBeneficiariosController } from './controllers/beneficiarios/get-all-beneficiarios-controller';
 
 @Module({
   imports: [PrismaModule, CryptographyModule],
@@ -97,7 +101,9 @@ import { DeleteDoacaoItensByIdController } from './controllers/doacao-itens/dele
     DeleteBeneficiarioById,
     DeleteDoacaoById,
     UpdateDoacao,
-    DeleteDoacaoItensById
+    DeleteDoacaoItensById,
+    GetAllDoadores,
+    GetAllBeneficiarios
   ],
   controllers: [
     CreateUsuarioController,
@@ -130,7 +136,9 @@ import { DeleteDoacaoItensByIdController } from './controllers/doacao-itens/dele
     DeleteBeneficiarioByIdController,
     DeleteDoacaoByIdController,
     UpdateDoacaoController,
-    DeleteDoacaoItensByIdController
+    DeleteDoacaoItensByIdController,
+    GetAllDoadoresController,
+    GetAllBeneficiariosController
   ],
 })
 export class HttpModule {}

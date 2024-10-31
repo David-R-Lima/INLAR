@@ -71,4 +71,9 @@ export class BeneficiarioRepositorio {
     
     return false
   }
+
+  async findAll() {
+    const prismaBeneficiario = await this.prisma.beneficiario.findMany();
+    return prismaBeneficiario.map(BeneficiarioMapper.fromDatabase);
+  }
 }
