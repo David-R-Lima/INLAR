@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DoacaoService } from 'src/app/services/doacao/doacao.service';
 import { GetDoacaoResponse } from 'src/app/models/interfaces/doacao/responses/GetDoacaoAction';
 
 @Component({
