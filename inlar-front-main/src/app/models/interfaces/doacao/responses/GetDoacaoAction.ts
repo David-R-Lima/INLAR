@@ -11,4 +11,5 @@ export interface GetDoacaoResponse {
     cidade?: string;
     siglaestado?: string;
     situacao: string;
+    ativo?: boolean;
 }
