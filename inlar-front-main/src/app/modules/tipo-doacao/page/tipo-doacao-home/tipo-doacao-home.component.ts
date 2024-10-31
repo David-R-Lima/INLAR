@@ -4,9 +4,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DeleteTipoDoacaoAction } from 'src/app/models/interfaces/tipodoacao/event/DeleteTipoDoacaoAction';
-import { GetTipoDoacaoResponse } from 'src/app/models/interfaces/tipodoacao/responses/GetTipoDoacaoResponse';
-import { TipoDoacaoService } from 'src/app/services/tipodoacao/tipodoacao.service';
+import { DeleteTipoDoacaoAction } from 'src/app/models/interfaces/tipo-doacao/event/DeleteTipoDoacaoAction';
+import { GetTipoDoacaoResponse } from 'src/app/models/interfaces/tipo-doacao/responses/GetTipoDoacaoAction';
+import { TipoDoacaoService } from 'src/app/services/tipo-doacao/tipo-doacao.service';
 import { TipoDoacaoFormComponent } from '../../components/tipo-doacao-form/tipo-doacao-form.component';
 
 @Component({
@@ -32,7 +32,7 @@ export class TipoDoacaoHomeComponent implements OnInit, OnDestroy {
   }
 
   getTipoDoacao() {
-    this.tipodoacaoService.getTipoDoacao(1)  
+    this.tipodoacaoService.getTipoDoacoes(1)  
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: GetTipoDoacaoResponse[]) => {
@@ -56,19 +56,19 @@ export class TipoDoacaoHomeComponent implements OnInit, OnDestroy {
   handleDeleteTipoDoacaoAction(event: DeleteTipoDoacaoAction): void {
     if (event) {
       this.confirmationService.confirm({
-        message: `Confirma a exclusão do Tipo Doacao: ${event?.doadorName}`,
+        message: `Confirma a exclusão do Tipo Doacao: ${event?.tipodoacaoName}`,
         header: 'Confirmação de exclusão',
         icon: 'pi pi-exclamation-triangle',
         acceptLabel: 'Sim',
         rejectLabel: 'Não',
-        accept: () => this.deleteTipoDoacao(Number(event?.doador_id)),
+        accept: () => this.deleteTipoDoacao(Number(event?.tipodoacao_id)),
       });
     }
   }
 
-  deleteDoador(doador_id: number): void {
-    if (doador_id) {
-      this.tipodoacaoService.deleteTipoDoacao(doador_id)  // Passe apenas o ID diretamente
+  deleteTipoDoacao(tipodoacao_id: number): void {
+    if (tipodoacao_id) {
+      this.tipodoacaoService.deleteTipoDoacao(tipodoacao_id)  // Passe apenas o ID diretamente
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
