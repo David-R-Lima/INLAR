@@ -8,6 +8,9 @@ import { BeneficiarioService } from 'src/app/services/beneficiario/beneficiario.
 import { GetBeneficiarioResponse } from 'src/app/models/interfaces/beneficiario/responses/GetBeneficiarioResponse';
 import { isValid as isValidCPF } from '@fnando/cpf';
 import { isValid as isValidCNPJ } from '@fnando/cnpj';
+import * as dayjs from 'dayjs';
+import * as utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
 
 @Component({
   selector: 'app-beneficiario-form',
@@ -123,7 +126,10 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       this.beneficiarioService.getBeneficiarioById(beneficiarioData.id)
         .subscribe({
           next: (beneficiario: GetBeneficiarioResponse) => {
-            this.populateForm(beneficiario); // Preenche o formulário com os dados recebidos
+            this.populateForm({
+              ...beneficiario,
+              dataNascimento: beneficiario.dataNascimento ? dayjs(new Date(beneficiario.dataNascimento)).utc().format("YYYY-MM-DD") : undefined
+            }); // Preenche o formulário com os dados recebidos
           },
           error: (err) => {
             this.handleErrorMessage('Erro ao buscar dados do beneficiário.');
@@ -216,7 +222,7 @@ export class BeneficiarioFormComponent implements OnInit, OnDestroy {
       cnpj: beneficiario.cnpj,
       rg: beneficiario.rg,
       genero: beneficiario.genero,
-      datanasc: beneficiario.datanasc,
+      datanasc: beneficiario.dataNascimento,
       contato1: beneficiario.contato1,
       contato2: beneficiario.contato2,
       cep: beneficiario.cep,
