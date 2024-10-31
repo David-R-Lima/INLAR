@@ -13,7 +13,7 @@ export class DoacaoTableComponent implements OnInit {
 
     @Input() public doacao: Array<GetDoacaoResponse> = []; 
     @Output() public DoacaoEvent = new EventEmitter<EditDoacaoAction>(); 
-    @Output() public deleteDoadorEvent = new EventEmitter<DeleteDoacaoAction>(); 
+    @Output() public deleteDoacaoEvent = new EventEmitter<DeleteDoacaoAction>(); 
     
     public doacaoSelected!: GetDoacaoResponse; 
     public addDoacaoAction = DoacaoEvent.ADD_DOACAO_ACTION; 
@@ -24,9 +24,9 @@ export class DoacaoTableComponent implements OnInit {
       console.log('DoacaoTableComponent initialized with', this.doacao);
     }
   
-    handleDeleteDoadorEvent(doacao_id: string, doacaoName: string): void {
+    handleDeleteDoacaoEvent(doacao_id: string, doacaoName: string): void {
       if (doacao_id !== '' && doacaoName !== '') {
-        this.deleteDoadorEvent.emit({ doacao_id, doacaoName }); // Emitir evento de deletar doador
+        this.deleteDoacaoEvent.emit({ doacao_id, doacaoName }); // Emitir evento de deletar doador
       }
     }
   

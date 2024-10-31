@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GetDoacaoResponse } from 'src/app/models/interfaces/doacao/responses/GetDoacaoResponse';
+import { GetDoacaoResponse } from 'src/app/models/interfaces/doacao/responses/GetDoacaoAction'; 
 
 export interface Doacao {
   idDoacao?: number;

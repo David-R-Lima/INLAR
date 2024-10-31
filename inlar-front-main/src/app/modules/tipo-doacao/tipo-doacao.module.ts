@@ -29,7 +29,7 @@ import { TipoDoacaoFormComponent } from './components/tipo-doacao-form/tipo-doac
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forChild(DOACAO_ROUTES),
+    RouterModule.forChild(TIPO_DOACAO_ROUTES),
     SharedModule,
     HttpClientModule,
     // PrimeNg
