@@ -17,7 +17,7 @@ import { DoacaoFormComponent } from '../../components/doacao-form/doacao-form.co
 export class  DoacaoHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   private ref!: DynamicDialogRef;
-  public beneficiarioDatas: Array<GetDoacaoResponse> = [];
+  public doacaoDatas: Array<GetDoacaoResponse> = [];
   private currentPage = 1;
 
   constructor(
@@ -38,7 +38,7 @@ export class  DoacaoHomeComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: GetDoacaoResponse[]) => {
           if (response.length > 0) {
-            this.beneficiarioDatas = response;
+            this.doacaoDatas = response;
           }
         },
         error: (err: any) => {
