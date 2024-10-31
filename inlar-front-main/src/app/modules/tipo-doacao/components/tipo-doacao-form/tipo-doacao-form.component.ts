@@ -6,8 +6,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TipoDoacaoService } from 'src/app/services/tipo-doacao/tipo-doacao.service';
 import { GetTipoDoacaoResponse } from 'src/app/models/interfaces/tipo-doacao/responses/GetTipoDoacaoResponse';
-import { isValid as isValidCPF } from '@fnando/cpf';
-import { isValid as isValidCNPJ } from '@fnando/cnpj';
 
 @Component({
   selector: 'app-tipo-doacao-form',
@@ -30,115 +28,68 @@ export class TipoDoacaoFormComponent implements OnInit, OnDestroy {
   ) {
     this.tipodoacaoForm = this.formBuilder.group({
       idTipoDoacao: [null],
-      nome: ['', Validators.required],
-      tipo_pessoa: ['F', Validators.required],
-      cpf: ['', this.cpfValidator],
-      cnpj: ['',this.cnpjValidator],
-      genero: ['', Validators.required],
-      contato1: ['', Validators.required],
-      contato2: [''],
-      cep: ['', Validators.required],
-      logradouro: ['', Validators.required],
-      numero: ['', Validators.required],
-      complemento: [''],
-      bairro: ['', Validators.required],
-      cidade: ['', Validators.required],
-      uf: ['', Validators.required],
-      observacoes: [''],
+      descricao: [''],
       ativo: [true]
     });
 
    
 
   ngOnInit(): void {
-    const doadorData = this.config.data?.event;
+    const tipodoacaoData = this.config.data?.event;
 
-    if (doadorData) {
+    if (tipodoacaoData) {
       this.isEditing = true;
-      doadorData.idDoador = doadorData.id; 
-      this.doadorService.getDoadorById(doadorData.id)
+      tipodoacaoData.idTipoDoacao = tipodoacaoData.id; 
+      this.tipodoacaoService.getTipoDoacaoById(tipodoacaoData.id)
         .subscribe({
-          next: (doador: GetDoadorResponse) => {
-            this.populateForm(doador); 
+          next: (tipodoacao: GetTipoDoacaoResponse) => {
+            this.populateForm(tipodoacao); 
           },
           error: (err) => {
-            this.handleErrorMessage('Erro ao buscar dados do doador.');
+            this.handleErrorMessage('Erro ao buscar dados do tipo doacao.');
           }
         });
     } else {
       this.isEditing = false;
-      this.doadorForm.reset();
+      this.tipodoacaoForm.reset();
     }
   }
 
-  handleSubmit(): void {
-    if (this.doadorForm.valid) {
-      const formData = { ...this.doadorForm.value };
 
-      
-      if (formData.tipo_pessoa === 'F' && formData.cpf) {
-        formData.cpf = formData.cpf.replace(/\D/g, '');
-        formData.cnpj = '';  
-      }
 
-     
-      if (formData.contato1) {
-        formData.contato1 = formData.contato1.replace(/\D/g, '');  
-      }
-      
-      if (formData.contato2) {
-        formData.contato2 = formData.contato2.replace(/\D/g, '');  
-      }
-  
-      if (formData.tipo_pessoa === 'J' && formData.cnpj) {
-        formData.cnpj = formData.cnpj.replace(/\D/g, '');
-        formData.cpf = '';  
-      }
-
-      
-      if (this.isEditing) {
-        this.editDoador(formData);  
-      } else {
-        this.addDoador(formData);  
-      }
-    } else {
-      this.handleErrorMessage('Formulário inválido. Verifique os campos obrigatórios.');
-    }
-  }
-
-  private addDoador(formData: any): void {
-    console.log('Adicionando doador com os dados:', formData);
-    this.doadorService.createDoador(formData)
+  private addTipoDoacao(formData: any): void {
+    console.log('Adicionando tipo doacao com os dados:', formData);
+    this.tipodoacaoService.createTipoDoacao(formData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response: GetDoadorResponse) => {
-          this.handleSuccessMessage('Doador criado com sucesso!');
+        next: (response: GetTipoDoacaoResponse) => {
+          this.handleSuccessMessage('Tipo doacao criado com sucesso!');
           this.ref.close();
         },
         error: (err) => {
-          this.handleErrorMessage('Erro ao criar doador!');
+          this.handleErrorMessage('Erro ao criar tipo doacao!');
         }
       });
   }
 
-  private editDoador(formData: any): void {
-    const payload = { ...formData, id: formData.idDoador };
-    this.doadorService.updateDoador(payload.id, payload)
+  private editTipoDoacao(formData: any): void {
+    const payload = { ...formData, id: formData.idTipoDoacao };
+    this.tipodoacaoService.updateTipoDoacao(payload.id, payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.handleSuccessMessage('Doador editado com sucesso!');
+          this.handleSuccessMessage('Tipo doacao editado com sucesso!');
           this.ref.close();
         },
         error: (err) => {
-          this.handleErrorMessage('Erro ao editar doador!');
+          this.handleErrorMessage('Erro ao editar tipo doacao!');
         }
       });
   }
 
-  private populateForm(doador: GetDoadorResponse): void {
-    this.doadorForm.patchValue({
-      idDoador: doador.idDoador,
+  private populateForm(tipodoacao: GetTipoDoacaoResponse): void {
+    this.tipodoacaoForm.patchValue({
+      idTipoDoacao: tipodoacao.idTipoDoacao,
       nome: doador.nome,
       tipo_pessoa: doador.tipoPessoa,
       cpf: doador.cpf,
@@ -166,20 +117,6 @@ export class TipoDoacaoFormComponent implements OnInit, OnDestroy {
     this.messageService.add({ severity: 'error', summary: 'Erro', detail: message });
   }
 
-  cpfValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-    if (value && !isValidCPF(value.replace(/\D/g, ''))) {
-      return { 'invalidCpf': true };
-    }
-    return null;
-  }
-  cnpjValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-    if (value && !isValidCNPJ(value.replace(/\D/g,  ''))) {
-       return { 'invalidCnpj': true};
-    }
-      return null;
-  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
