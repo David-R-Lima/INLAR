@@ -5,7 +5,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TipoDoacaoService } from 'src/app/services/tipo-doacao/tipo-doacao.service';
-import { GetTipoDoacaoResponse } from 'src/app/models/interfaces/tipo-doacao/responses/GetTipoDoacaoResponse';
+
 
 @Component({
   selector: 'app-tipo-doacao-form',
@@ -45,7 +45,7 @@ export class TipoDoacaoFormComponent implements OnInit, OnDestroy {
                 this.populateForm(tipodoacao); 
               },
               error: (err) => {
-                this.handleErrorMessage('Erro ao buscar dados da doacao.');
+                this.handleErrorMessage('Erro ao buscar dados do tipo doacao.');
               }
             });
         } else {
