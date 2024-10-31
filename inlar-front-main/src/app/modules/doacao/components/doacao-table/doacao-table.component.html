@@ -17,7 +17,7 @@
             <tr>
               <th pSortableColumn="nome">
                 <div class="flex justify-content-between align-items-center">
-                  <div>Nome</div>
+                  <div>Id</div>
                   <div>
                     <p-sortIcon field="nome"></p-sortIcon>
                     <p-columnFilter
@@ -34,7 +34,7 @@
               </th>
               <th pSortableColumn="uf">
                 <div class="flex justify-content-between align-items-center">
-                  <div>Estado (UF)</div>
+                  <div>Descrição</div>
                   <div>
                     <p-sortIcon field="uf"></p-sortIcon>
                     <p-columnFilter
@@ -55,10 +55,20 @@
                     pButton
                     pRipple
                     icon="pi pi-plus"
-                    label="Adicionar"
-                    pTooltip="Adicionar Doaçao"
+                    label="Nova Doação Recebida"
+                    pTooltip="Nova Doação Recebida"
                     tooltipPosition="top"
-                    (click)="handleBeneficiarioEvent('ADICIONAR BENEFICIARIO')"
+                    (click)="handleBeneficiarioEvent('ADICIONAR DOACAO')"
+                  ></button>
+
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-plus"
+                    label="Nova Doação para Beneficiario"
+                    pTooltip="Nova Doação para Beneficiario"
+                    tooltipPosition="top"
+                    (click)="handleBeneficiarioEvent('ADICIONAR DOACAO')"
                   ></button>
                 </div>
               </th>
