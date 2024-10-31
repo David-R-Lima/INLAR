@@ -10,7 +10,7 @@
           <label for="doador">Doador</label>
           <p-dropdown 
             id="doador"
-            [options]="doadorOptions" 
+            [options]="DoadorOptions" 
             formControlName="doador" 
             placeholder="Selecione o doador">
           </p-dropdown>
@@ -30,7 +30,7 @@
           <label for="beneficiario">Beneficiario</label>
            <p-dropdown 
               id="beneficiario"
-              [options]="beneficiarioOptions" 
+              [options]="BeneficiarioOptions" 
               formControlName="beneficiario" 
               placeholder="Selecione o Beneficiario">
             </p-dropdown>
@@ -44,6 +44,7 @@
                 window.location.href = 'beneficiario-form.component.html';
             }
         </script>
+
 
 
         <!-- Endereço -->

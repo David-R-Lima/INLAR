@@ -15,8 +15,19 @@ import { GetDoacaoResponse } from 'src/app/models/interfaces/doacao/responses/Ge
 export class DoacaoFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
 
+  public DoadorOptions = [
+    { label: 'Doador 1', value: 'd1' },
+    { label: 'Doador 2', value: 'd2' }
+  ];
+
+  public BeneficiarioOptions = [
+    { label: 'Beneficiario 1', value: 'b1' },
+    { label: 'Beneficiario 2', value: 'b2' }
+  ];
+
   public doacaoForm: FormGroup;
   public isEditing = false;
+  public estados: any[];
   
   constructor(
     public ref: DynamicDialogRef,
@@ -39,6 +50,36 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       siglaestado: ['', Validators.required],
       situacao: [''],
     });
+
+    this.estados = [
+      { label: 'Acre', value: 'AC' },
+      { label: 'Alagoas', value: 'AL' },
+      { label: 'Amapá', value: 'AP' },
+      { label: 'Amazonas', value: 'AM' },
+      { label: 'Bahia', value: 'BA' },
+      { label: 'Ceará', value: 'CE' },
+      { label: 'Distrito Federal', value: 'DF' },
+      { label: 'Espírito Santo', value: 'ES' },
+      { label: 'Goiás', value: 'GO' },
+      { label: 'Maranhão', value: 'MA' },
+      { label: 'Mato Grosso', value: 'MT' },
+      { label: 'Mato Grosso do Sul', value: 'MS' },
+      { label: 'Minas Gerais', value: 'MG' },
+      { label: 'Pará', value: 'PA' },
+      { label: 'Paraíba', value: 'PB' },
+      { label: 'Paraná', value: 'PR' },
+      { label: 'Pernambuco', value: 'PE' },
+      { label: 'Piauí', value: 'PI' },
+      { label: 'Rio de Janeiro', value: 'RJ' },
+      { label: 'Rio Grande do Norte', value: 'RN' },
+      { label: 'Rio Grande do Sul', value: 'RS' },
+      { label: 'Rondônia', value: 'RO' },
+      { label: 'Roraima', value: 'RR' },
+      { label: 'Santa Catarina', value: 'SC' },
+      { label: 'São Paulo', value: 'SP' },
+      { label: 'Sergipe', value: 'SE' },
+      { label: 'Tocantins', value: 'TO' }
+    ];
   }
 
   ngOnInit(): void {
