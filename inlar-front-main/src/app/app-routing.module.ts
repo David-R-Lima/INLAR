@@ -38,6 +38,14 @@ const routes: Routes = [
       ),
     // canActivate: [AuthGuard],
   },
+  {
+    path: 'doacao',
+    loadChildren: () =>
+      import('./modules/doacao/doacao.module').then(
+        (m) => m.DoacaoModule
+      ),
+    // canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
