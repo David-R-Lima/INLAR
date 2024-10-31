@@ -12,5 +12,17 @@ export interface GetDoacaoResponse {
     siglaestado?: string;
     situacao: string;
     ativo?: boolean;
-    data: Date;
+    dataCadastro: Date;
+    doacaoItens: DoacaoItens[]
+}
+
+export interface DoacaoItens {
+    idDoacaoitem: number
+    idDoacao: number
+    idTipoDoacao: number
+    numItems: number
+    descricao?: string
+    quantidade?: number
+    // valorMonetario?: number
+    dataCadastro?: Date
 }

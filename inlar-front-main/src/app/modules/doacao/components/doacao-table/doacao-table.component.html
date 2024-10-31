@@ -1,107 +1,105 @@
 <div class="grid">
-    <div class="col-12">
-      <p-card styleClass="shadow-3 m-5 text-indigo-800" header="Doações">
-        <p-table
-          [value]="doacao"
-          [(selection)]="doacaodelected"
-          [rows]="10"
-          [paginator]="true"
-          [responsive]="true"
-          [tableStyle]="{ 'min-width': '75rem' }"
-          [rowHover]="true"
-          [showCurrentPageReport]="true"
-          dataKey="idDoacao"
-          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} doações"
-        >
-          <ng-template pTemplate="header">
+  <div class="col-12">
+    <p-card styleClass="shadow-3 m-5 text-indigo-800" header="Doações">
+      <p-table
+        [value]="doacao"
+        [(selection)]="doacaoSelected"
+        [rows]="10"
+        [paginator]="true"
+        [responsive]="true"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [rowHover]="true"
+        [showCurrentPageReport]="true"
+        dataKey="idDoacao"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} doações"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <!-- Coluna para ID -->
+            <th pSortableColumn="id">
+              <div class="flex justify-content-between align-items-center">
+                <div>ID</div>
+                <div>
+                  <p-sortIcon field="id"></p-sortIcon>
+                  <p-columnFilter
+                    type="text"
+                    field="id"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
+                </div>
+              </div>
+            </th>
 
-              <!-- Coluna para ID -->
-              <th pSortableColumn="id">
-                <div class="flex justify-content-between align-items-center">
-                  <div>ID</div>
-                  <div>
-                    <p-sortIcon field="id"></p-sortIcon>
-                    <p-columnFilter
-                      type="text"
-                      field="uf"
-                      display="menu"
-                      matchMode="contains"
-                      [showMatchModes]="false"
-                      [showOperator]="false"
-                      [showAddButton]="false"
-                    ></p-columnFilter>
-                  </div>
+            <!-- Coluna para Descrição -->
+            <th pSortableColumn="descricao">
+              <div class="flex justify-content-between align-items-center">
+                <div>Descrição</div>
+                <div>
+                  <p-sortIcon field="descricao"></p-sortIcon>
+                  <p-columnFilter
+                    type="text"
+                    field="descricao"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
                 </div>
-              </th>
-            <tr>
+              </div>
+            </th>
 
-                <!-- Coluna para Descrição -->
-              <th pSortableColumn="nome">
-                <div class="flex justify-content-between align-items-center">
-                  <div>Descricão</div>
-                  <div>
-                    <p-sortIcon field="nome"></p-sortIcon>
-                    <p-columnFilter
-                      type="text"
-                      field="nome"
-                      display="menu"
-                      matchMode="contains"
-                      [showMatchModes]="false"
-                      [showOperator]="false"
-                      [showAddButton]="false"
-                    ></p-columnFilter>
-                  </div>
-                </div>
-              </th>
-  
-              <th>
-                <div class="flex justify-content-center">
-                  <button
-                    pButton
-                    pRipple
-                    icon="pi pi-plus" 
-                    label="Adicionar"
-                    pTooltip="Adicionar Doação"
-                    tooltipPosition="top"
-                    (click)="handleDoacaoEvent('ADICIONAR DOACAO')"
-                  ></button>
-                </div>
-              </th>
-            </tr>
-          </ng-template>
-  
-          <ng-template pTemplate="body" let-doador>
-            <tr>
-              <td>{{ doacao.id_doacao }}</td>
-              <td>{{ doacao.descricao }}</td>
-              <td>{{ doacao.data }}</td>
-              <td>
-                <div class="flex justify-content-center gap-3 align-content-center align-items-center">
-                  <button
-                    pButton
-                    pRipple
-                    icon="pi pi-pencil"
-                    pTooltip="Editar doação"
-                    tooltipPosition="top"
-                    class="p-button-rounded p-button-warning"
-                    (click)="handleDoacaoEvent('EDITAR DOACAO', doacao.idDoacao, doacao.descricao, doacao.data)"
-                  ></button>
-                  <button
-                    pButton
-                    pRipple
-                    icon="pi pi-trash"
-                    pTooltip="Remover doação"
-                    tooltipPosition="top"
-                    class="p-button-rounded p-button-danger"
-                    (click)="handleDeleteDoacaoEvent(doacao.id_doacao)"
-                  ></button>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-card>
-    </div>
-    <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+            <th>
+              <div class="flex justify-content-center">
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-plus"
+                  label="Adicionar"
+                  pTooltip="Adicionar Doação"
+                  tooltipPosition="top"
+                  (click)="handleDoacaoEvent('ADICIONAR DOACAO')"
+                ></button>
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-doacao>
+          <tr>
+            <td>{{ doacao.idDoacao }}</td>
+            <td>{{ doacao.descricao }}</td>
+            <td>{{ doacao.data }}</td>
+            <td>
+              <div class="flex justify-content-center gap-3 align-content-center align-items-center">
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-pencil"
+                  pTooltip="Editar doação"
+                  tooltipPosition="top"
+                  class="p-button-rounded p-button-warning"
+                  (click)="handleDoacaoEvent('EDITAR DOACAO', doacao.idDoacao, doacao.descricao, doacao.data)"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-trash"
+                  pTooltip="Remover doação"
+                  tooltipPosition="top"
+                  class="p-button-rounded p-button-danger"
+                  (click)="handleDeleteDoacaoEvent(doacao.idDoacao)"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
   </div>
-  
+  <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+</div>
