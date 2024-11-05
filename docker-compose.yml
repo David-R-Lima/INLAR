@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  backend:
+    build: 
+      context: ./inlar-back-main
+      dockerfile: Dockerfile
+    ports:
+      - 3256:3256
+    environment:
+      - DATABASE_URL=mysql://root:root@db:3306/inlar
+      - JWT_SECRET=daslkjdaksjdlaksjdlak
+    depends_on:
+      - db
+  frontend:
+    build: 
+      context: ./inlar-front-main
+      dockerfile: Dockerfile
+    ports:
+      - 4200:4200
+    depends_on:
+      - backend
+  db:
+    image: mysql:latest
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+volumes:
+  db_data:
