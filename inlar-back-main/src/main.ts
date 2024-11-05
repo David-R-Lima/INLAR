@@ -9,5 +9,7 @@ async function bootstrap() {
     credentials: true,
   })
   await app.listen(3256);
+
+  console.log("Servidor rodando na porta: 3256");
 }
 bootstrap();
