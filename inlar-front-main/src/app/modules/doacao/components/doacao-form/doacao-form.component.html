@@ -116,7 +116,7 @@
 
         <!-- Descrição -->
         <div class="form-group">
-            <label for="descricao">Descrição</label>
+            <label for="descricao">Descrição *</label>
             <input 
               id="descricao"
               pInputText 
@@ -126,15 +126,18 @@
           </div>
 
       <!-- List of Itens -->
-      <h1>Itens</h1>
+      <label for="itens" style="font-weight: 700;">Itens</label>
 
-      <div *ngFor="let item of doacaoForm.get('itens')?.value; let i = index">
+      <div *ngFor="let item of doacaoForm.get('itens')?.value; let i = index" style="border: 2px solid black; padding: 4px; border-radius: 8px;">
         <p>Item {{ i + 1 }}</p>
         <p>Tipo: {{ item?.tipo }}</p>
-        <p>Quantidade: {{ item?.quantidade }}</p>
-        <p>Valor: {{ item?.valor }}</p>
+        <p>
+          <!-- Verifica o tipo do item para exibir quantidade ou valor -->
+          {{ item?.tipo == 1 ? 'Quantidade: ' + item?.quantidade : 'Valor: R$' + item?.valor }}
+        </p>
         <p>Descrição: {{ item?.descricao }}</p>
       </div>
+      
 
       <div class="form-group flex justify-content-center">
         <p-button (click)="showDialog($event)" label="Adicionar item" />
@@ -174,7 +177,7 @@
         <label for="descricao">Descrição</label>
         <input id="descricao" pInputText [(ngModel)]="currentItem.descricao" placeholder="Descrição" />
       </div>
-      <button type="button" (click)="addItem()">Salvar</button>
+      <p-button type="button" (click)="addItem()" label="Adicionar"/>
     </p-dialog>
   </div>
   
