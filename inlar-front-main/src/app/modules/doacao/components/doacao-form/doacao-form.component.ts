@@ -9,7 +9,6 @@ import { ChangeDetectorRef } from '@angular/core';
 
 interface Item {
   tipo: string;
-  numItens?: number;
   quantidade?: number;
   valor?: number;
   descricao?: string;
@@ -23,7 +22,7 @@ interface Item {
 export class DoacaoFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   public itemModalVisible: boolean = false;
-  public currentItem: Item = { tipo: '', numItens: undefined, quantidade: undefined, valor: undefined, descricao: '' };
+  public currentItem: Item = { tipo: '', quantidade: undefined, valor: undefined, descricao: '' };
   public items: Item[] = [];
   public doacaoForm: FormGroup;
   public isEditing = false;
@@ -192,7 +191,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       });
 
       // Clear the current item fields
-      this.currentItem = { tipo: '', numItens: undefined, quantidade: undefined, valor: undefined, descricao: '' };
+      this.currentItem = { tipo: '', quantidade: undefined, valor: undefined, descricao: '' };
       
       // Close the modal
       this.itemModalVisible = false;
