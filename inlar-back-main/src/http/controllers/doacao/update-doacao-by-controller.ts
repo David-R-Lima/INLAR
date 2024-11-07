@@ -35,19 +35,6 @@ import { InternalError } from 'src/inlar/errors/internal-error';
     quantidade: z.coerce.number().optional(),
     valor: z.coerce.number().optional(),
     situacao: z.string().optional(),
-    itens: z.array(
-        z.object({
-          tipo: z.coerce.number({
-            required_error: 'Field: {tipo} is required',
-          }),
-          numItens: z.number().optional(),
-          quantidade: z.number().optional(),
-          valor: z.number().optional(),
-          descricao: z.string().optional(),
-        })
-      ).min(1, {
-        message: 'At least one item is required',
-      }),
   });
 
   type Schema = z.infer<typeof squema>;
@@ -84,7 +71,6 @@ import { InternalError } from 'src/inlar/errors/internal-error';
         bairro: body.bairro,
         cidade: body.cidade,
         uf: body.uf,
-        // itens: body.itens,
         numItens: body.numItens,
         quantidade: body.quantidade,
         valor: body.valor,

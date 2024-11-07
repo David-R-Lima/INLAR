@@ -41,6 +41,8 @@ export class UpdateDoacao {
     if (!doacaoExists) {
       return new NotFoundError("Doacao not found");
     }
+    
+    doacaoExists.setDescricao(data.descricao)
     doacaoExists.setCep(data.cep);
     doacaoExists.setLogradouro(data.logradouro);
     doacaoExists.setNumero(data.numero);
