@@ -1,19 +1,33 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Subject } from 'rxjs';
+import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { config, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DoacaoService } from 'src/app/services/doacao/doacao.service';
-import { GetDoacaoResponse } from 'src/app/models/interfaces/doacao/responses/GetDoacaoAction';
+import { ChangeDetectorRef } from '@angular/core';
+
+interface Item {
+  tipo: string;
+  numItens?: number;
+  quantidade?: number;
+  valor?: number;
+  descricao?: string;
+}
 
 @Component({
-    selector: 'app-doacao-form',
-    templateUrl: './doacao-form.component.html',
-    styleUrls: []
+  selector: 'app-doacao-form',
+  templateUrl: './doacao-form.component.html',
+  styleUrls: []
 })
 export class DoacaoFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
+  public itemModalVisible: boolean = false;
+  public currentItem: Item = { tipo: '', numItens: undefined, quantidade: undefined, valor: undefined, descricao: '' };
+  public items: Item[] = [];
+  public doacaoForm: FormGroup;
+  public isEditing = false;
+  public estados: any[];
 
   public DoadorOptions = [
     { label: 'Doador 1', value: 'd1' },
@@ -25,31 +39,35 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     { label: 'Beneficiario 2', value: 'b2' }
   ];
 
-  public doacaoForm: FormGroup;
-  public isEditing = false;
-  public estados: any[];
-  
+  public tipoOptions = [
+    { label: 'Comida', value: '1' },
+    { label: "Dinheiro", value: '2'}
+  ]
+
   constructor(
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private doacaoService: DoacaoService
+    private doacaoService: DoacaoService,
+    private cdr: ChangeDetectorRef
   ) {
     this.doacaoForm = this.formBuilder.group({
-      idDoacao: [null],
-      idDoador : ['', Validators.required],
-      idBeneficiario: ['', Validators.required],
-      descricao: [''],
-      cep: ['', Validators.required],
-      logradouro: ['', Validators.required],
-      numero: ['', Validators.required],
-      complemento: [''],
-      bairro: ['', Validators.required],
-      cidade: ['', Validators.required],
-      siglaestado: ['', Validators.required],
-      situacao: [''],
-    });
+      id_usuario: [1],
+      idDoacao: [undefined],
+      idDoador: [undefined],
+      idBeneficiario: [undefined],
+      descricao: [undefined],
+      cep: [undefined],
+      logradouro: [undefined],
+      numero: [undefined],
+      complemento: [undefined],
+      bairro: [undefined],
+      cidade: [undefined],
+      siglaestado: [undefined],
+      situacao: [undefined],
+      itens: [[]] // Array for items
+    })
 
     this.estados = [
       { label: 'Acre', value: 'AC' },
@@ -80,6 +98,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       { label: 'Sergipe', value: 'SE' },
       { label: 'Tocantins', value: 'TO' }
     ];
+
   }
 
   ngOnInit(): void {
@@ -87,30 +106,21 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
 
     if (doacaoData) {
       this.isEditing = true;
-      doacaoData.idDoacao = doacaoData.id; 
-      this.doacaoService.getDoacaoById(doacaoData.id)
-        .subscribe({
-          next: (doacao: GetDoacaoResponse) => {
-            this.populateForm(doacao); 
-          },
-          error: (err) => {
-            this.handleErrorMessage('Erro ao buscar dados da doacao.');
-          }
-        });
-    } else {
-      this.isEditing = false;
-      this.doacaoForm.reset();
+      this.doacaoService.getDoacaoById(doacaoData.id).subscribe({
+        next: (doacao) => this.populateForm(doacao),
+        error: () => this.handleErrorMessage('Erro ao buscar dados da doacao.')
+      });
     }
-  }    
-  
+  }
+
   handleSubmit(): void {
     if (this.doacaoForm.valid) {
-      const formData = { ...this.doacaoForm.value };  
-      
+      const formData = { ...this.doacaoForm.value };
+
       if (this.isEditing) {
-        this.editDoacao(formData);  
+        this.editDoacao(formData);
       } else {
-        this.addDoacao(formData);  
+        this.addDoacao(formData);
       }
     } else {
       this.handleErrorMessage('Formulário inválido. Verifique os campos obrigatórios.');
@@ -118,39 +128,31 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
   }
 
   private addDoacao(formData: any): void {
-    console.log('Adicionando doação com os dados:', formData);
-    this.doacaoService.createDoacao(formData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response: GetDoacaoResponse) => {
-          this.handleSuccessMessage('Doação registrada com sucesso!');
-          this.ref.close();
-        },
-        error: (err) => {
-          this.handleErrorMessage('Erro ao registrar doação!');
-        }
-      });
+    console.log(formData)
+    this.doacaoService.createDoacao(formData).pipe(takeUntil(this.destroy$)).subscribe({
+      next: () => {
+        this.handleSuccessMessage('Doação registrada com sucesso!');
+        this.ref.close();
+      },
+      error: () => this.handleErrorMessage('Erro ao registrar doação!')
+    });
   }
 
   private editDoacao(formData: any): void {
     const payload = { ...formData, id: formData.idDoacao };
-    this.doacaoService.updateDoacao(payload.id, payload)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.handleSuccessMessage('Doação editada com sucesso!');
-          this.ref.close();
-        },
-        error: (err) => {
-          this.handleErrorMessage('Erro ao editar doação!');
-        }
-      });
+    this.doacaoService.updateDoacao(payload.id, payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: () => {
+        this.handleSuccessMessage('Doação editada com sucesso!');
+        this.ref.close();
+      },
+      error: () => this.handleErrorMessage('Erro ao editar doação!')
+    });
   }
 
-  private populateForm(doacao: GetDoacaoResponse): void {
+  private populateForm(doacao: any): void {
     this.doacaoForm.patchValue({
       idDoacao: doacao.idDoacao,
-      idDoador : doacao.idDoador,
+      idDoador: doacao.idDoador,
       idBeneficiario: doacao.idBeneficiario,
       descricao: doacao.descricao,
       cep: doacao.cep,
@@ -160,10 +162,9 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       bairro: doacao.bairro,
       cidade: doacao.cidade,
       siglaestado: doacao.siglaestado,
-      situacao: doacao.situacao,
+      situacao: doacao.situacao
     });
-
-  } 
+  }
 
   private handleSuccessMessage(message: string): void {
     this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: message });
@@ -173,6 +174,48 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     this.messageService.add({ severity: 'error', summary: 'Erro', detail: message });
   }
 
+  // Show modal for adding a new item
+  showDialog(e: Event): void {
+    e.preventDefault()
+    this.itemModalVisible = true;
+  }
+
+  // Add the current item to the items array in the form
+  addItem(): void {
+    if (this.currentItem.tipo) {
+      //@ts-expect-error dps concerto
+      this.items.push({ ...this.currentItem, tipo: this.currentItem.tipo.value }); // Add a copy of the current item
+
+      // Update the form value with the new items array
+      this.doacaoForm.patchValue({
+        itens: this.items
+      });
+
+      // Clear the current item fields
+      this.currentItem = { tipo: '', numItens: undefined, quantidade: undefined, valor: undefined, descricao: '' };
+      
+      // Close the modal
+      this.itemModalVisible = false;
+      this.cdr.detectChanges();
+    } else {
+      this.handleErrorMessage('Preencha o tipo do item antes de adicionar.');
+    }
+
+    this.cdr.detectChanges();
+  }
+
+  // Remove an item from the array
+  removeItem(index: number): void {
+    this.items.splice(index, 1);
+    this.doacaoForm.patchValue({
+      itens: this.items
+    });
+  }
+
+  getItensControls() {
+    return (this.doacaoForm.get('itens') as FormArray).controls; // Return the controls of the FormArray
+  }
+  
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

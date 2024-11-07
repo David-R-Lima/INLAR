@@ -11,6 +11,7 @@ import { NotFoundError } from 'src/inlar/errors/not-found-error';
 interface Request {
   id_usuario: number;
   id_doador?: number
+  id_beneficiario?: number;
   descricao: string;
   cep?: string | null;
   logradouro?: string | null;
@@ -48,6 +49,7 @@ export class CreateDoacao {
     const doacao = new Doacao({
       idUsuario: data.id_usuario,
       idDoador: data.id_doador,
+      idbeneficiario: data.id_beneficiario,
       descricao: data.descricao,
       cep: data.cep,
       logradouro: data.logradouro,

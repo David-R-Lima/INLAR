@@ -22,6 +22,7 @@ import { DOACAO_ROUTES } from './doacao.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DoacaoTableComponent } from './components/doacao-table/doacao-table.component';
 import { DoacaoFormComponent } from './components/doacao-form/doacao-form.component';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [DoacaoHomeComponent, DoacaoTableComponent, DoacaoFormComponent],
@@ -29,6 +30,7 @@ import { DoacaoFormComponent } from './components/doacao-form/doacao-form.compon
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    DialogModule,
     RouterModule.forChild(DOACAO_ROUTES),
     SharedModule,
     HttpClientModule,

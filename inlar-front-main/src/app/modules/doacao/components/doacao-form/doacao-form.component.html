@@ -11,13 +11,10 @@
           <p-dropdown 
             id="doador"
             [options]="DoadorOptions" 
-            formControlName="doador" 
+            formControlName="idDoador" 
             placeholder="Selecione o doador">
           </p-dropdown>
         </div>
-
-        <!-- Abrir cadastro de doador-->
-        <button onclick="abrirCadastrodoador()">+</button>
 
         <script>
             function abrirCadastrodoador() {
@@ -31,13 +28,10 @@
            <p-dropdown 
               id="beneficiario"
               [options]="BeneficiarioOptions" 
-              formControlName="beneficiario" 
+              formControlName="idBeneficiario" 
               placeholder="Selecione o Beneficiario">
             </p-dropdown>
         </div>
-
-        <!-- Abrir cadastro de Beneficiario-->
-        <button onclick="abrirCadastrobeneficiario()">+</button>
 
         <script>
             function abrirCadastrobeneficiario() {
@@ -48,7 +42,7 @@
 
 
         <!-- Endereço -->
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="cep">CEP</label>
             <input 
               id="cep"
@@ -57,9 +51,9 @@
               formControlName="cep" 
               maxlength="8" 
             />
-        </div>
+        </div> -->
     
-      <div class="form-group">
+      <!-- <div class="form-group">
             <label for="logradouro">Logradouro</label>
             <input 
               id="logradouro"
@@ -67,9 +61,9 @@
               placeholder="Logradouro" 
               formControlName="logradouro" 
             />
-          </div>
+          </div> -->
     
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="numero">Número</label>
             <input 
               id="numero"
@@ -107,18 +101,18 @@
               placeholder="Cidade" 
               formControlName="cidade" 
             />
-          </div>
+          </div> -->
 
         <!-- Estado (UF) -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="uf">Estado (UF)</label>
           <p-dropdown 
             id="uf"
             [options]="estados" 
-            formControlName="uf" 
+            formControlName="siglaestado" 
             placeholder="Selecione um Estado">
           </p-dropdown>
-        </div>
+        </div> -->
 
         <!-- Descrição -->
         <div class="form-group">
@@ -131,28 +125,21 @@
             />
           </div>
 
-          <!-- Quantidade -->
-          <div class="form-group">
-            <label for="qtde">Quantidade</label>
-            <input 
-              id="qtde"
-              pInputText 
-              placeholder="Quantidade" 
-              formControlName="qtde" 
-            />
-          </div>
+      <!-- List of Itens -->
+      <h1>Itens</h1>
 
-        <!-- Valor monetário -->
-        <div class="form-group">
-          <label for="valormonetario">Valor Monetário</label>
-          <p-inputMask
-            id="valormonetario"
-            formControlName="valormonetario"
-            mask="R$     " 
-            placeholder="Digite o Valor Monetário"
-            slotChar="_"  
-          ></p-inputMask>
-        </div>
+      <div *ngFor="let item of doacaoForm.get('itens')?.value; let i = index">
+        <p>Item {{ i + 1 }}</p>
+        <p>Tipo: {{ item?.tipo }}</p>
+        <p>Quantidade: {{ item?.quantidade }}</p>
+        <p>Valor: {{ item?.valor }}</p>
+        <p>Descrição: {{ item?.descricao }}</p>
+      </div>
+
+      <div class="form-group flex justify-content-center">
+        <p-button (click)="showDialog($event)" label="Adicionar item" />
+      </div>
+      
   
         <!-- Botão de Submissão -->
         <div class="form-group flex justify-content-center">
@@ -163,5 +150,35 @@
         </div>
       </div>
     </form>
+    <p-dialog [(visible)]="itemModalVisible" [modal]="true" header="Detalhes do Item" st>
+      <div class="form-group" style="display: flex; flex-direction: column;  padding: 2px; width: 100%; align-items: start  ; margin-bottom: 0.5rem; ">
+        <label for="tipo">Tipo</label>
+        <p-dropdown
+          id="tipo"
+          [(ngModel)]="currentItem.tipo"
+          [options]="tipoOptions"
+          optionLabel="label"
+          placeholder="Selecione o tipo"
+        ></p-dropdown>
+      </div>
+      
+      <div class="form-group" style="display: flex; flex-direction: column;  padding: 2px; width: 100%; align-items: start  ;margin-bottom: 0.5rem; ">
+        <label for="numItens">Número de Itens</label>
+        <input id="numItens" pInputText [(ngModel)]="currentItem.numItens" placeholder="Número de Itens" />
+      </div>
+      <div class="form-group" style="display: flex; flex-direction: column;  padding: 2px; width: 100%; align-items: start  ;margin-bottom: 0.5rem; ">
+        <label for="quantidade">Quantidade</label>
+        <input id="quantidade" pInputText [(ngModel)]="currentItem.quantidade" placeholder="Quantidade" />
+      </div>
+      <div class="form-group" style="display: flex; flex-direction: column;  padding: 2px; width: 100%; align-items: start  ;margin-bottom: 0.5rem; ">
+        <label for="valor">Valor</label>
+        <input id="valor" pInputText [(ngModel)]="currentItem.valor" placeholder="Valor" />
+      </div>
+      <div class="form-group" style="display: flex; flex-direction: column;  padding: 2px; width: 100%; align-items: start  ; margin-bottom: 0.5rem;">
+        <label for="descricao">Descrição</label>
+        <input id="descricao" pInputText [(ngModel)]="currentItem.descricao" placeholder="Descrição" />
+      </div>
+      <button type="button" (click)="addItem()">Salvar</button>
+    </p-dialog>
   </div>
   

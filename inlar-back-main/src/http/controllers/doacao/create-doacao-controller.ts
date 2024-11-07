@@ -15,41 +15,41 @@ import { InternalError } from 'src/inlar/errors/internal-error';
   
   const squema = z.object({
     id_usuario: z.coerce.number(),
-    id_doador: z.coerce.number().optional(),
+    id_doador: z.coerce.number().optional().nullable(),
     descricao: z.string({
       required_error: 'Field: {nome} is required',
     }),
-    cep: z.string().max(8, { message: 'Cannot exceed 8 caracters' }).optional(),
+    cep: z.string().max(8, { message: 'Cannot exceed 8 caracters' }).optional().nullable(),
     logradouro: z
       .string()
       .max(255, { message: 'Cannot exceed 255 caracters' })
-      .optional(),
+      .optional().nullable(),
     numero: z
       .string()
       .max(10, { message: 'Cannot exceed 10 caracters' })
-      .optional(),
+      .optional().nullable(),
     complemento: z
       .string()
       .max(100, { message: 'Cannot exceed 100 caracters' })
-      .optional(),
+      .optional().nullable(),
     bairro: z
       .string()
       .max(100, { message: 'Cannot exceed 100 caracters' })
-      .optional(),
+      .optional().nullable(),
     cidade: z
       .string()
       .max(100, { message: 'Cannot exceed 100 caracters' })
-      .optional(),
-    uf: z.string().max(2, { message: 'Cannot exceed 2 caracters' }).optional(),
-    observacoes: z.string().optional(),
+      .optional().nullable(),
+    uf: z.string().max(2, { message: 'Cannot exceed 2 caracters' }).optional().nullable(),
+    observacoes: z.string().optional().nullable(),
     itens: z.array(
         z.object({
           tipo: z.coerce.number({
             required_error: 'Field: {tipo} is required',
           }),
-          numItens: z.number().optional(),
-          quantidade: z.number().optional(),
-          valor: z.number().optional(),
+          numItens: z.coerce.number().optional(),
+          quantidade: z.coerce.number().optional(),
+          valor: z.coerce.number().optional(),
           descricao: z.string().optional(),
         })
       ).min(1, {
