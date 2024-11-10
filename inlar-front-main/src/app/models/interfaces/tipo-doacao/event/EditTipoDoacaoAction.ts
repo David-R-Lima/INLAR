@@ -1,6 +1,6 @@
 export interface EditTipoDoacaoAction {
     action: string;
-    id?: number;
-    tipodoacaoName?: string;
+    id_tipo_doacao: number;
+    descricao: string;
   }
   

@@ -1,5 +1,5 @@
 export interface DeleteTipoDoacaoAction {
-    tipodoacao_id: string;
-    tipodoacaoName: string;
+    id_tipo_doacao: number;
+    descricao: string;
   }
   

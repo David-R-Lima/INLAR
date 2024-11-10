@@ -1,0 +1,82 @@
+<div class="grid">
+  <div class="col-12">
+    <p-card styleClass="shadow-3 m-5 text-indigo-800" header="Tipo de doações">
+      <p-table
+        [value]="tipodoacao"
+        [(selection)]="tipodoacaoSelected"
+        [rows]="10"
+        [paginator]="true"
+        [responsive]="true"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [rowHover]="true"
+        [showCurrentPageReport]="true"
+        dataKey="idTipoDoacao"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} tipo de doações"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="descricao">
+              <div class="flex justify-content-between align-items-center">
+                <div>Descrição</div>
+
+                <div>
+                  <p-sortIcon field="descricao"></p-sortIcon>
+                  <p-columnFilter
+                    type="text"
+                    field="descricao"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="flex justify-content-center">
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-plus"
+                  label="Adicionar"
+                  pTooltip="Adicionar tipo doação"
+                  tooltipPosition="top"
+                  (click)="handleTipoDoacaoEvent('ADICIONAR TIPODOACAO', tipodoacaoSelected?.idTipoDoacao)"
+                ></button>
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tipodoacao>
+          <tr>
+            <td>{{ tipodoacao.descricao  }}</td>
+            <td>
+              <div class="flex justify-content-center gap-3 align-content-center align-items-center">
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-pencil"
+                  pTooltip="Editar tipo doação"
+                  tooltipPosition="top"
+                  class="p-button-rounded p-button-warning"
+                  (click)="handleTipoDoacaoEvent('EDITAR TIPODOACAO', tipodoacaoSelected?.idTipoDoacao, tipodoacaoSelected?.descricao)"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-trash"
+                  pTooltip="Remover tipo doação"
+                  tooltipPosition="top"
+                  class="p-button-rounded p-button-danger"
+                  (click)="handleDeleteTipoDoacaoEvent(tipodoacaoSelected?.idTipoDoacao, tipodoacaoSelected?.descricao)"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+  <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+</div>

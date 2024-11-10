@@ -46,6 +46,14 @@ const routes: Routes = [
       ),
     // canActivate: [AuthGuard],
   },
+  {
+    path: 'tipodoacao',
+    loadChildren: () =>
+      import('./modules/tipo-doacao/tipo-doacao.module').then(
+        (m) => m.TipoDoacaoModule
+      ),
+    // canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

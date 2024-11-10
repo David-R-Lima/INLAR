@@ -17,7 +17,7 @@ import { TipoDoacaoFormComponent } from '../../components/tipo-doacao-form/tipo-
 export class TipoDoacaoHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   private ref!: DynamicDialogRef;
-  public tipodoacaoDatas: Array<GetTipoDoacaoResponse> = [];
+  public tipodoacao: Array<GetTipoDoacaoResponse> = [];
 
   constructor(
     private tipodoacaoService: TipoDoacaoService,
@@ -37,7 +37,7 @@ export class TipoDoacaoHomeComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: GetTipoDoacaoResponse[]) => {
           if (response.length > 0) {
-            this.tipodoacaoDatas = response;
+            this.tipodoacao = response;
           }
         },
         error: (err: any) => {
@@ -56,12 +56,12 @@ export class TipoDoacaoHomeComponent implements OnInit, OnDestroy {
   handleDeleteTipoDoacaoAction(event: DeleteTipoDoacaoAction): void {
     if (event) {
       this.confirmationService.confirm({
-        message: `Confirma a exclusão do Tipo Doacao: ${event?.tipodoacaoName}`,
+        message: `Confirma a exclusão do Tipo Doacao: ${event?.descricao}`,
         header: 'Confirmação de exclusão',
         icon: 'pi pi-exclamation-triangle',
         acceptLabel: 'Sim',
         rejectLabel: 'Não',
-        accept: () => this.deleteTipoDoacao(Number(event?.tipodoacao_id)),
+        accept: () => this.deleteTipoDoacao(Number(event?.descricao)),
       });
     }
   }

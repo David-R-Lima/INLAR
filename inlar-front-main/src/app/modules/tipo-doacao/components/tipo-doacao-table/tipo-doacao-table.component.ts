@@ -15,7 +15,7 @@ export class TipoDoacaoTableComponent implements OnInit {
     @Output() public TipoDoacaoEvent = new EventEmitter<EditTipoDoacaoAction>(); 
     @Output() public deleteTipoDoacaoEvent = new EventEmitter<DeleteTipoDoacaoAction>(); 
     
-    public tipodoacaoSelected!: GetTipoDoacaoResponse; 
+    public tipodoacaoSelected?: GetTipoDoacaoResponse; 
     public addTipoDoacaoAction = TipoDoacaoEvent.ADD_TIPO_DOACAO_ACTION; 
     public EditTipoDoacaoAction = TipoDoacaoEvent.EDIT_TIPO_DOACAO_ACTION;
   
@@ -24,16 +24,16 @@ export class TipoDoacaoTableComponent implements OnInit {
       console.log('TipoDoacaoTableComponent initialized with', this.tipodoacao);
     }
   
-    handleDeleteTipoDoacaoEvent(tipodoacao_id: string, tipodoacaoName: string): void {
-      if (tipodoacao_id !== '' && tipodoacaoName !== '') {
-        this.deleteTipoDoacaoEvent.emit({ tipodoacao_id, tipodoacaoName }); // Emitir evento de deletar tipo doacao
+    handleDeleteTipoDoacaoEvent(id_tipo_doacao?: number, descricao?: string): void {
+      if (id_tipo_doacao && descricao && descricao !== "") {
+        this.deleteTipoDoacaoEvent.emit({ id_tipo_doacao, descricao }); // Emitir evento de deletar tipo doacao
       }
     }
   
-    handleTipoDoacaoEvent(action: string, id?: number, tipodoacaoName?: string): void {
-      console.log('ID recebido:', id, 'Tipo:', typeof id);
-      if (action && action !== '') {
-        this.TipoDoacaoEvent.emit({ action, id, tipodoacaoName });
+    handleTipoDoacaoEvent(action: string, id_tipo_doacao?: number, descricao?: string): void {
+      if (action && action !== '' && id_tipo_doacao && descricao) {
+        this.TipoDoacaoEvent.emit({ action, id_tipo_doacao, descricao });
       }
     }
+
   }

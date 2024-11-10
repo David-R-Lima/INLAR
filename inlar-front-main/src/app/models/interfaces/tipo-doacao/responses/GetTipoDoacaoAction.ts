@@ -1,4 +1,5 @@
 export interface GetTipoDoacaoResponse {
     idTipoDoacao: number;
-    descricao: string;
+    descricao?: string;
+    ativo?: boolean
 }

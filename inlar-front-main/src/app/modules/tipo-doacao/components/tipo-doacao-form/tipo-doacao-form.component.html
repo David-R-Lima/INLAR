@@ -1,0 +1,23 @@
+<div>
+  <form [formGroup]="tipodoacaoForm" (ngSubmit)="handleSubmit()">
+    <div class="card flex flex-column gap-3 custom-form">
+
+      <!-- Campo oculto para ID do Beneficiário -->
+      <input type="hidden" formControlName="idTipoDoacao" />
+
+      <!-- Nome -->
+      <div class="form-group">
+        <label for="descricao">Descrição</label>
+        <input id="descricao" pInputText placeholder="Descrição" formControlName="descricao" />
+      </div>
+
+      <!-- Botão de Submissão -->
+      <div class="form-group flex justify-content-center">
+        <p-button 
+          type="submit" 
+          label="Concluir">
+        </p-button>
+      </div>
+    </div>
+  </form>
+</div>
