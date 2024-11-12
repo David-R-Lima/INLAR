@@ -6,6 +6,7 @@ import { config, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DoacaoService } from 'src/app/services/doacao/doacao.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { UserDataService } from 'src/app/shared/services/usuario/usuario-data.service';
 
 interface Item {
   tipo: string;
@@ -50,10 +51,11 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private doacaoService: DoacaoService,
     private cdr: ChangeDetectorRef,
+    private userDataSerive: UserDataService,
   ) {
 
     this.doacaoForm = this.formBuilder.group({
-      id_usuario: [1],
+      id_usuario: [undefined],
       idDoacao: [undefined],
       idDoador: [undefined],
       idBeneficiario: [undefined],
@@ -103,7 +105,6 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const doacaoData = this.config.data?.event;
-    // this.userDataSerive.getUserData()
 
     if (doacaoData) {
       this.isEditing = true;
@@ -116,7 +117,9 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
 
   handleSubmit(): void {
     if (this.doacaoForm.valid) {
-      const formData = { ...this.doacaoForm.value };
+      const userData = this.userDataSerive.getUserData();  // Fetch user data from the service
+
+      const formData = { ...this.doacaoForm.value, id_usuario: userData?.idUsuario };
 
       if (this.isEditing) {
         this.editDoacao(formData);
@@ -129,7 +132,6 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
   }
 
   private addDoacao(formData: any): void {
-    console.log(formData)
     this.doacaoService.createDoacao(formData).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.handleSuccessMessage('Doação registrada com sucesso!');

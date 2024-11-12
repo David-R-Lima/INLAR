@@ -8,12 +8,10 @@ export class UserDataService {
   private userData: Usuario | undefined;
 
   setUserData(data: Usuario): void {
-    console.log('shared')
-    console.log(data);
     this.userData = data;
   }
 
-  getUserData(): any {
+  getUserData(): Usuario | undefined {
     return this.userData;
   }
 }

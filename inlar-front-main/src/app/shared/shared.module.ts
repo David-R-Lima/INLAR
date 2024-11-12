@@ -23,6 +23,6 @@ import { UserDataService } from './services/usuario/usuario-data.service';
     ButtonModule,
   ],
   exports: [ToolbarNavigationComponent, ShortenPipe],
-  providers: [DialogService, CurrencyPipe, UserDataService],
+  providers: [DialogService, CurrencyPipe],
 })
 export class SharedModule {}
