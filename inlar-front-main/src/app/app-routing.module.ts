@@ -20,7 +20,7 @@ const routes: Routes = [
       import('./modules/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'beneficiario',
@@ -28,7 +28,7 @@ const routes: Routes = [
       import('./modules/beneficiario/beneficiario.module').then(
         (m) => m.BeneficiarioModule
       ),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'doador',
@@ -36,7 +36,7 @@ const routes: Routes = [
       import('./modules/doador/doador.module').then(
         (m) => m.DoadorModule
       ),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'doacao',
@@ -44,7 +44,7 @@ const routes: Routes = [
       import('./modules/doacao/doacao.module').then(
         (m) => m.DoacaoModule
       ),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'tipodoacao',
@@ -52,7 +52,7 @@ const routes: Routes = [
       import('./modules/tipo-doacao/tipo-doacao.module').then(
         (m) => m.TipoDoacaoModule
       ),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
 ];
 

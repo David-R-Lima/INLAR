@@ -49,8 +49,9 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private doacaoService: DoacaoService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
+
     this.doacaoForm = this.formBuilder.group({
       id_usuario: [1],
       idDoacao: [undefined],
@@ -102,6 +103,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const doacaoData = this.config.data?.event;
+    // this.userDataSerive.getUserData()
 
     if (doacaoData) {
       this.isEditing = true;

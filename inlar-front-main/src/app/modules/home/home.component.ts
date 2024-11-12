@@ -19,13 +19,13 @@ export class HomeComponent implements OnDestroy {
 
   loginForm = this.formBuilder.group({
     email: ['', Validators.required],
-    password: ['', Validators.required],
+    senha: ['', Validators.required],
   });
 
   signupForm = this.formBuilder.group({
-    name: ['', Validators.required],
+    usuario: ['', Validators.required],
     email: ['', Validators.required],
-    password: ['', Validators.required],
+    senha: ['', Validators.required],
   });
 
   constructor(
@@ -44,14 +44,13 @@ export class HomeComponent implements OnDestroy {
         .subscribe({
           next: (response) => {
             if (response) {
-              this.cookieService.set('USER_INFO', response?.token);
               this.loginForm.reset();
               this.router.navigate(['/dashboard']);
 
               this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso',
-                detail: `Bem vindo de volta ${response?.name}!`,
+                detail: `Bem vindo!`,
                 life: 2000,
               });
             }

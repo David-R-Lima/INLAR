@@ -62,4 +62,18 @@ export class UsuarioRepositorio {
 
     return null;
   }
+
+  async getUserById(id: number): Promise<Usuario | null> {
+    const prismaUsuario = await this.prisma.usuario.findUnique({
+      where: {
+        IDUSUARIO: id,
+      },
+    });
+
+    if (prismaUsuario) {
+      return UsuarioMapper.fromDatabase(prismaUsuario);
+    }
+    
+    return null;
+  }
 }

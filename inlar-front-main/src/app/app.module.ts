@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -24,6 +24,7 @@ import { DoadorService } from './services/doador/doador.service';
 import { BeneficiarioService } from './services/beneficiario/beneficiario.service';
 import { TelefoneMaskDirective } from './directive/TELEFONE/telefone-mask.directive';
 import { InputMaskModule } from 'primeng/inputmask';
+import { AuthInterceptor } from './services/interceptor.service';
 
 
 @NgModule({
@@ -49,7 +50,7 @@ import { InputMaskModule } from 'primeng/inputmask';
     ToastModule,
     SelectButtonModule
   ],
-  providers: [CookieService, MessageService,DoadorService,BeneficiarioService,],
+  providers: [CookieService, MessageService,DoadorService,BeneficiarioService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

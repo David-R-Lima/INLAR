@@ -67,9 +67,12 @@ import { GetAllDoadores } from 'src/inlar/actions/doador/get-all-doadores';
 import { GetAllDoadoresController } from './controllers/doador/get-all-doadores-controller';
 import { GetAllBeneficiarios } from 'src/inlar/actions/beneficiario/get-all-beneficiarios';
 import { GetAllBeneficiariosController } from './controllers/beneficiarios/get-all-beneficiarios-controller';
+import { AuthModule } from './auth/auth.module';
+import { GetUserById } from 'src/inlar/actions/usuarios/get-user-by-id';
+import { GetUserByIdController } from './controllers/usuarios/get-user-by-id.controller';
 
 @Module({
-  imports: [PrismaModule, CryptographyModule],
+  imports: [PrismaModule, CryptographyModule, AuthModule],
   providers: [
     CreateUsuario,
     CreateDoador,
@@ -103,7 +106,8 @@ import { GetAllBeneficiariosController } from './controllers/beneficiarios/get-a
     UpdateDoacao,
     DeleteDoacaoItensById,
     GetAllDoadores,
-    GetAllBeneficiarios
+    GetAllBeneficiarios,
+    GetUserById
   ],
   controllers: [
     CreateUsuarioController,
@@ -138,7 +142,8 @@ import { GetAllBeneficiariosController } from './controllers/beneficiarios/get-a
     UpdateDoacaoController,
     DeleteDoacaoItensByIdController,
     GetAllDoadoresController,
-    GetAllBeneficiariosController
+    GetAllBeneficiariosController,
+    GetUserByIdController
   ],
 })
 export class HttpModule {}
