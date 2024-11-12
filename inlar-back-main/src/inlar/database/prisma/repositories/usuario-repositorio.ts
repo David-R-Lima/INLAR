@@ -9,7 +9,6 @@ export class UsuarioRepositorio {
 
   async create(usuario: Usuario): Promise<Usuario> {
     const data = UsuarioMapper.toDatabase(usuario);
-    console.log('data: ', data);
 
     const prismaUsuario = await this.prisma.usuario.create({
       data,
@@ -60,6 +59,20 @@ export class UsuarioRepositorio {
       return UsuarioMapper.fromDatabase(prismaUsuario);
     }
 
+    return null;
+  }
+
+  async getUserById(id: number): Promise<Usuario | null> {
+    const prismaUsuario = await this.prisma.usuario.findUnique({
+      where: {
+        IDUSUARIO: id,
+      },
+    });
+
+    if (prismaUsuario) {
+      return UsuarioMapper.fromDatabase(prismaUsuario);
+    }
+    
     return null;
   }
 }

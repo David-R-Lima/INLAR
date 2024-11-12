@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GetDoacaoResponse } from 'src/app/models/interfaces/doacao/responses/GetDoacaoAction'; 
+import { environment } from 'src/environments/environment';
 
 export interface Doacao {
   idDoacao?: number;
@@ -23,7 +24,7 @@ export interface Doacao {
   providedIn: 'root'
 })
 export class DoacaoService {
-  private apiUrl = 'http://localhost:3256'; // URL do seu backend
+  private apiUrl = environment.API_URL; // URL do seu backend
 
   constructor(private http: HttpClient) {}
 

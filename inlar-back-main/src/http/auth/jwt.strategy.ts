@@ -32,7 +32,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
         IDUSUARIO: payload.sub
       }
     })
-    console.log(user)
 
     if (!user) {
       return false;

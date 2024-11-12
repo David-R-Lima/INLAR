@@ -32,6 +32,7 @@ import { Public } from 'src/http/auth/public';
       @Body(validationPipe)
       body: Schema,
     ) {
+
       const res = await this.authenticateUser.execute({
         email: body.email,
         senha: body.senha,

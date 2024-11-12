@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GetDoadorResponse } from 'src/app/models/interfaces/doador/responses/GetDoadorResponse';
+import { environment } from 'src/environments/environment';
 
 export interface Doador {
   idDoador?: number;
@@ -27,7 +28,7 @@ export interface Doador {
   providedIn: 'root'
 })
 export class DoadorService {
-  private apiUrl = 'http://localhost:3256'; // URL do seu backend
+  private apiUrl = environment.API_URL;; // URL do seu backend
 
   constructor(private http: HttpClient) {}
 

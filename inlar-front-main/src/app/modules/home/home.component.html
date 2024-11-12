@@ -4,7 +4,7 @@
       class="flex justify-content-center align-content-center text-align-center"
     >
       <!-- LOGIN -->
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmitLoginForm()">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmitLoginForm()" *ngIf="loginCard">
         <p-card
           styleClass="mt-10"
           header="Login"
@@ -28,7 +28,7 @@
               type="password"
               pInputText
               placeholder="Senha"
-              formControlName="password"
+              formControlName="senha"
             />
           </div>
           <div class="card flex justify-content-center mt-3">
@@ -50,12 +50,11 @@
       </form>
 
       <!-- SIGNUP -->
-      <form [formGroup]="signupForm" (ngSubmit)="onSubmitSignupForm()">
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmitSignupForm()" *ngIf="!loginCard">
         <p-card
           styleClass="mt-10"
           header="Criar conta"
           subheader="Crie já sua conta gratuita!"
-          *ngIf="!loginCard"
         >
           <div
             class="flex justify-content-center align-content-center text-align-center"
@@ -64,7 +63,7 @@
               type="text"
               pInputText
               placeholder="Nome"
-              formControlName="name"
+              formControlName="usuario"
             />
           </div>
           <div
@@ -84,7 +83,7 @@
               type="password"
               pInputText
               placeholder="Senha"
-              formControlName="password"
+              formControlName="senha"
             />
           </div>
           <div class="card flex justify-content-center mt-3">
