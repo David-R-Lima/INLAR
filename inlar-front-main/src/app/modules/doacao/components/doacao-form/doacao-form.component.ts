@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DoacaoService } from 'src/app/services/doacao/doacao.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { UserDataService } from 'src/app/shared/services/usuario/usuario-data.service';
+import { TipoDoacaoService } from 'src/app/services/tipo-doacao/tipo-doacao.service';
 
 interface Item {
   tipo: string;
@@ -39,10 +40,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     { label: 'Beneficiario 2', value: 'b2' }
   ];
 
-  public tipoOptions = [
-    { label: 'Comida', value: '1' },
-    { label: "Dinheiro", value: '2'}
-  ]
+  public tipoOptions: {label: string, value: string}[] = []
 
   constructor(
     public ref: DynamicDialogRef,
@@ -52,6 +50,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     private doacaoService: DoacaoService,
     private cdr: ChangeDetectorRef,
     private userDataSerive: UserDataService,
+    private tipoDoacaoService: TipoDoacaoService
   ) {
 
     this.doacaoForm = this.formBuilder.group({
@@ -113,6 +112,19 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
         error: () => this.handleErrorMessage('Erro ao buscar dados da doacao.')
       });
     }
+
+    this.tipoDoacaoService.getTipoDoacoes(1)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (tipoDoacoes: any[]) => {
+        // Mapear os dados para o formato esperado
+        this.tipoOptions = tipoDoacoes.map(tipo => ({
+          label: tipo.descricao, // Campo da descrição
+          value: tipo.idTipoDoacao // Campo do ID
+        }));
+      },
+      error: () => this.handleErrorMessage('Erro ao buscar tipos de doação.')
+    });
   }
 
   handleSubmit(): void {

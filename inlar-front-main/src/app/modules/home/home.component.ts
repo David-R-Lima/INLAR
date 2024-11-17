@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SignupUserRequest } from 'src/app/models/interfaces/user/SignupUserRequest';
 import { AuthRequest } from 'src/app/models/interfaces/user/auth/AuthRequest';
@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnDestroy {
+export class HomeComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject<void>();
   loginCard = true;
 
@@ -102,5 +102,8 @@ export class HomeComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+  ngOnInit(): void {
+    this.userService.fetchUserData()
   }
 }
