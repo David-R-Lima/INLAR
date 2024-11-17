@@ -22,6 +22,8 @@ import { TIPO_DOACAO_ROUTES } from './tipo-doacao.routing';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TipoDoacaoTableComponent } from './components/tipo-doacao-table/tipo-doacao-table.component';
 import { TipoDoacaoFormComponent } from './components/tipo-doacao-form/tipo-doacao-form.component';
+import { TipoDoacaoService } from 'src/app/services/tipo-doacao/tipo-doacao.service';
+import { CheckboxModule } from 'primeng/checkbox'
 
 @NgModule({
   declarations: [TipoDoacaoHomeComponent, TipoDoacaoTableComponent, TipoDoacaoFormComponent],
@@ -45,7 +47,9 @@ import { TipoDoacaoFormComponent } from './components/tipo-doacao-form/tipo-doac
     DropdownModule,
     ConfirmDialogModule,
     TooltipModule,
+    CheckboxModule
+    
   ],
-  providers: [DialogService, ConfirmationService],
+  providers: [DialogService, ConfirmationService, TipoDoacaoService],
 })
 export class TipoDoacaoModule { }

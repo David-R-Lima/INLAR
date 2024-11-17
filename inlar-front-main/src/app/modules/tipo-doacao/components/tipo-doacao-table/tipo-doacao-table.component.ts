@@ -25,13 +25,13 @@ export class TipoDoacaoTableComponent implements OnInit {
     }
   
     handleDeleteTipoDoacaoEvent(id_tipo_doacao?: number, descricao?: string): void {
-      if (id_tipo_doacao && descricao && descricao !== "") {
+      if (id_tipo_doacao) {
         this.deleteTipoDoacaoEvent.emit({ id_tipo_doacao, descricao }); // Emitir evento de deletar tipo doacao
       }
     }
   
     handleTipoDoacaoEvent(action: string, id_tipo_doacao?: number, descricao?: string): void {
-      if (action && action !== '' && id_tipo_doacao && descricao) {
+      if (action && action !== '') {
         this.TipoDoacaoEvent.emit({ action, id_tipo_doacao, descricao });
       }
     }

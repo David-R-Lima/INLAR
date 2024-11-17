@@ -10,6 +10,15 @@
         <label for="descricao">Descrição</label>
         <input id="descricao" pInputText placeholder="Descrição" formControlName="descricao" />
       </div>
+      <div class="form-group">
+        <label for="ativo">Ativo</label>
+        <p-checkbox 
+          id="ativo" 
+          formControlName="ativo" 
+          [binary]="true">
+        </p-checkbox>
+      </div>
+      
 
       <!-- Botão de Submissão -->
       <div class="form-group flex justify-content-center">

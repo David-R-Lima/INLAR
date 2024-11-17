@@ -42,7 +42,7 @@
                   label="Adicionar"
                   pTooltip="Adicionar tipo doação"
                   tooltipPosition="top"
-                  (click)="handleTipoDoacaoEvent('ADICIONAR TIPODOACAO', tipodoacaoSelected?.idTipoDoacao)"
+                  (click)="handleTipoDoacaoEvent('ADICIONAR TIPODOACAO')"
                 ></button>
               </div>
             </th>
@@ -60,7 +60,7 @@
                   pTooltip="Editar tipo doação"
                   tooltipPosition="top"
                   class="p-button-rounded p-button-warning"
-                  (click)="handleTipoDoacaoEvent('EDITAR TIPODOACAO', tipodoacaoSelected?.idTipoDoacao, tipodoacaoSelected?.descricao)"
+                  (click)="handleTipoDoacaoEvent('EDITAR TIPODOACAO', tipodoacao?.idTipoDoacao, tipodoacao?.descricao)"
                 ></button>
                 <button
                   pButton
@@ -69,7 +69,7 @@
                   pTooltip="Remover tipo doação"
                   tooltipPosition="top"
                   class="p-button-rounded p-button-danger"
-                  (click)="handleDeleteTipoDoacaoEvent(tipodoacaoSelected?.idTipoDoacao, tipodoacaoSelected?.descricao)"
+                  (click)="handleDeleteTipoDoacaoEvent(tipodoacao?.idTipoDoacao, tipodoacao.descricao)"
                 ></button>
               </div>
             </td>

@@ -33,7 +33,24 @@ export class TipoDoacaoFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-      return
+    const doadorData = this.config.data?.event;
+
+    if (doadorData) {
+      this.isEditing = true;
+
+      this.tipodoacaoService.getTipoDoacaoById(doadorData.id_tipo_doacao)
+        .subscribe({
+          next: (doador: GetTipoDoacaoResponse) => {
+            this.populateForm(doador); 
+          },
+          error: (err) => {
+            this.handleErrorMessage('Erro ao buscar dados do doador.');
+          }
+        });
+    } else {
+      this.isEditing = false;
+      this.tipodoacaoForm.reset();
+    }
   }
 
   ngOnDestroy(): void {
@@ -41,7 +58,6 @@ export class TipoDoacaoFormComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   private addTipoDoacao(formData: any): void {
-    console.log('Adicionando doação com os dados:', formData);
     this.tipodoacaoService.createTipoDoacao(formData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -70,7 +86,7 @@ export class TipoDoacaoFormComponent implements OnInit, OnDestroy {
   }
 
   private editTipoDoacao(formData: any): void {
-    const payload = { ...formData, id: formData.idDoacao };
+    const payload = { ...formData, id: formData.idTipoDoacao };
     this.tipodoacaoService.updateTipoDoacao(payload.id, payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -89,7 +105,7 @@ export class TipoDoacaoFormComponent implements OnInit, OnDestroy {
     this.tipodoacaoForm.patchValue({
       idTipoDoacao: tipodoacao.idTipoDoacao,
       descricao: tipodoacao.descricao,
-      ativo: ""
+      ativo: tipodoacao.ativo
     });
   }
 

@@ -38,6 +38,7 @@ export class TipoDoacaoHomeComponent implements OnInit, OnDestroy {
         next: (response: GetTipoDoacaoResponse[]) => {
           if (response.length > 0) {
             this.tipodoacao = response;
+            console.log(response)
           }
         },
         error: (err: any) => {
@@ -61,7 +62,7 @@ export class TipoDoacaoHomeComponent implements OnInit, OnDestroy {
         icon: 'pi pi-exclamation-triangle',
         acceptLabel: 'Sim',
         rejectLabel: 'Não',
-        accept: () => this.deleteTipoDoacao(Number(event?.descricao)),
+        accept: () => this.deleteTipoDoacao(Number(event?.id_tipo_doacao)),
       });
     }
   }
@@ -95,7 +96,7 @@ export class TipoDoacaoHomeComponent implements OnInit, OnDestroy {
   }
 
   handleTipoDoacaoAction(event: any): void {
-    const isEditing = event && event.action !== 'ADICIONAR Tipo Doacao';
+    const isEditing = event && event.action !== 'ADICIONAR TIPODOACAO';
     if (event) {
       this.ref = this.dialogService.open(TipoDoacaoFormComponent, {
         header: event?.action,

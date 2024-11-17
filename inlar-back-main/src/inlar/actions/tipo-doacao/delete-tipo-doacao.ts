@@ -6,30 +6,25 @@ import { NotFoundError } from 'src/inlar/errors/not-found-error';
 
 interface Request {
     id: number
-    descricao?: string
-    ativo?: boolean
 }
 
 @Injectable()
-export class UpdatetipoDoacao {
+export class DeleteTipoDoacaoById {
   constructor(private tipoDoacaoRepositorio: TipoDoacaoRepositorio) {}
 
-  async execute(data: Request): Promise<TipoDoacao | NotFoundError | InternalError> {
+  async execute(data: Request): Promise<TipoDoacao | NotFoundError> {
     const res = await this.tipoDoacaoRepositorio.findById(data.id);
 
-    if(!res) {
-        return new NotFoundError("Tipo doacao not found")
+    if(res) {
+
+        try {
+            await this.tipoDoacaoRepositorio.delete(data.id)
+        } catch (error) {
+            return new InternalError("Erro ao deletar")
+        }
+        return res;
     }
 
-    res.setdescricao(data.descricao)
-    res.setAtivo(data.ativo)
-
-    try {
-        const updatedTipoDoacao = await this.tipoDoacaoRepositorio.update(data.id, res)
-
-        return updatedTipoDoacao
-    } catch (error) {
-        return new InternalError(error?.message ?? "Internal Error")
-    }
+    return new NotFoundError("Tipo doacao not found")
   }
 }

@@ -70,6 +70,8 @@ import { GetAllBeneficiariosController } from './controllers/beneficiarios/get-a
 import { AuthModule } from './auth/auth.module';
 import { GetUserById } from 'src/inlar/actions/usuarios/get-user-by-id';
 import { GetUserByIdController } from './controllers/usuarios/get-user-by-id.controller';
+import { DeleteTipoDoacaoById } from 'src/inlar/actions/tipo-doacao/delete-tipo-doacao';
+import { DeleteTipoDoacaooByIdController } from './controllers/tipoDoacao/delete-tipoDoacao-controller';
 
 @Module({
   imports: [PrismaModule, CryptographyModule, AuthModule],
@@ -107,7 +109,8 @@ import { GetUserByIdController } from './controllers/usuarios/get-user-by-id.con
     DeleteDoacaoItensById,
     GetAllDoadores,
     GetAllBeneficiarios,
-    GetUserById
+    GetUserById,
+    DeleteTipoDoacaoById
   ],
   controllers: [
     CreateUsuarioController,
@@ -143,7 +146,8 @@ import { GetUserByIdController } from './controllers/usuarios/get-user-by-id.con
     DeleteDoacaoItensByIdController,
     GetAllDoadoresController,
     GetAllBeneficiariosController,
-    GetUserByIdController
+    GetUserByIdController,
+    DeleteTipoDoacaooByIdController
   ],
 })
 export class HttpModule {}
