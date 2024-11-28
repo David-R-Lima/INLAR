@@ -1,19 +1,43 @@
-.grid {
-  background-color: #dfdfdf!important;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100vmin;
+.grid{
+  display: flex;
+  align-items: center;
+  margin: 0;
 }
 
-@media screen and (min-width: 1400px) {
-  .grid {
-    background-position: top;
-  }
+img {
+  height: 100px;
+  display: flex;
+  margin: auto;
 }
 
-@media screen and (max-width: 1000px) {
-  .grid {
-    height: 100vmax;
-  }
+form {
+  text-align: center;
+  width: 420px;
+  padding:0;
+}
+
+input{
+  width: 100%;
+}
+
+label{
+  font-size: 16px;
+  margin: 16px 0 ;
+}
+
+button{
+  width: 100%;
+  cursor: pointer;
+}
+
+span{
+  color: #ff0000;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.email,.senha,.email{
+  text-align: left;
+  margin-bottom: 24px;
 }

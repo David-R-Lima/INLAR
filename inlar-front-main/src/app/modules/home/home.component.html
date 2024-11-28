@@ -1,29 +1,24 @@
 <div class="grid">
-  <div class="col-12">
-    <div
-      class="flex justify-content-center align-content-center text-align-center"
-    >
-      <!-- LOGIN -->
+      <!-- Login -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmitLoginForm()" *ngIf="loginCard">
+        <img src="../../../favicon.ico" alt="logoinlar">
         <p-card
           styleClass="mt-10"
           header="Login"
-          subheader="Faça login com sua conta existente!"
+          subheader="Faça seu login para que assim consiga acessar nosso sistema!"
           *ngIf="loginCard"
         >
-          <div
-            class="flex justify-content-center align-content-center text-align-center"
-          >
+          <div class="email">
+            <label for="">E-mail</label>
             <input
-              type="email"
+              type="text"
               pInputText
               placeholder="Email"
               formControlName="email"
             />
           </div>
-          <div
-            class="flex justify-content-center align-content-center text-align-center mt-3"
-          >
+          <div class="senha">
+            <label for="">Senha</label>
             <input
               type="password"
               pInputText
@@ -31,7 +26,6 @@
               formControlName="senha"
             />
           </div>
-          <div class="card flex justify-content-center mt-3">
             <button
               type="submit"
               pButton
@@ -39,26 +33,19 @@
               label="Login"
               [disabled]="!this.loginForm.valid"
             ></button>
-          </div>
-          <span
-            class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
-            (click)="loginCard = !loginCard"
-            style="cursor: pointer"
-            >Criar Conta</span
+          <span (click)="loginCard = !loginCard">Não tenho uma conta</span
           >
         </p-card>
       </form>
 
-      <!-- SIGNUP -->
+      <!-- Cadastro -->
       <form [formGroup]="signupForm" (ngSubmit)="onSubmitSignupForm()" *ngIf="!loginCard">
         <p-card
           styleClass="mt-10"
           header="Criar conta"
           subheader="Crie já sua conta gratuita!"
         >
-          <div
-            class="flex justify-content-center align-content-center text-align-center"
-          >
+          <div class="nome">
             <input
               type="text"
               pInputText
@@ -66,19 +53,15 @@
               formControlName="usuario"
             />
           </div>
-          <div
-            class="flex justify-content-center align-content-center text-align-center mt-3"
-          >
+          <div class="email">
             <input
-              type="email"
+              type="text"
               pInputText
               placeholder="Email"
               formControlName="email"
             />
           </div>
-          <div
-            class="flex justify-content-center align-content-center text-align-center mt-3"
-          >
+          <div class="senha">
             <input
               type="password"
               pInputText
@@ -86,7 +69,6 @@
               formControlName="senha"
             />
           </div>
-          <div class="card flex justify-content-center mt-3">
             <button
               type="submit"
               pButton
@@ -94,15 +76,7 @@
               label="Criar conta"
               [disabled]="!this.signupForm.valid"
             ></button>
-          </div>
-          <span
-            class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
-            style="cursor: pointer"
-            (click)="loginCard = !loginCard"
-            >Fazer login</span
-          >
+          <span (click)="loginCard = !loginCard">Ja tenho uma conta</span>
         </p-card>
       </form>
-    </div>
-  </div>
 </div>
