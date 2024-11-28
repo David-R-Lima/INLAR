@@ -15,6 +15,13 @@ interface Item {
   valor?: number;
   descricao?: string;
 }
+interface Doador {
+  nome: string;
+}
+
+interface Beneficiario {
+  nome: string;
+}
 
 @Component({
   selector: 'app-doacao-form',
@@ -29,17 +36,8 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
   public doacaoForm: FormGroup;
   public isEditing = false;
   public estados: any[];
-
-  public DoadorOptions = [
-    { label: 'Doador 1', value: 'd1' },
-    { label: 'Doador 2', value: 'd2' }
-  ];
-
-  public BeneficiarioOptions = [
-    { label: 'Beneficiario 1', value: 'b1' },
-    { label: 'Beneficiario 2', value: 'b2' }
-  ];
-
+  public DoadorOptions: Doador = { nome: ''};
+  public BeneficiarioOptions: Beneficiario =  {  nome: ''};
   public tipoOptions: {label: string, value: string}[] = []
 
   constructor(
@@ -55,8 +53,8 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
 
     this.doacaoForm = this.formBuilder.group({
       id_usuario: [undefined],
-      idDoacao: [undefined],
-      idDoador: [undefined],
+      idDoacao: [[]],
+      idDoador: [[]],
       idBeneficiario: [undefined],
       descricao: [undefined],
       cep: [undefined],
