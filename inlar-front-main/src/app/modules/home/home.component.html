@@ -40,12 +40,14 @@
 
       <!-- Cadastro -->
       <form [formGroup]="signupForm" (ngSubmit)="onSubmitSignupForm()" *ngIf="!loginCard">
+        <img src="../../../favicon.ico" alt="logoinlar">
         <p-card
           styleClass="mt-10"
           header="Criar conta"
           subheader="Crie já sua conta gratuita!"
         >
           <div class="nome">
+            <label for="">Nome Completo</label>
             <input
               type="text"
               pInputText
@@ -54,14 +56,16 @@
             />
           </div>
           <div class="email">
+            <label for="">E-mail</label>
             <input
-              type="text"
+              type="email"
               pInputText
               placeholder="Email"
               formControlName="email"
             />
           </div>
           <div class="senha">
+            <label for="">Senha</label>
             <input
               type="password"
               pInputText
