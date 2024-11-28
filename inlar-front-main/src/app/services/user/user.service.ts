@@ -41,7 +41,6 @@ export class UserService {
   }
 
   fetchUserData(): Observable<any> {
-    console.log("ewntrei")
     return this.http.get<{usuario: Usuario}>(`${this.API_URL}/usuario`).pipe(
       tap((data) => {
         // Store user data in the shared service
