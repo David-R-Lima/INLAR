@@ -10,17 +10,20 @@ import { UserDataService } from 'src/app/shared/services/usuario/usuario-data.se
 import { TipoDoacaoService } from 'src/app/services/tipo-doacao/tipo-doacao.service';
 
 interface Item {
-  tipo: string;
+  tipo: number;
+  tipoLabel: string;
   quantidade?: number;
   valor?: number;
   descricao?: string;
 }
 interface Doador {
-  nome: string;
+  label: string;
+  value: number;
 }
 
 interface Beneficiario {
-  nome: string;
+  label: string;
+  value: number;
 }
 
 @Component({
@@ -32,7 +35,8 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   public itemModalVisible: boolean = false;
   public currentItem: Item = {
-    tipo: '',
+    tipo: 0,
+    tipoLabel: '',
     quantidade: undefined,
     valor: undefined,
     descricao: '',
@@ -41,9 +45,19 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
   public doacaoForm: FormGroup;
   public isEditing = false;
   public estados: any[];
-  public DoadorOptions: Doador[] = [{ nome: '' }];
-  public BeneficiarioOptions: Beneficiario[] = [{ nome: '' }];
-  public tipoOptions: { label: string; value: string }[] = [];
+  public DoadorOptions: Doador[] = [
+    {
+      label: 'doador',
+      value: 1,
+    },
+  ];
+  public BeneficiarioOptions: Beneficiario[] = [
+    {
+      label: 'beneficiario',
+      value: 1,
+    },
+  ];
+  public tipoOptions: { label: string; value: number }[] = [];
 
   constructor(
     public ref: DynamicDialogRef,
@@ -219,9 +233,16 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
   // Add the current item to the items array in the form
   addItem(): void {
     if (this.currentItem.tipo) {
+      const item = this.tipoOptions.find(
+                //@ts-expect-error sadasd
+        (i) => i.value === this.currentItem.tipo.value
+      );
+
       this.items.push({
         ...this.currentItem,
-        tipo: this.currentItem.tipo,
+        //@ts-expect-error sadasd
+        tipo: this.currentItem.tipo.value,
+        tipoLabel: item?.label ?? '',
       }); // Add a copy of the current item
 
       // Update the form value with the new items array
@@ -231,7 +252,8 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
 
       // Clear the current item fields
       this.currentItem = {
-        tipo: '',
+        tipo: 0,
+        tipoLabel: '',
         quantidade: undefined,
         valor: undefined,
         descricao: '',
