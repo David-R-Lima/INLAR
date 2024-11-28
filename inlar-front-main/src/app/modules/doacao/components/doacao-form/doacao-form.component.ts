@@ -26,19 +26,24 @@ interface Beneficiario {
 @Component({
   selector: 'app-doacao-form',
   templateUrl: './doacao-form.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class DoacaoFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   public itemModalVisible: boolean = false;
-  public currentItem: Item = { tipo: '', quantidade: undefined, valor: undefined, descricao: '' };
+  public currentItem: Item = {
+    tipo: '',
+    quantidade: undefined,
+    valor: undefined,
+    descricao: '',
+  };
   public items: Item[] = [];
   public doacaoForm: FormGroup;
   public isEditing = false;
   public estados: any[];
-  public DoadorOptions: Doador = { nome: ''};
-  public BeneficiarioOptions: Beneficiario =  {  nome: ''};
-  public tipoOptions: {label: string, value: string}[] = []
+  public DoadorOptions: Doador[] = [{ nome: '' }];
+  public BeneficiarioOptions: Beneficiario[] = [{ nome: '' }];
+  public tipoOptions: { label: string; value: string }[] = [];
 
   constructor(
     public ref: DynamicDialogRef,
@@ -50,7 +55,6 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     private userDataSerive: UserDataService,
     private tipoDoacaoService: TipoDoacaoService
   ) {
-
     this.doacaoForm = this.formBuilder.group({
       id_usuario: [undefined],
       idDoacao: [[]],
@@ -65,8 +69,8 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       cidade: [undefined],
       siglaestado: [undefined],
       situacao: [undefined],
-      itens: [[]] // Array for items
-    })
+      itens: [[]], // Array for items
+    });
 
     this.estados = [
       { label: 'Acre', value: 'AC' },
@@ -95,9 +99,8 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       { label: 'Santa Catarina', value: 'SC' },
       { label: 'São Paulo', value: 'SP' },
       { label: 'Sergipe', value: 'SE' },
-      { label: 'Tocantins', value: 'TO' }
+      { label: 'Tocantins', value: 'TO' },
     ];
-
   }
 
   ngOnInit(): void {
@@ -107,29 +110,33 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       this.isEditing = true;
       this.doacaoService.getDoacaoById(doacaoData.id).subscribe({
         next: (doacao) => this.populateForm(doacao),
-        error: () => this.handleErrorMessage('Erro ao buscar dados da doacao.')
+        error: () => this.handleErrorMessage('Erro ao buscar dados da doacao.'),
       });
     }
 
-    this.tipoDoacaoService.getTipoDoacoes(1)
-    .pipe(takeUntil(this.destroy$))
-    .subscribe({
-      next: (tipoDoacoes: any[]) => {
-        // Mapear os dados para o formato esperado
-        this.tipoOptions = tipoDoacoes.map(tipo => ({
-          label: tipo.descricao, // Campo da descrição
-          value: tipo.idTipoDoacao // Campo do ID
-        }));
-      },
-      error: () => this.handleErrorMessage('Erro ao buscar tipos de doação.')
-    });
+    this.tipoDoacaoService
+      .getTipoDoacoes(1)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (tipoDoacoes: any[]) => {
+          // Mapear os dados para o formato esperado
+          this.tipoOptions = tipoDoacoes.map((tipo) => ({
+            label: tipo.descricao, // Campo da descrição
+            value: tipo.idTipoDoacao, // Campo do ID
+          }));
+        },
+        error: () => this.handleErrorMessage('Erro ao buscar tipos de doação.'),
+      });
   }
 
   handleSubmit(): void {
     if (this.doacaoForm.valid) {
-      const userData = this.userDataSerive.getUserData();  // Fetch user data from the service
+      const userData = this.userDataSerive.getUserData(); // Fetch user data from the service
 
-      const formData = { ...this.doacaoForm.value, id_usuario: userData?.idUsuario };
+      const formData = {
+        ...this.doacaoForm.value,
+        id_usuario: userData?.idUsuario,
+      };
 
       if (this.isEditing) {
         this.editDoacao(formData);
@@ -137,29 +144,37 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
         this.addDoacao(formData);
       }
     } else {
-      this.handleErrorMessage('Formulário inválido. Verifique os campos obrigatórios.');
+      this.handleErrorMessage(
+        'Formulário inválido. Verifique os campos obrigatórios.'
+      );
     }
   }
 
   private addDoacao(formData: any): void {
-    this.doacaoService.createDoacao(formData).pipe(takeUntil(this.destroy$)).subscribe({
-      next: () => {
-        this.handleSuccessMessage('Doação registrada com sucesso!');
-        this.ref.close();
-      },
-      error: () => this.handleErrorMessage('Erro ao registrar doação!')
-    });
+    this.doacaoService
+      .createDoacao(formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.handleSuccessMessage('Doação registrada com sucesso!');
+          this.ref.close();
+        },
+        error: () => this.handleErrorMessage('Erro ao registrar doação!'),
+      });
   }
 
   private editDoacao(formData: any): void {
     const payload = { ...formData, id: formData.idDoacao };
-    this.doacaoService.updateDoacao(payload.id, payload).pipe(takeUntil(this.destroy$)).subscribe({
-      next: () => {
-        this.handleSuccessMessage('Doação editada com sucesso!');
-        this.ref.close();
-      },
-      error: () => this.handleErrorMessage('Erro ao editar doação!')
-    });
+    this.doacaoService
+      .updateDoacao(payload.id, payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.handleSuccessMessage('Doação editada com sucesso!');
+          this.ref.close();
+        },
+        error: () => this.handleErrorMessage('Erro ao editar doação!'),
+      });
   }
 
   private populateForm(doacao: any): void {
@@ -175,38 +190,53 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       bairro: doacao.bairro,
       cidade: doacao.cidade,
       siglaestado: doacao.siglaestado,
-      situacao: doacao.situacao
+      situacao: doacao.situacao,
     });
   }
 
   private handleSuccessMessage(message: string): void {
-    this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: message });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sucesso',
+      detail: message,
+    });
   }
 
   private handleErrorMessage(message: string): void {
-    this.messageService.add({ severity: 'error', summary: 'Erro', detail: message });
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Erro',
+      detail: message,
+    });
   }
 
   // Show modal for adding a new item
   showDialog(e: Event): void {
-    e.preventDefault()
+    e.preventDefault();
     this.itemModalVisible = true;
   }
 
   // Add the current item to the items array in the form
   addItem(): void {
     if (this.currentItem.tipo) {
-      //@ts-expect-error dps concerto
-      this.items.push({ ...this.currentItem, tipo: this.currentItem.tipo.value }); // Add a copy of the current item
+      this.items.push({
+        ...this.currentItem,
+        tipo: this.currentItem.tipo,
+      }); // Add a copy of the current item
 
       // Update the form value with the new items array
       this.doacaoForm.patchValue({
-        itens: this.items
+        itens: this.items,
       });
 
       // Clear the current item fields
-      this.currentItem = { tipo: '', quantidade: undefined, valor: undefined, descricao: '' };
-      
+      this.currentItem = {
+        tipo: '',
+        quantidade: undefined,
+        valor: undefined,
+        descricao: '',
+      };
+
       // Close the modal
       this.itemModalVisible = false;
       this.cdr.detectChanges();
@@ -221,14 +251,14 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
   removeItem(index: number): void {
     this.items.splice(index, 1);
     this.doacaoForm.patchValue({
-      itens: this.items
+      itens: this.items,
     });
   }
 
   getItensControls() {
     return (this.doacaoForm.get('itens') as FormArray).controls; // Return the controls of the FormArray
   }
-  
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
