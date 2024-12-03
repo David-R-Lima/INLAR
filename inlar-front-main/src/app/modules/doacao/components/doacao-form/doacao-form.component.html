@@ -12,6 +12,8 @@
           [options]="DoadorOptions"
           formControlName="idDoador"
           placeholder="Selecione o doador"
+          dataKey="value"
+          [placeholder]="selectedDoador?.value?.toString() ?? 'Selecione o doador'"
         >
         </p-dropdown>
       </div>
@@ -30,6 +32,8 @@
           [options]="BeneficiarioOptions"
           formControlName="idBeneficiario"
           placeholder="Selecione o Beneficiario"
+          dataKey="value"
+          [placeholder]="selectedBeneficario?.value?.toString() ?? 'Selecione o Beneficiario'"
         >
         </p-dropdown>
       </div>
@@ -130,15 +134,26 @@
       <div
         *ngFor="let item of doacaoForm.get('itens')?.value; let i = index"
         style="border: 2px solid black; padding: 4px; border-radius: 8px"
+        
       >
         <p>Item {{ i + 1 }}</p>
-        <p>Tipo: {{ item?.tipoLabel }}</p>
+        <p>          {{
+          item?.tipoLabel
+            ? "Tipo: " + item?.tipoLabel
+            : null
+        }}</p>
         <p>
-          <!-- Verifica o tipo do item para exibir quantidade ou valor -->
           {{
-            item?.tipo == 1
+            item?.quantidade
               ? "Quantidade: " + item?.quantidade
-              : "Valor: R$" + item?.valor
+              : null
+          }}
+        </p>
+        <p>
+          {{
+            item?.valor
+              ? "Valor: R$" + item?.valor
+              : null
           }}
         </p>
         <p>Descrição: {{ item?.descricao }}</p>

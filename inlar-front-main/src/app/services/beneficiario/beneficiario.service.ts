@@ -53,4 +53,8 @@ export class BeneficiarioService {
   deleteBeneficiario(idBeneficiario: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/beneficiario/${idBeneficiario}`);
   }
+
+  getAllBeneficiarios(): Observable<GetBeneficiarioResponse[]> {
+    return this.http.get<GetBeneficiarioResponse[]>(`${this.apiUrl}/beneficiario-all`);
+  }
 }
