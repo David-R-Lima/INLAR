@@ -12,6 +12,7 @@ import {
 import { GetDoacaoById } from 'src/inlar/actions/doacao/get-doacao-by-id';
 import { Doacao } from 'src/inlar/entities/doacao';
 import { NotFoundError } from 'src/inlar/errors/not-found-error';
+import { DoadorPresenter } from 'src/http/presenters/doacao-presenter';
   
   const squema = z.object({
     id_doacao: z.coerce.number(),
@@ -35,7 +36,7 @@ import { NotFoundError } from 'src/inlar/errors/not-found-error';
       });
   
       if (res instanceof Doacao) {
-        return res;
+        return DoadorPresenter.toHttp(res)
       }
 
       if(res instanceof NotFoundError) {

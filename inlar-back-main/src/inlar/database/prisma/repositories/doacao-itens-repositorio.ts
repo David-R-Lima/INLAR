@@ -95,4 +95,19 @@ export class DoacaoItensRepositorio {
     
     return false
   }
+
+  async DeleteMany(idDoacao: number): Promise<boolean> {
+    const res = await this.prisma.doacaoItens.deleteMany({
+      where: {
+        FK_DOACAOITENS_DOACAO: {
+          IDDOACAO: idDoacao
+        }
+      }
+    })
+    if( res ){
+      return true
+    }
+    
+    return false
+  }
 }

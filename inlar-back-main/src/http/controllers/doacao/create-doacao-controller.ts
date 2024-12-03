@@ -14,8 +14,9 @@ import { Doacao } from 'src/inlar/entities/doacao';
 import { InternalError } from 'src/inlar/errors/internal-error';
   
   const squema = z.object({
-    id_usuario: z.coerce.number(),
-    id_doador: z.coerce.number().optional().nullable(),
+    idUsuario: z.coerce.number(),
+    idDoador: z.coerce.number().optional().nullable(),
+    idBeneficiario: z.coerce.number().optional().nullable(),
     descricao: z.string({
       required_error: 'Field: {nome} is required',
     }),
@@ -90,8 +91,9 @@ import { InternalError } from 'src/inlar/errors/internal-error';
       })
 
       const res = await this.createDoacao.execute({
-        id_usuario: body.id_usuario,
-        id_doador: body.id_doador,
+        id_usuario: body.idUsuario,
+        id_doador: body.idDoador,
+        id_beneficiario: body.idBeneficiario,
         descricao: body.descricao,
         cep: body.cep,
         logradouro: body.logradouro,

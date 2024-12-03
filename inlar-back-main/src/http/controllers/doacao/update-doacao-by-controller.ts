@@ -17,9 +17,9 @@ import { NotFoundError } from 'rxjs';
 import { InternalError } from 'src/inlar/errors/internal-error';
 
   const squema = z.object({
-    id_doador: z.coerce.number().optional(),
-    id_beneficiario: z.coerce.number().optional(),
-    id_usuario: z.coerce.number(),
+    idDoador: z.coerce.number().optional(),
+    idBeneficiario: z.coerce.number().optional(),
+    idUsuario: z.coerce.number(),
     descricao: z.string({
       required_error: 'Field: {nome} is required',
     }),
@@ -35,6 +35,19 @@ import { InternalError } from 'src/inlar/errors/internal-error';
     quantidade: z.coerce.number().optional(),
     valor: z.coerce.number().optional(),
     situacao: z.string().optional(),
+    itens: z.array(
+      z.object({
+        tipo: z.coerce.number({
+          required_error: 'Field: {tipo} is required',
+        }),
+        numItens: z.coerce.number().optional().nullable(),
+        quantidade: z.coerce.number().optional().nullable(),
+        valor: z.coerce.number().optional().nullable(),
+        descricao: z.string().optional().nullable(),
+      })
+    ).min(1, {
+      message: 'At least one item is required',
+    }).optional(),
   });
 
   type Schema = z.infer<typeof squema>;
@@ -61,9 +74,9 @@ import { InternalError } from 'src/inlar/errors/internal-error';
     ) {
       const res = await this.updateDoacao.execute({
         id: param.id_doacao,
-        id_doador: body.id_doador,
-        id_beneficiario: body.id_beneficiario,
-        id_usuario: body.id_usuario,
+        id_doador: body.idDoador,
+        id_beneficiario: body.idBeneficiario,
+        id_usuario: body.idUsuario,
         cep: body.cep,
         logradouro: body.logradouro,
         numero: body.numero,
@@ -75,7 +88,8 @@ import { InternalError } from 'src/inlar/errors/internal-error';
         quantidade: body.quantidade,
         valor: body.valor,
         descricao: body.descricao,
-        situacao: body.situacao
+        situacao: body.situacao,
+        itens: body.itens
       });
 
       if (res instanceof Doacao) {

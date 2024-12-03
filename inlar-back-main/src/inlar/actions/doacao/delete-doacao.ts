@@ -20,13 +20,9 @@ export class DeleteDoacaoById {
       return new NotFoundError("Doacao not found");
     }
 
-    const itens = await this.doacaoItensRepositorio.findManyByDoacaoId(res.getIdDoacao())
-
     try {
 
-      itens.forEach(async (item) => {
-        await this.doacaoItensRepositorio.Delete(item.getIdDoacaoItem())
-      })
+      await this.doacaoItensRepositorio.DeleteMany(data.idDoacao)
       
       const doacao =  await this.doacaoRepositorio.Delete(data.idDoacao)
 

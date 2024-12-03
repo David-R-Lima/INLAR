@@ -52,4 +52,7 @@ export class DoadorService {
   deleteDoador(idDoador: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/doador/${idDoador}`);
   }
+  getAllDoadores(): Observable<GetDoadorResponse[]> {
+    return this.http.get<GetDoadorResponse[]>(`${this.apiUrl}/doador-all`);
+  }
 }

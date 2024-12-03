@@ -2,12 +2,15 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { config, Subject } from 'rxjs';
+import { config, forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DoacaoService } from 'src/app/services/doacao/doacao.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { UserDataService } from 'src/app/shared/services/usuario/usuario-data.service';
 import { TipoDoacaoService } from 'src/app/services/tipo-doacao/tipo-doacao.service';
+import { BeneficiarioService } from 'src/app/services/beneficiario/beneficiario.service';
+import { DoadorService } from 'src/app/services/doador/doador.service';
+import { DoacaoItens } from 'src/app/services/doacao-itens/doacao-itens.service';
 
 interface Item {
   tipo: number;
@@ -45,19 +48,11 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
   public doacaoForm: FormGroup;
   public isEditing = false;
   public estados: any[];
-  public DoadorOptions: Doador[] = [
-    {
-      label: 'doador',
-      value: 1,
-    },
-  ];
-  public BeneficiarioOptions: Beneficiario[] = [
-    {
-      label: 'beneficiario',
-      value: 1,
-    },
-  ];
+  public DoadorOptions: Doador[] = [];
+  public BeneficiarioOptions: Beneficiario[] = [];
   public tipoOptions: { label: string; value: number }[] = [];
+  public selectedDoador: Doador | null = null;
+  public selectedBeneficario: Doador | null = null;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -67,12 +62,14 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     private doacaoService: DoacaoService,
     private cdr: ChangeDetectorRef,
     private userDataSerive: UserDataService,
-    private tipoDoacaoService: TipoDoacaoService
+    private tipoDoacaoService: TipoDoacaoService,
+    private beneficiarioService: BeneficiarioService,
+    private doadorService: DoadorService
   ) {
     this.doacaoForm = this.formBuilder.group({
-      id_usuario: [undefined],
-      idDoacao: [[]],
-      idDoador: [[]],
+      idUsuario: [undefined],
+      idDoacao: [undefined],
+      idDoador: [undefined],
       idBeneficiario: [undefined],
       descricao: [undefined],
       cep: [undefined],
@@ -117,30 +114,77 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnInit(): void {
+   ngOnInit(): void {
     const doacaoData = this.config.data?.event;
 
     if (doacaoData) {
       this.isEditing = true;
-      this.doacaoService.getDoacaoById(doacaoData.id).subscribe({
-        next: (doacao) => this.populateForm(doacao),
-        error: () => this.handleErrorMessage('Erro ao buscar dados da doacao.'),
-      });
-    }
 
-    this.tipoDoacaoService
-      .getTipoDoacoes(1)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (tipoDoacoes: any[]) => {
-          // Mapear os dados para o formato esperado
-          this.tipoOptions = tipoDoacoes.map((tipo) => ({
-            label: tipo.descricao, // Campo da descrição
-            value: tipo.idTipoDoacao, // Campo do ID
+      forkJoin({
+        doadores: this.doadorService.getAllDoadores(),
+        beneficiarios: this.beneficiarioService.getAllBeneficiarios(),
+        doacao: this.doacaoService.getDoacaoById(doacaoData.id),
+        doacaoItens: this.tipoDoacaoService.getTipoDoacoes(1)
+      }).subscribe({
+        next: ({ doadores, beneficiarios, doacao, doacaoItens }) => {
+          this.DoadorOptions = doadores.map((doador) => ({
+            label: doador.nome,
+            value: doador.idDoador,
           }));
-        },
-        error: () => this.handleErrorMessage('Erro ao buscar tipos de doação.'),
-      });
+          this.BeneficiarioOptions = beneficiarios.map((beneficiario) => ({
+            label: beneficiario.nome,
+            value: beneficiario.idBeneficiario,
+          }));
+
+          this.tipoOptions = doacaoItens.map((tipo) => ({
+            label: tipo.descricao ?? "",
+            value: tipo.idTipoDoacao,
+          }));
+
+          const mappedItens: Item[] = doacao.doacaoItens.map((item: any) => {
+            const tipoItem = doacaoItens.find((tipo) => tipo.idTipoDoacao === item.idTipoDoacao);
+            
+            return {
+              tipo: item.idTipoDoacao,
+              tipoLabel: tipoItem?.descricao ?? "",
+              quantidade: item.quantidade ?? undefined,
+              valor: item.valor ?? undefined,
+              descricao: item.descricao ?? '',
+            };
+          });
+
+          this.items.push(...mappedItens)
+          
+          this.populateForm({
+            ...doacao,
+            itens: mappedItens
+          });
+
+        }
+      })
+    } else {
+      forkJoin({
+        doadores: this.doadorService.getAllDoadores(),
+        beneficiarios: this.beneficiarioService.getAllBeneficiarios(),
+        doacaoItens: this.tipoDoacaoService.getTipoDoacoes(1)
+      }).subscribe({
+        next: ({ doadores, beneficiarios, doacaoItens }) => {
+          this.DoadorOptions = doadores.map((doador) => ({
+            label: doador.nome,
+            value: doador.idDoador,
+          }));
+          this.BeneficiarioOptions = beneficiarios.map((beneficiario) => ({
+            label: beneficiario.nome,
+            value: beneficiario.idBeneficiario,
+          }));
+
+          this.tipoOptions = doacaoItens.map((tipo) => ({
+            label: tipo.descricao ?? "",
+            value: tipo.idTipoDoacao,
+          }));
+        }
+      })
+    }
   }
 
   handleSubmit(): void {
@@ -149,13 +193,19 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
 
       const formData = {
         ...this.doacaoForm.value,
-        id_usuario: userData?.idUsuario,
+        idUsuario: userData?.idUsuario,
       };
 
       if (this.isEditing) {
-        this.editDoacao(formData);
+        this.editDoacao({
+          ...formData,
+          itens: this.items
+        });
       } else {
-        this.addDoacao(formData);
+        this.addDoacao({
+          ...formData,
+          itens: this.items
+        });
       }
     } else {
       this.handleErrorMessage(
@@ -205,6 +255,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       cidade: doacao.cidade,
       siglaestado: doacao.siglaestado,
       situacao: doacao.situacao,
+      itens: doacao.doacaoItens,
     });
   }
 

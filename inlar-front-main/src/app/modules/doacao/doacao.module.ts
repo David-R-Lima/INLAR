@@ -23,6 +23,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { DoacaoTableComponent } from './components/doacao-table/doacao-table.component';
 import { DoacaoFormComponent } from './components/doacao-form/doacao-form.component';
 import { DialogModule } from 'primeng/dialog';
+import { DoadorService } from 'src/app/services/doador/doador.service';
+import { BeneficiarioService } from 'src/app/services/beneficiario/beneficiario.service';
 
 @NgModule({
   declarations: [DoacaoHomeComponent, DoacaoTableComponent, DoacaoFormComponent],
@@ -48,6 +50,6 @@ import { DialogModule } from 'primeng/dialog';
     ConfirmDialogModule,
     TooltipModule,
   ],
-  providers: [DialogService, ConfirmationService],
+  providers: [DialogService, ConfirmationService, DoadorService, BeneficiarioService],
 })
 export class DoacaoModule { }
