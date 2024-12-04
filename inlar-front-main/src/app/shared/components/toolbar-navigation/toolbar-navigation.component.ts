@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-toolbar-navigation',
   templateUrl: './toolbar-navigation.component.html',
-  styleUrls: [],
+  styleUrls: ['./toolbar-navigation.scss'],
 })
 export class ToolbarNavigationComponent {
   constructor(private cookie: CookieService, private router: Router) {}
