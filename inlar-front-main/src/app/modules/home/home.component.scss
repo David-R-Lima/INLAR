@@ -1,3 +1,7 @@
+$primary-color: #0586FE;
+$backgorund-1:#fafafa;
+$white:#ffffff;
+
 .grid{
   display: flex;
   align-items: center;
@@ -41,4 +45,14 @@ span{
 .nome,.senha,.email{
   text-align: left;
   margin-bottom: 24px;
+}
+
+h1{
+  padding-top: 24px;
+  font-size: 28px;
+}
+
+h5{
+  font-size: 16px;
+  font-weight: 400
 }

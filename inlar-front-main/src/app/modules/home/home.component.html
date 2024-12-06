@@ -1,13 +1,13 @@
 <div class="grid">
       <!-- Login -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmitLoginForm()" *ngIf="loginCard">
-        <img src="../../../favicon.ico" alt="logoinlar">
         <p-card
           styleClass="mt-10"
-          header="Login"
-          subheader="Faça seu login para que assim consiga acessar nosso sistema!"
           *ngIf="loginCard"
         >
+        <img src="../../../favicon.ico" alt="logoinlar">
+        <h1>Login</h1>
+        <h5>Faça seu login para que assim consiga acessar o sistema!</h5>
           <div class="email">
             <label for="">E-mail</label>
             <input
