@@ -1,7 +1,4 @@
-<div>
-  <form [formGroup]="beneficiarioForm" (ngSubmit)="handleSubmit()">
-    <div class="card flex flex-column gap-3 custom-form">
-
+  <form [formGroup]="beneficiarioForm" (ngSubmit)="handleSubmit()" class="card flex flex-column gap-3 custom-form">
       <!-- Campo oculto para ID do Beneficiário -->
       <input type="hidden" formControlName="idBeneficiario" />
 
@@ -10,27 +7,28 @@
         <label for="nome">Nome</label>
         <input id="nome" pInputText placeholder="Nome" formControlName="nome" />
       </div>
+      <div class="juncao">
+          <!-- Dropdown para escolher entre Pessoa Física ou Jurídica -->
+        <div class="form-group">
+          <label for="tipoPessoa">Tipo de Pessoa</label>
+          <p-dropdown 
+            id="tipoPessoa"
+            [options]="tipoPessoaOptions" 
+            formControlName="tipo_pessoa" 
+            placeholder="Selecione o tipo de pessoa">
+          </p-dropdown>
+        </div>
 
-      <!-- Dropdown para escolher entre Pessoa Física ou Jurídica -->
-      <div class="form-group">
-        <label for="tipoPessoa">Tipo de Pessoa</label>
-        <p-dropdown 
-          id="tipoPessoa"
-          [options]="tipoPessoaOptions" 
-          formControlName="tipo_pessoa" 
-          placeholder="Selecione o tipo de pessoa">
-        </p-dropdown>
-      </div>
-
-      <!-- Estado (UF) -->
-      <div class="form-group">
-        <label for="uf">Estado (UF)</label>
-        <p-dropdown 
-          id="uf"
-          [options]="estados" 
-          formControlName="uf" 
-          placeholder="Selecione um Estado">
-        </p-dropdown>
+        <!-- Estado (UF) -->
+        <div class="form-group">
+          <label for="uf">Estado (UF)</label>
+          <p-dropdown 
+            id="uf"
+            [options]="estados" 
+            formControlName="uf" 
+            placeholder="Selecione um Estado">
+          </p-dropdown>
+        </div>
       </div>
 
       <!-- Campos para Pessoa Física -->
@@ -84,37 +82,39 @@
         />
       </div>
 
-      <div class="form-group">
-        <label for="genero">Gênero</label>
-        <p-dropdown 
-          id="genero"
-          [options]="generos" 
-          formControlName="genero" 
-          placeholder="Selecione o Gênero">
-        </p-dropdown>
-      </div>
-
-      <!-- Contato -->
-      <div class="form-group">
-        <label for="contato1">Contato 1</label>
-        <p-inputMask
-          id="contato1"
-          formControlName="contato1"
-          mask="(99) 99999-9999" 
-          placeholder="Digite o Telefone"
-          slotChar="_"  
-        ></p-inputMask>
-      </div>
-      
-      <div class="form-group">
-        <label for="contato2">Contato 2</label>
-        <p-inputMask
-          id="contato2"
-          formControlName="contato2"
-          mask="(99) 99999-9999"  
-          placeholder="Digite o Telefone"
-          slotChar="_"
-        ></p-inputMask>
+      <div class="juncao">
+        <div class="form-group">
+          <label for="genero">Gênero</label>
+          <p-dropdown 
+            id="genero"
+            [options]="generos" 
+            formControlName="genero" 
+            placeholder="Selecione o Gênero">
+          </p-dropdown>
+        </div>
+  
+        <!-- Contato -->
+        <div class="form-group">
+          <label for="contato1">Contato 1</label>
+          <p-inputMask
+            id="contato1"
+            formControlName="contato1"
+            mask="(99) 99999-9999" 
+            placeholder="Digite o Telefone"
+            slotChar="_"  
+          ></p-inputMask>
+        </div>
+        
+        <div class="form-group">
+          <label for="contato2">Contato 2</label>
+          <p-inputMask
+            id="contato2"
+            formControlName="contato2"
+            mask="(99) 99999-9999"  
+            placeholder="Digite o Telefone"
+            slotChar="_"
+          ></p-inputMask>
+        </div>
       </div>
 
       <!-- Endereço -->
@@ -191,12 +191,10 @@
       </div>
 
       <!-- Botão de Submissão -->
-      <div class="form-group flex justify-content-center">
+      <div class="form-button">
         <p-button 
           type="submit" 
           label="Concluir">
         </p-button>
       </div>
-    </div>
   </form>
-</div>

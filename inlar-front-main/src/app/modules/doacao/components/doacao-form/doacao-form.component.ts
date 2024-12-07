@@ -32,7 +32,7 @@ interface Beneficiario {
 @Component({
   selector: 'app-doacao-form',
   templateUrl: './doacao-form.component.html',
-  styleUrls: [],
+  styleUrls: ['../../../../styles/form.scss'],
 })
 export class DoacaoFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();

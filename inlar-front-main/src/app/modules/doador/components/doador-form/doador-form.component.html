@@ -1,7 +1,5 @@
 <div>
-  <form [formGroup]="doadorForm" (ngSubmit)="handleSubmit()" class="form-custom">
-    <div class="card flex flex-column gap-3">
-
+  <form [formGroup]="doadorForm" (ngSubmit)="handleSubmit()" class="card flex flex-column gap-3">
       <!-- Campo oculto para ID do Doador -->
       <input type="hidden" formControlName="idDoador" />
 
@@ -169,12 +167,10 @@
       </div>
 
       <!-- Botão de Submissão -->
-      <div class="form-group flex justify-content-center">
+      <div class="form-button">
         <p-button 
           type="submit" 
           label="Concluir">
         </p-button>
       </div>
-    </div>
   </form>
-</div>
