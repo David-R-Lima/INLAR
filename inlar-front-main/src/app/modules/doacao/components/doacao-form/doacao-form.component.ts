@@ -32,7 +32,7 @@ interface Beneficiario {
 @Component({
   selector: 'app-doacao-form',
   templateUrl: './doacao-form.component.html',
-  styleUrls: ['../../../../styles/form.scss'],
+  styleUrls: [],
 })
 export class DoacaoFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
@@ -114,7 +114,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
     ];
   }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     const doacaoData = this.config.data?.event;
 
     if (doacaoData) {
@@ -124,7 +124,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
         doadores: this.doadorService.getAllDoadores(),
         beneficiarios: this.beneficiarioService.getAllBeneficiarios(),
         doacao: this.doacaoService.getDoacaoById(doacaoData.id),
-        doacaoItens: this.tipoDoacaoService.getTipoDoacoes(1)
+        doacaoItens: this.tipoDoacaoService.getTipoDoacoes(1),
       }).subscribe({
         next: ({ doadores, beneficiarios, doacao, doacaoItens }) => {
           this.DoadorOptions = doadores.map((doador) => ({
@@ -137,36 +137,37 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
           }));
 
           this.tipoOptions = doacaoItens.map((tipo) => ({
-            label: tipo.descricao ?? "",
+            label: tipo.descricao ?? '',
             value: tipo.idTipoDoacao,
           }));
 
           const mappedItens: Item[] = doacao.doacaoItens.map((item: any) => {
-            const tipoItem = doacaoItens.find((tipo) => tipo.idTipoDoacao === item.idTipoDoacao);
-            
+            const tipoItem = doacaoItens.find(
+              (tipo) => tipo.idTipoDoacao === item.idTipoDoacao
+            );
+
             return {
               tipo: item.idTipoDoacao,
-              tipoLabel: tipoItem?.descricao ?? "",
+              tipoLabel: tipoItem?.descricao ?? '',
               quantidade: item.quantidade ?? undefined,
               valor: item.valor ?? undefined,
               descricao: item.descricao ?? '',
             };
           });
 
-          this.items.push(...mappedItens)
-          
+          this.items.push(...mappedItens);
+
           this.populateForm({
             ...doacao,
-            itens: mappedItens
+            itens: mappedItens,
           });
-
-        }
-      })
+        },
+      });
     } else {
       forkJoin({
         doadores: this.doadorService.getAllDoadores(),
         beneficiarios: this.beneficiarioService.getAllBeneficiarios(),
-        doacaoItens: this.tipoDoacaoService.getTipoDoacoes(1)
+        doacaoItens: this.tipoDoacaoService.getTipoDoacoes(1),
       }).subscribe({
         next: ({ doadores, beneficiarios, doacaoItens }) => {
           this.DoadorOptions = doadores.map((doador) => ({
@@ -179,11 +180,11 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
           }));
 
           this.tipoOptions = doacaoItens.map((tipo) => ({
-            label: tipo.descricao ?? "",
+            label: tipo.descricao ?? '',
             value: tipo.idTipoDoacao,
           }));
-        }
-      })
+        },
+      });
     }
   }
 
@@ -199,12 +200,12 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
       if (this.isEditing) {
         this.editDoacao({
           ...formData,
-          itens: this.items
+          itens: this.items,
         });
       } else {
         this.addDoacao({
           ...formData,
-          itens: this.items
+          itens: this.items,
         });
       }
     } else {
@@ -285,7 +286,7 @@ export class DoacaoFormComponent implements OnInit, OnDestroy {
   addItem(): void {
     if (this.currentItem.tipo) {
       const item = this.tipoOptions.find(
-                //@ts-expect-error sadasd
+        //@ts-expect-error sadasd
         (i) => i.value === this.currentItem.tipo.value
       );
 
