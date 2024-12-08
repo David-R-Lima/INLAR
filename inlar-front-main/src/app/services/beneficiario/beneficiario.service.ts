@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GetBeneficiarioResponse } from 'src/app/models/interfaces/beneficiario/responses/GetBeneficiarioResponse';
+import { environment } from 'src/environments/environment';
 
 
 export interface Beneficiario {
@@ -29,7 +30,7 @@ export interface Beneficiario {
   providedIn: 'root'
 })
 export class BeneficiarioService {
-  private apiUrl = 'http://localhost:3256'; // URL do seu backend
+  private apiUrl = environment.API_URL; // URL do seu backend
 
   constructor(private http: HttpClient) {}
 
